@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytica84 — Join the Movement</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -148,6 +150,58 @@
         .hero-proof:hover {
             color: #ff69b4;
             text-shadow: 0 0 10px rgba(255,20,147,0.3);
+        }
+        
+        .origin-section {
+            padding: 0 20px 40px;
+            max-width: 700px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+        .origin-card {
+            background: rgba(255,20,147,0.04);
+            border: 1px solid rgba(255,20,147,0.2);
+            border-radius: 16px;
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+        .origin-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff1493, #00ffff);
+        }
+        .origin-label {
+            display: inline-block;
+            color: #ff1493;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,20,147,0.3);
+            padding: 4px 12px;
+            border-radius: 4px;
+        }
+        .origin-quote {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #c0c0d0;
+            font-style: italic;
+        }
+        .origin-quote .highlight {
+            color: #ff1493;
+            font-weight: 600;
+            font-style: normal;
+        }
+        .origin-quote .cyan {
+            color: #00ffff;
+            font-weight: 600;
+            font-style: normal;
         }
         
         .form-card {
@@ -316,6 +370,7 @@
             .nav-left { gap: 12px; }
             .nav-logo img { max-width: 160px; }
             .hero { padding: 60px 15px 40px; }
+            .origin-card { padding: 24px; }
             .form-card { padding: 28px; }
         }
     </style>
@@ -347,6 +402,15 @@
             Now tracking crypto in real time.
         </p>
         <a href="https://www.tiktok.com/@analytica84" target="_blank" class="hero-proof" data-en="📹 Proof of Concept — Watch on TikTok →" data-es="📹 Prueba de Concepto — Ver en TikTok →">📹 Proof of Concept — Watch on TikTok →</a>
+    </section>
+
+    <section class="origin-section">
+        <div class="origin-card">
+            <div class="origin-label" data-en="Origin Story" data-es="Historia de Origen">Origin Story</div>
+            <p class="origin-quote" data-en="They locked me out of the boardroom, so I <span class='highlight'>weaponized my Crayons Method edge</span> for retail. Use it all you want for free and let's turn crypto into an <span class='cyan'>ATM</span> while the AI and I finish the FX code — then we go take on <span class='highlight'>Wall Street</span>." data-es="Me cerraron las puertas de la sala de juntas, así que <span class='highlight'>armé mi ventaja del Método Crayons</span> para el retail. Úsalo todo lo que quieras gratis y convirtamos cripto en un <span class='cyan'>ATM</span> mientras la IA y yo terminamos el código FX — luego vamos a enfrentar a <span class='highlight'>Wall Street</span>.">
+                They locked me out of the boardroom, so I <span class="highlight">weaponized my Crayons Method edge</span> for retail. Use it all you want for free and let's turn crypto into an <span class="cyan">ATM</span> while the AI and I finish the FX code — then we go take on <span class="highlight">Wall Street</span>.
+            </p>
+        </div>
     </section>
 
     <section class="form-section">
