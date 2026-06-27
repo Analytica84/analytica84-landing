@@ -15,7 +15,7 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-        
+
         @keyframes pulse-glow {
             0%, 100% { box-shadow: 0 0 20px rgba(0,255,255,0.3); }
             50% { box-shadow: 0 0 40px rgba(0,255,255,0.6), 0 0 60px rgba(0,255,255,0.2); }
@@ -24,7 +24,7 @@
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         .navbar {
             display: flex;
             align-items: center;
@@ -89,7 +89,7 @@
             color: #000;
             box-shadow: 0 0 20px rgba(255,20,147,0.4);
         }
-        
+
         .hero {
             text-align: center;
             padding: 80px 20px 60px;
@@ -151,7 +151,7 @@
             color: #ff69b4;
             text-shadow: 0 0 10px rgba(255,20,147,0.3);
         }
-        
+
         .origin-section {
             padding: 0 20px 40px;
             max-width: 700px;
@@ -203,7 +203,7 @@
             font-weight: 600;
             font-style: normal;
         }
-        
+
         .form-card {
             background: rgba(0,255,255,0.03);
             border: 1px solid rgba(0,255,255,0.15);
@@ -268,7 +268,26 @@
             font-size: 0.8rem;
             color: #555;
         }
-        
+        .status-msg {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            font-size: 0.9rem;
+        }
+        .status-msg.success {
+            background: rgba(0,255,0,0.1);
+            border: 1px solid rgba(0,255,0,0.3);
+            color: #00ff00;
+            display: block;
+        }
+        .status-msg.error {
+            background: rgba(255,0,0,0.1);
+            border: 1px solid rgba(255,0,0,0.3);
+            color: #ff4444;
+            display: block;
+        }
+
         .preview-section {
             padding: 60px 20px;
             text-align: center;
@@ -324,7 +343,7 @@
             font-size: 0.9rem;
             margin-top: 8px;
         }
-        
+
         .movement-section {
             padding: 80px 20px;
             text-align: center;
@@ -347,7 +366,7 @@
             color: #ff1493;
             font-weight: 600;
         }
-        
+
         footer {
             text-align: center;
             padding: 40px 20px;
@@ -364,7 +383,7 @@
         footer a:hover {
             text-shadow: 0 0 10px rgba(0,255,255,0.3);
         }
-        
+
         @media(max-width: 600px) {
             .navbar { padding: 15px 20px; }
             .nav-left { gap: 12px; }
@@ -374,6 +393,7 @@
             .form-card { padding: 28px; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -417,14 +437,15 @@
         <div class="form-card">
             <div class="form-group">
                 <label data-en="Email" data-es="Correo Electrónico">Email</label>
-                <input type="email" placeholder="you@email.com" required>
+                <input type="email" id="email" placeholder="you@email.com" required>
             </div>
             <div class="form-group">
                 <label data-en="TikTok Handle" data-es="Usuario de TikTok">TikTok Handle</label>
-                <input type="text" placeholder="@yourhandle" required>
+                <input type="text" id="tiktok" placeholder="@yourhandle" required>
             </div>
-            <button class="submit-btn" data-en="Join the Movement →" data-es="Únete al Movimiento →">Join the Movement →</button>
+            <button class="submit-btn" onclick="submitForm()" data-en="Join the Movement →" data-es="Únete al Movimiento →">Join the Movement →</button>
             <p class="form-note" data-en="Free access. No spam. We build this together." data-es="Acceso gratis. Sin spam. Construimos esto juntos.">Free access. No spam. We build this together.</p>
+            <div id="status" class="status-msg"></div>
         </div>
     </section>
 
@@ -454,6 +475,8 @@
     </footer>
 
     <script>
+        const BOT_URL = 'https://web-production-b19ed.up.railway.app';
+
         function setLang(lang) {
             document.documentElement.lang = lang;
             document.getElementById('btn-en').classList.toggle('active', lang === 'en');
@@ -466,6 +489,41 @@
         }
         const savedLang = localStorage.getItem('a84-lang') || 'en';
         if (savedLang !== 'en') setLang(savedLang);
+
+        async function submitForm() {
+            const email = document.getElementById('email').value;
+            const tiktok = document.getElementById('tiktok').value;
+            const status = document.getElementById('status');
+
+            if (!email || !tiktok) {
+                status.className = 'status-msg error';
+                status.innerText = 'Please fill in both fields';
+                return;
+            }
+
+            try {
+                const res = await fetch(BOT_URL + '/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, tiktok })
+                });
+                const data = await res.json();
+
+                if (data.status === 'saved') {
+                    status.className = 'status-msg success';
+                    status.innerText = 'Welcome to the movement! Redirecting...';
+                    setTimeout(() => {
+                        window.location.href = 'partner.html';
+                    }, 1500);
+                } else {
+                    status.className = 'status-msg error';
+                    status.innerText = 'Error: ' + (data.error || 'Please try again');
+                }
+            } catch (e) {
+                status.className = 'status-msg error';
+                status.innerText = 'Connection error. Please try again.';
+            }
+        }
     </script>
 
 </body>
