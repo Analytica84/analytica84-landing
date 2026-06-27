@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytica84 — Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000000;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background: rgba(0,255,255,0.03);
+            border: 1px solid rgba(0,255,255,0.2);
+            border-radius: 16px;
+            padding: 48px;
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+        }
+        .logo {
+            max-width: 180px;
+            margin-bottom: 24px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+        .subtitle {
+            color: #8a8a9a;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        .cta-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #00ffff, #00a884);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,255,255,0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <img src="a84-bolt-logo.jpg" alt="Analytica84" class="logo">
+        <h1>Your Dashboard is Ready</h1>
+        <p class="subtitle">You've been approved. Access your live A84 market intelligence now.</p>
+        <a href="https://web-production-b19ed.up.railway.app" class="cta-btn">
+            Launch Dashboard →
+        </a>
+    </div>
+</body>
+</html>
