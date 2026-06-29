@@ -216,6 +216,98 @@
             color: #00ffff;
             text-decoration: none;
         }
+        
+        .donate-section {
+            text-align: center;
+            margin-top: 48px;
+            padding: 40px;
+            background: rgba(0,255,255,0.03);
+            border: 1px solid rgba(0,255,255,0.15);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        .donate-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00ffff, #00a884);
+        }
+        .donate-section h2 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+        .donate-section p {
+            color: #8a8a9a;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .donate-address {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(0,255,255,0.25);
+            border-radius: 12px;
+            padding: 14px 24px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #00ffff;
+            cursor: pointer;
+            transition: all 0.3s;
+            word-break: break-all;
+        }
+        .donate-address:hover {
+            border-color: rgba(0,255,255,0.5);
+            box-shadow: 0 0 20px rgba(0,255,255,0.15);
+        }
+        .donate-address .copy-icon {
+            color: #00a884;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .donate-label {
+            display: inline-block;
+            color: #00ffff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0,255,255,0.3);
+            padding: 4px 12px;
+            border-radius: 4px;
+        }
+        .donate-note {
+            margin-top: 16px;
+            font-size: 0.8rem;
+            color: #555;
+        }
+        .donate-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(0,255,0,0.1);
+            border: 1px solid rgba(0,255,0,0.3);
+            color: #00ff00;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.4s ease;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .donate-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -260,6 +352,19 @@
             <a href="index.html" class="cta-btn">Sign Up Now →</a>
         </div>
         
+        
+        <div class="donate-section">
+            <div class="donate-label">Support the Build</div>
+            <h2>Fuel the Signals</h2>
+            <p>Every donation goes directly into infrastructure, data feeds, and platform development. No middlemen.</p>
+            <div class="donate-address" onclick="copyAddress()">
+                <span>0xe1B57BFAb0dc47cC7A5e673f84E49126801C3456</span>
+                <span class="copy-icon">📋</span>
+            </div>
+            <p class="donate-note">USDC on Hyperliquid · Click to copy</p>
+        </div>
+
+        <div class="donate-toast" id="donate-toast">Address copied to clipboard</div>
         <div class="footer">
             <p>© 2026 Analytica84 · Powered by <a href="https://www.tiktok.com/@analytica84" target="_blank">Forex Crayons Engine</a></p>
             <p style="margin-top:8px;"><a href="https://www.tiktok.com/@analytica84" target="_blank">@analytica84</a></p>
@@ -319,6 +424,15 @@
         
         loadCommunity();
         setInterval(loadCommunity, 30000);
+        
+        function copyAddress() {
+            const addr = '0xe1B57BFAb0dc47cC7A5e673f84E49126801C3456';
+            navigator.clipboard.writeText(addr).then(() => {
+                const toast = document.getElementById('donate-toast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            });
+        }
     </script>
 </body>
 </html>
