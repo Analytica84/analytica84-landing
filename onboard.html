@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytica84 — Onboard</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000000;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0,255,255,0.3); }
+            50% { box-shadow: 0 0 40px rgba(0,255,255,0.6), 0 0 60px rgba(0,255,255,0.2); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: #000000;
+            border-bottom: 1px solid rgba(0,255,255,0.1);
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .nav-logo img {
+            max-width: 220px;
+            height: auto;
+        }
+        .lang-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(0,255,255,0.05);
+            border: 1px solid rgba(0,255,255,0.2);
+            border-radius: 6px;
+            padding: 4px;
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: #666;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .lang-btn.active {
+            background: rgba(0,255,255,0.15);
+            color: #00ffff;
+        }
+        .lang-btn:hover:not(.active) {
+            color: #aaa;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .nav-links a {
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+        .nav-links a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(0,255,255,0.6);
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: #00ffff;
+            box-shadow: 0 0 8px rgba(0,255,255,0.5);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .container {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .card {
+            background: rgba(0,255,255,0.03);
+            border: 1px solid rgba(0,255,255,0.2);
+            border-radius: 16px;
+            padding: 48px;
+            width: 100%;
+            text-align: center;
+        }
+        .step {
+            display: inline-block;
+            background: rgba(0,255,255,0.1);
+            color: #00ffff;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .logo {
+            max-width: 180px;
+            margin-bottom: 24px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+        .subtitle {
+            color: #8a8a9a;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        .discount {
+            color: #00ff00;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin: 20px 0;
+            text-shadow: 0 0 20px rgba(0,255,0,0.3);
+        }
+        .discount-label {
+            color: #8a8a9a;
+            font-size: 0.9rem;
+            margin-bottom: 32px;
+        }
+        .benefits {
+            text-align: left;
+            margin: 32px 0;
+            padding: 20px;
+            background: rgba(0,255,255,0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(0,255,255,0.1);
+        }
+        .benefits li {
+            list-style: none;
+            padding: 8px 0;
+            color: #ccc;
+            font-size: 0.95rem;
+        }
+        .benefits li:before {
+            content: "✓";
+            color: #00ff00;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .cta-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #00ffff, #00a884);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            margin-top: 24px;
+            letter-spacing: 1px;
+        }
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,255,255,0.4);
+        }
+        .note {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #555;
+        }
+        .verify-link {
+            margin-top: 12px;
+            font-size: 0.85rem;
+        }
+        .verify-link a {
+            color: #00ffff;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .verify-link a:hover {
+            text-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(0,255,255,0.08);
+        }
+        footer p {
+            color: #444;
+            font-size: 0.85rem;
+        }
+        footer a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+        .referral-section {
+            margin-top: 16px;
+            padding: 12px 20px;
+            border: 1px solid rgba(138,138,154,0.2);
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .referral-section a {
+            color: #8a8a9a;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        .referral-section a:hover {
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+
+        @media(max-width: 768px) {
+            .navbar { padding: 15px 20px; flex-wrap: wrap; gap: 10px; }
+            .nav-left { gap: 12px; }
+            .nav-logo img { max-width: 160px; }
+            .nav-links { gap: 16px; }
+            .container { padding: 40px 15px; }
+            .card { padding: 32px 24px; }
+        }
+        @media(max-width: 600px) {
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="nav-logo">
+                <a href="index.html"><img src="a84-bolt-logo.jpg" alt="Analytica84"></a>
+            </div>
+            <div class="lang-toggle">
+                <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+                <button class="lang-btn" onclick="setLang('es')" id="btn-es">ES</button>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="community.html" data-en="Community" data-es="Comunidad">Community</a>
+            <a href="investor.html" data-en="Investor" data-es="Inversor">Investor</a>
+            <a href="learn.html" data-en="Learn" data-es="Aprender">Learn</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="card">
+            <span class="step" data-en="STEP 1 OF 2" data-es="PASO 1 DE 2">STEP 1 OF 2</span>
+            <img src="a84-bolt-logo.jpg" alt="Analytica84" class="logo">
+            <h1 data-en="Unlock Your Dashboard" data-es="Desbloquea Tu Panel">Unlock Your Dashboard</h1>
+            <div class="discount">4%</div>
+            <div class="discount-label" data-en="Trading Fee Discount" data-es="Descuento en Comisiones">Trading Fee Discount</div>
+            <ul class="benefits">
+                <li data-en="Access to live A84 Price Targets" data-es="Acceso a Objetivos de Precio A84 en vivo">Access to live A84 Price Targets</li>
+                <li data-en="5-timeframe structural analysis" data-es="Análisis estructural de 5 marcos de tiempo">5-timeframe structural analysis</li>
+                <li data-en="Real-time Hyperliquid integration" data-es="Integración en tiempo real con Hyperliquid">Real-time Hyperliquid integration</li>
+                <li data-en="Community-first build updates" data-es="Actualizaciones de la comunidad primero">Community-first build updates</li>
+            </ul>
+            <a href="https://app.hyperliquid.xyz/join/ANALYTICA84" target="_blank" class="cta-btn" data-en="Sign Up on Hyperliquid →" data-es="Regístrate en Hyperliquid →">Sign Up on Hyperliquid →</a>
+            <p class="note" data-en="After signing up, return here to verify your wallet" data-es="Después de registrarte, regresa aquí para verificar tu wallet">After signing up, return here to verify your wallet</p>
+            <p class="verify-link">
+                <a href="verify.html" data-en="Already have an account? Verify your wallet →" data-es="¿Ya tienes cuenta? Verifica tu wallet →">Already have an account? Verify your wallet →</a>
+            </p>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Analytica84 · <span data-en="Powered by" data-es="Impulsado por">Powered by</span> <a href="https://www.tiktok.com/@analytica84" target="_blank">Forex Crayons Engine</a></p>
+        <div class="referral-section">
+            <a href="https://app.hyperliquid.xyz/join/ANALYTICA84" target="_blank" data-en="Hyperliquid Referral: ANALYTICA84" data-es="Referido Hyperliquid: ANALYTICA84">Hyperliquid Referral: ANALYTICA84</a>
+        </div>
+    </footer>
+
+    <script>
+        function setLang(lang) {
+            document.documentElement.lang = lang;
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+            document.querySelectorAll('[data-en][data-es]').forEach(el => {
+                const html = el.getAttribute('data-' + lang);
+                if (html) el.innerHTML = html;
+            });
+            localStorage.setItem('a84-lang', lang);
+        }
+        const savedLang = localStorage.getItem('a84-lang') || 'en';
+        if (savedLang !== 'en') setLang(savedLang);
+    </script>
+
+</body>
+</html>
