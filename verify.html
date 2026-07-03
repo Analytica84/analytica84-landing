@@ -4,32 +4,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytica84 — Verify Wallet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #000000;
             color: #e0e0e0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Rajdhani', sans-serif;
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(0,0,0,0.9);
+            border-bottom: 1px solid #1a1a2e;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .nav-logo {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
+            text-decoration: none;
+        }
+        .nav-logo img {
+            max-width: 220px;
+            height: auto;
+            display: block;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            color: #00ffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            padding: 0.25rem 0;
+            transition: all 0.3s ease;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00ffff;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px #00ffff;
+        }
+        .nav-links a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(0,255,255,0.5);
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a.active {
+            color: #00ffff;
+        }
+        .nav-links a.active::after { width: 100%; }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: #00ffff;
+            transition: all 0.3s ease;
+        }
+        .lang-toggle {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .lang-btn {
+            background: transparent;
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            padding: 0.3rem 0.8rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+        .lang-btn:hover, .lang-btn.active {
+            background: #00ffff;
+            color: #000000;
+            box-shadow: 0 0 15px rgba(0,255,255,0.4);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
         }
         .card {
             background: rgba(0,255,255,0.03);
             border: 1px solid rgba(0,255,255,0.2);
             border-radius: 16px;
             padding: 48px;
-            max-width: 520px;
             width: 100%;
             text-align: center;
         }
-        .logo {
-            max-width: 180px;
-            margin-bottom: 24px;
+        .step {
+            display: inline-block;
+            background: rgba(0,255,255,0.1);
+            color: #00ffff;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 16px;
         }
         h1 {
+            font-family: 'Orbitron', sans-serif;
             font-size: 1.8rem;
             font-weight: 800;
             margin-bottom: 12px;
@@ -39,6 +146,85 @@
             color: #8a8a9a;
             margin-bottom: 32px;
             line-height: 1.6;
+        }
+        .disclosure-section {
+            text-align: left;
+            margin-bottom: 32px;
+        }
+        .disclosure-title {
+            color: #00ffff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .disclosure-scroll {
+            max-height: 280px;
+            overflow-y: auto;
+            background: rgba(0,20,40,0.6);
+            border: 1px solid rgba(0,255,255,0.15);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        .disclosure-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .disclosure-scroll::-webkit-scrollbar-track {
+            background: rgba(0,255,255,0.05);
+            border-radius: 3px;
+        }
+        .disclosure-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0,255,255,0.3);
+            border-radius: 3px;
+        }
+        .disclosure-scroll h3 {
+            color: #00ffff;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin: 20px 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .disclosure-scroll h3:first-child {
+            margin-top: 0;
+        }
+        .disclosure-scroll p {
+            color: #00ffff;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        .disclosure-scroll p:last-child {
+            margin-bottom: 0;
+        }
+        .checkbox-wrap {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            text-align: left;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: rgba(0,255,255,0.03);
+            border: 1px solid rgba(0,255,255,0.15);
+            border-radius: 8px;
+        }
+        .checkbox-wrap input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #00ffff;
+            margin-top: 2px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .checkbox-wrap label {
+            color: #00ffff;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            cursor: pointer;
         }
         .form-group {
             margin-bottom: 20px;
@@ -76,6 +262,7 @@
             color: #000;
             border: none;
             border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
             font-size: 1rem;
             font-weight: 800;
             cursor: pointer;
@@ -83,9 +270,15 @@
             letter-spacing: 1px;
             text-transform: uppercase;
         }
-        .submit-btn:hover {
+        .submit-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(0,255,255,0.4);
+        }
+        .submit-btn:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
         }
         .status {
             margin-top: 20px;
@@ -105,52 +298,187 @@
             color: #ff4444;
             display: block;
         }
-        .step {
+        .back-link {
             display: inline-block;
-            background: rgba(0,255,255,0.1);
-            color: #00ffff;
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 16px;
+            margin-top: 24px;
+            color: #8a8a9a;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
         }
+        .back-link:hover {
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #1a1a2e;
+            color: #8a8a9a;
+            font-size: 0.85rem;
+        }
+        .footer span { color: #00ffff; }
+        .referral-section {
+            margin-top: 16px;
+            padding: 12px 20px;
+            border: 1px solid rgba(138,138,154,0.2);
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .referral-section a {
+            color: #8a8a9a;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .referral-section a:hover {
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width: 768px) {
+            .navbar { padding: 1rem; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: rgba(0,0,0,0.98);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.3s ease;
+                border-left: 1px solid #1a1a2e;
+            }
+            .nav-links.active { right: 0; }
+            .hamburger { display: flex; }
+            .container { padding: 2rem 1rem; }
+            .card { padding: 28px; }
+            .disclosure-scroll { padding: 16px; max-height: 220px; }
+        }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <span class="step">STEP 2 OF 2</span>
-        <img src="a84-bolt-logo.jpg" alt="Analytica84" class="logo">
-        <h1>Verify Your Wallet</h1>
-        <p class="subtitle">Enter the wallet address you used to sign up on Hyperliquid. We'll verify it and unlock your dashboard.</p>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.html" class="nav-logo"><img src="a84-bolt-logo.jpg" alt="Analytica84"></a>
         
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="email" placeholder="you@email.com" required>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="community.html" data-en="Community" data-es="Comunidad">Community</a></li>
+            <li><a href="investor.html" data-en="Investor" data-es="Inversor">Investor</a></li>
+            <li><a href="learn.html" data-en="Learn" data-es="Aprender">Learn</a></li>
+            <li><a href="dashboard.html" data-en="Dashboard" data-es="Panel">Dashboard</a></li>
+            <li><a href="verify.html" class="active" data-en="Verify" data-es="Verificar">Verify</a></li>
+        </ul>
+
+        <div class="lang-toggle">
+            <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+            <button class="lang-btn" onclick="setLang('es')" id="btn-es">ES</button>
         </div>
-        <div class="form-group">
-            <label>Hyperliquid Wallet Address</label>
-            <input type="text" id="wallet" placeholder="0x..." required>
+
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
-        <button class="submit-btn" onclick="submitWallet()">Submit for Verification →</button>
-        
-        <div id="status" class="status"></div>
-    </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <div class="card">
+            <span class="step" data-en="STEP 2 OF 2" data-es="PASO 2 DE 2">STEP 2 OF 2</span>
+            <h1 data-en="Verify Your Wallet" data-es="Verifica Tu Wallet">Verify Your Wallet</h1>
+            <p class="subtitle" data-en="Enter the wallet address you used to sign up on Hyperliquid. We'll verify it and unlock your dashboard." data-es="Ingresa la dirección de wallet que usaste para registrarte en Hyperliquid. La verificaremos y desbloquearemos tu panel.">Enter the wallet address you used to sign up on Hyperliquid. We'll verify it and unlock your dashboard.</p>
+
+            <!-- Risk Disclosure Gate -->
+            <div class="disclosure-section">
+                <div class="disclosure-title" data-en="Terms of Use & Risk Disclosure" data-es="Términos de Uso y Divulgación de Riesgos">Terms of Use & Risk Disclosure</div>
+                <div class="disclosure-scroll">
+                    <h3 data-en="1. Nature of Service" data-es="1. Naturaleza del Servicio">1. Nature of Service</h3>
+                    <p data-en="Analytica 84 is a provider of proprietary Market Intelligence and educational resources centered on the Crayon Method. We do not provide, nor are we authorized to provide, personalized financial, investment, or trading advice. All information, data, and targets provided through this platform are for informational and educational purposes only." data-es="Analytica 84 es un proveedor de Inteligencia de Mercado propietaria y recursos educativos centrados en el Método Crayon. No proporcionamos, ni estamos autorizados a proporcionar, asesoramiento financiero, de inversión o de trading personalizado. Toda la información, datos y objetivos proporcionados a través de esta plataforma son solo para fines informativos y educativos.">Analytica 84 is a provider of proprietary Market Intelligence and educational resources centered on the Crayon Method. We do not provide, nor are we authorized to provide, personalized financial, investment, or trading advice. All information, data, and targets provided through this platform are for informational and educational purposes only.</p>
+
+                    <h3 data-en="2. No Fiduciary Relationship" data-es="2. No Existe Relación Fiduciaria">2. No Fiduciary Relationship</h3>
+                    <p data-en="The use of this platform does not create a fiduciary, advisory, or broker-client relationship between Analytica 84 and the user. You are solely responsible for your own trading decisions, risk management, and the execution of any transactions on third-party protocols or exchanges. Analytica 84 is not a custodian of your assets and has no role in the execution of your trades." data-es="El uso de esta plataforma no crea una relación fiduciaria, de asesoramiento o de corredor-cliente entre Analytica 84 y el usuario. Usted es el único responsable de sus propias decisiones de trading, gestión de riesgos y la ejecución de cualquier transacción en protocolos o exchanges de terceros. Analytica 84 no es custodio de sus activos y no tiene ningún papel en la ejecución de sus operaciones.">The use of this platform does not create a fiduciary, advisory, or broker-client relationship between Analytica 84 and the user. You are solely responsible for your own trading decisions, risk management, and the execution of any transactions on third-party protocols or exchanges. Analytica 84 is not a custodian of your assets and has no role in the execution of your trades.</p>
+
+                    <h3 data-en="3. Past Performance and Market Intelligence" data-es="3. Rendimiento Pasado e Inteligencia de Mercado">3. Past Performance and Market Intelligence</h3>
+                    <p data-en="Past performance of any market trend, signal, or TMV (True Market Value) target is not indicative of future results. Historical market data, including data generated by the Crayon Method, is for educational context only and should not be relied upon as a guarantee of future performance. Market conditions are dynamic, and all trading involves the risk of loss. The intelligence provided herein is not a recommendation to buy, sell, or hold any financial instrument." data-es="El rendimiento pasado de cualquier tendencia de mercado, señal o objetivo de TMV (Valor Verdadero de Mercado) no es indicativo de resultados futuros. Los datos de mercado históricos, incluidos los generados por el Método Crayon, son solo para contexto educativo y no deben considerarse como garantía de rendimiento futuro. Las condiciones del mercado son dinámicas y todo trading conlleva el riesgo de pérdida. La inteligencia proporcionada aquí no es una recomendación para comprar, vender o mantener ningún instrumento financiero.">Past performance of any market trend, signal, or TMV (True Market Value) target is not indicative of future results. Historical market data, including data generated by the Crayon Method, is for educational context only and should not be relied upon as a guarantee of future performance. Market conditions are dynamic, and all trading involves the risk of loss. The intelligence provided herein is not a recommendation to buy, sell, or hold any financial instrument.</p>
+
+                    <h3 data-en="4. User Responsibility and Jurisdiction" data-es="4. Responsabilidad del Usuario y Jurisdicción">4. User Responsibility and Jurisdiction</h3>
+                    <p data-en="By accessing this platform, you affirm that you are not a resident of, or accessing this service from, a jurisdiction where such activity is restricted or prohibited, including but not limited to the United States of America. Analytica 84 assumes no responsibility for compliance with your local financial regulations. The user bears full responsibility for ensuring their participation complies with all applicable laws in their home jurisdiction." data-es="Al acceder a esta plataforma, usted afirma que no es residente de, ni accede a este servicio desde, una jurisdicción donde dicha actividad está restringida o prohibida, incluidos pero no limitados a los Estados Unidos de América. Analytica 84 no asume responsabilidad por el cumplimiento de sus regulaciones financieras locales. El usuario asume total responsabilidad por garantizar que su participación cumpla con todas las leyes aplicables en su jurisdicción de origen.">By accessing this platform, you affirm that you are not a resident of, or accessing this service from, a jurisdiction where such activity is restricted or prohibited, including but not limited to the United States of America. Analytica 84 assumes no responsibility for compliance with your local financial regulations. The user bears full responsibility for ensuring their participation complies with all applicable laws in their home jurisdiction.</p>
+
+                    <h3 data-en="5. Acceptance of Risk" data-es="5. Aceptación del Riesgo">5. Acceptance of Risk</h3>
+                    <p data-en="Trading in digital assets and derivatives involves substantial risk of loss. You acknowledge that you have the knowledge and experience to evaluate the merits and risks of the information provided and that you are using this intelligence at your own discretion. You agree that Analytica 84 shall not be liable for any direct, indirect, or consequential loss resulting from your use of, or reliance on, this information." data-es="El trading en activos digitales y derivados conlleva un riesgo sustancial de pérdida. Usted reconoce que tiene el conocimiento y la experiencia para evaluar los méritos y riesgos de la información proporcionada y que está utilizando esta inteligencia a su propia discreción. Usted acepta que Analytica 84 no será responsable de ninguna pérdida directa, indirecta o consecuente resultante de su uso o dependencia de esta información.">Trading in digital assets and derivatives involves substantial risk of loss. You acknowledge that you have the knowledge and experience to evaluate the merits and risks of the information provided and that you are using this intelligence at your own discretion. You agree that Analytica 84 shall not be liable for any direct, indirect, or consequential loss resulting from your use of, or reliance on, this information.</p>
+                </div>
+
+                <div class="checkbox-wrap">
+                    <input type="checkbox" id="risk-check" onchange="toggleSubmit()">
+                    <label for="risk-check" data-en="I confirm that I have read and agree to the Terms of Use and Risk Disclosure, and I certify that I am not a resident of, nor accessing this service from, a restricted jurisdiction including the United States." data-es="Confirmo que he leído y acepto los Términos de Uso y la Divulgación de Riesgos, y certifico que no soy residente de, ni accedo a este servicio desde, una jurisdicción restringida incluidos los Estados Unidos.">I confirm that I have read and agree to the Terms of Use and Risk Disclosure, and I certify that I am not a resident of, nor accessing this service from, a restricted jurisdiction including the United States.</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label data-en="Email" data-es="Correo Electrónico">Email</label>
+                <input type="email" id="email" placeholder="you@email.com" required>
+            </div>
+            <div class="form-group">
+                <label data-en="Hyperliquid Wallet Address" data-es="Dirección de Wallet Hyperliquid">Hyperliquid Wallet Address</label>
+                <input type="text" id="wallet" placeholder="0x..." required>
+            </div>
+            <button class="submit-btn" id="submit-btn" onclick="submitWallet()" disabled data-en="Submit for Verification →" data-es="Enviar para Verificación →">Submit for Verification →</button>
+
+            <div id="status" class="status"></div>
+
+            <a href="index.html" class="back-link" data-en="← Back to Analytica84" data-es="← Volver a Analytica84">← Back to Analytica84</a>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2026 <span>Analytica84</span> — <span data-en="Powered by Crayons" data-es="Impulsado por Crayons">Powered by Crayons</span></p>
+        <div class="referral-section">
+            <a href="https://app.hyperliquid.xyz/join/ANALYTICA84" target="_blank" data-en="Hyperliquid Referral: ANALYTICA84" data-es="Referido Hyperliquid: ANALYTICA84">Hyperliquid Referral: ANALYTICA84</a>
+        </div>
+    </footer>
 
     <script>
         const BOT_URL = 'https://web-production-b19ed.up.railway.app';
-        
+
+        function setLang(lang) {
+            document.documentElement.lang = lang;
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+            document.querySelectorAll('[data-en][data-es]').forEach(el => {
+                const html = el.getAttribute('data-' + lang);
+                if (html) el.innerHTML = html;
+            });
+            localStorage.setItem('a84-lang', lang);
+        }
+        const savedLang = localStorage.getItem('a84-lang') || 'en';
+        if (savedLang !== 'en') setLang(savedLang);
+
+        function toggleSubmit() {
+            const checked = document.getElementById('risk-check').checked;
+            document.getElementById('submit-btn').disabled = !checked;
+        }
+
         async function submitWallet() {
             const email = document.getElementById('email').value;
             const wallet = document.getElementById('wallet').value;
             const status = document.getElementById('status');
-            
+
             if (!email || !wallet) {
                 status.className = 'status error';
-                status.innerText = 'Please fill in both fields';
+                status.innerText = savedLang === 'es' ? 'Por favor complete ambos campos' : 'Please fill in both fields';
                 return;
             }
-            
+
             try {
                 const res = await fetch(BOT_URL + '/api/verify-wallet', {
                     method: 'POST',
@@ -158,19 +486,30 @@
                     body: JSON.stringify({ email, wallet })
                 });
                 const data = await res.json();
-                
+
                 if (data.status === 'wallet_saved') {
                     status.className = 'status success';
-                    status.innerText = 'Wallet submitted! Waiting for approval. Check your email soon.';
+                    status.innerText = savedLang === 'es' ? '¡Wallet enviada! Esperando aprobación. Revisa tu correo pronto.' : 'Wallet submitted! Waiting for approval. Check your email soon.';
                 } else {
                     status.className = 'status error';
                     status.innerText = 'Error: ' + (data.error || 'Unknown error');
                 }
             } catch (e) {
                 status.className = 'status error';
-                status.innerText = 'Connection error. Please try again.';
+                status.innerText = savedLang === 'es' ? 'Error de conexión. Por favor intente de nuevo.' : 'Connection error. Please try again.';
             }
         }
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
     </script>
+
 </body>
 </html>
