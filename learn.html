@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytica84 — Learn</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000000;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: #000000;
+            border-bottom: 1px solid rgba(0,255,255,0.1);
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .nav-logo img {
+            max-width: 220px;
+            height: auto;
+        }
+        .lang-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(0,255,255,0.05);
+            border: 1px solid rgba(0,255,255,0.2);
+            border-radius: 6px;
+            padding: 4px;
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: #666;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .lang-btn.active {
+            background: rgba(0,255,255,0.15);
+            color: #00ffff;
+        }
+        .lang-btn:hover:not(.active) {
+            color: #aaa;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .nav-links a {
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+        .nav-links a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(0,255,255,0.6);
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: #00ffff;
+            box-shadow: 0 0 8px rgba(0,255,255,0.5);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .nav-links a.active {
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(0,255,255,0.6);
+        }
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .page-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 12px;
+            color: #fff;
+            background: linear-gradient(135deg, #fff 0%, #00ffff 50%, #ff1493 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .page-subtitle {
+            text-align: center;
+            color: #8a8a9a;
+            margin-bottom: 48px;
+            font-size: 1.1rem;
+        }
+
+        /* ===== TUTORIAL TABLE ===== */
+        .tutorial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 48px;
+        }
+        .tutorial-table th {
+            background: rgba(0,255,255,0.08);
+            color: #00ffff;
+            padding: 16px;
+            text-align: left;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(0,255,255,0.3);
+        }
+        .tutorial-table td {
+            padding: 20px 16px;
+            border-bottom: 1px solid rgba(0,255,255,0.1);
+            vertical-align: middle;
+        }
+        .tutorial-table tr:hover {
+            background: rgba(0,255,255,0.03);
+        }
+        .tutorial-type {
+            display: inline-block;
+            background: rgba(0,255,255,0.1);
+            color: #00ffff;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .tutorial-type.video {
+            background: rgba(255,20,147,0.1);
+            color: #ff1493;
+        }
+        .tutorial-type.walkthrough {
+            background: rgba(0,255,0,0.1);
+            color: #00ff00;
+        }
+        .tutorial-link {
+            color: #00ffff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tutorial-link:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+        .tutorial-desc {
+            color: #8a8a9a;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+        .coming-soon {
+            color: #555;
+            font-style: italic;
+        }
+
+        /* ===== BACK BUTTON ===== */
+        .back-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #8a8a9a;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 10px 20px;
+            border: 1px solid rgba(138,138,154,0.2);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            color: #00ffff;
+            border-color: rgba(0,255,255,0.3);
+            text-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(0,255,255,0.08);
+        }
+        footer p {
+            color: #444;
+            font-size: 0.85rem;
+        }
+        footer a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+        .referral-section {
+            margin-top: 16px;
+            padding: 12px 20px;
+            border: 1px solid rgba(138,138,154,0.2);
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .referral-section a {
+            color: #8a8a9a;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        .referral-section a:hover {
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+
+        @media(max-width: 768px) {
+            .navbar { padding: 15px 20px; flex-wrap: wrap; gap: 10px; }
+            .nav-left { gap: 12px; }
+            .nav-logo img { max-width: 160px; }
+            .nav-links { gap: 16px; }
+            .container { padding: 40px 15px; }
+            .tutorial-table th, .tutorial-table td { padding: 12px; font-size: 0.85rem; }
+        }
+        @media(max-width: 600px) {
+            .nav-links { display: none; }
+            .tutorial-table { font-size: 0.8rem; }
+            .tutorial-table th { display: none; }
+            .tutorial-table td { display: block; padding: 12px; border: none; border-bottom: 1px solid rgba(0,255,255,0.1); }
+            .tutorial-table td::before {
+                content: attr(data-label);
+                display: block;
+                color: #00ffff;
+                font-size: 0.7rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="nav-logo">
+                <a href="index.html"><img src="a84-bolt-logo.jpg" alt="Analytica84"></a>
+            </div>
+            <div class="lang-toggle">
+                <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+                <button class="lang-btn" onclick="setLang('es')" id="btn-es">ES</button>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="community.html" data-en="Community" data-es="Comunidad">Community</a>
+            <a href="investor.html" data-en="Investor" data-es="Inversor">Investor</a>
+            <a href="learn.html" class="active" data-en="Learn" data-es="Aprender">Learn</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="back-section">
+            <a href="index.html" class="back-btn" data-en="← Back to Analytica84" data-es="← Volver a Analytica84">← Back to Analytica84</a>
+        </div>
+
+        <h1 class="page-title" data-en="Learn" data-es="Aprender">Learn</h1>
+        <p class="page-subtitle" data-en="Tutorials to get you started on Hyperliquid." data-es="Tutoriales para empezar en Hyperliquid.">Tutorials to get you started on Hyperliquid.</p>
+
+        <table class="tutorial-table">
+            <thead>
+                <tr>
+                    <th data-en="Type" data-es="Tipo">Type</th>
+                    <th data-en="Tutorial" data-es="Tutorial">Tutorial</th>
+                    <th data-en="Description" data-es="Descripción">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Type"><span class="tutorial-type video" data-en="Video" data-es="Video">Video</span></td>
+                    <td data-label="Tutorial">
+                        <a href="https://youtu.be/itZQZ9GU12c" target="_blank" class="tutorial-link" data-en="📹 How to Use Hyperliquid (English)" data-es="📹 Cómo Usar Hyperliquid (Inglés)">📹 How to Use Hyperliquid (English)</a>
+                    </td>
+                    <td data-label="Description" data-en="Step-by-step guide to navigating the Hyperliquid exchange — placing orders, managing positions, and understanding the interface." data-es="Guía paso a paso para navegar el exchange Hyperliquid — colocar órdenes, gestionar posiciones y entender la interfaz.">Step-by-step guide to navigating the Hyperliquid exchange — placing orders, managing positions, and understanding the interface.</td>
+                </tr>
+                <tr>
+                    <td data-label="Type"><span class="tutorial-type video" data-en="Video" data-es="Video">Video</span></td>
+                    <td data-label="Tutorial">
+                        <a href="https://youtu.be/b7Mlya85dao" target="_blank" class="tutorial-link" data-en="📹 How to Use Hyperliquid (Español)" data-es="📹 Cómo Usar Hyperliquid (Español)">📹 How to Use Hyperliquid (Español)</a>
+                    </td>
+                    <td data-label="Description" data-en="Spanish version — complete walkthrough of the Hyperliquid platform for Spanish-speaking traders." data-es="Versión en español — guía completa de la plataforma Hyperliquid para traders hispanohablantes.">Spanish version — complete walkthrough of the Hyperliquid platform for Spanish-speaking traders.</td>
+                </tr>
+                <tr>
+                    <td data-label="Type"><span class="tutorial-type walkthrough" data-en="Walkthrough" data-es="Guía">Walkthrough</span></td>
+                    <td data-label="Tutorial">
+                        <span class="tutorial-link coming-soon" data-en="🎮 A84 Dashboard Walkthrough — Coming Soon" data-es="🎮 Guía del Panel A84 — Próximamente">🎮 A84 Dashboard Walkthrough — Coming Soon</span>
+                    </td>
+                    <td data-label="Description" data-en="How to read the A84 dashboard — price lines, A84 targets, and navigating across all 5 timeframes." data-es="Cómo leer el panel A84 — líneas de precio, objetivos A84 y navegación en los 5 marcos de tiempo.">How to read the A84 dashboard — price lines, A84 targets, and navigating across all 5 timeframes.</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <p>© 2026 Analytica84 · <span data-en="Powered by" data-es="Impulsado por">Powered by</span> <a href="https://www.tiktok.com/@analytica84" target="_blank">Forex Crayons Engine</a></p>
+        <div class="referral-section">
+            <a href="https://app.hyperliquid.xyz/join/ANALYTICA84" target="_blank" data-en="Hyperliquid Referral: ANALYTICA84" data-es="Referido Hyperliquid: ANALYTICA84">Hyperliquid Referral: ANALYTICA84</a>
+        </div>
+    </footer>
+
+    <script>
+        function setLang(lang) {
+            document.documentElement.lang = lang;
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+            document.querySelectorAll('[data-en][data-es]').forEach(el => {
+                const html = el.getAttribute('data-' + lang);
+                if (html) el.innerHTML = html;
+            });
+            localStorage.setItem('a84-lang', lang);
+        }
+        const savedLang = localStorage.getItem('a84-lang') || 'en';
+        if (savedLang !== 'en') setLang(savedLang);
+    </script>
+
+</body>
+</html>
