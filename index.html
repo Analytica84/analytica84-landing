@@ -25,6 +25,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* ===== NAVBAR ===== */
         .navbar {
             display: flex;
             align-items: center;
@@ -73,6 +74,38 @@
         }
         .lang-btn:hover:not(.active) {
             color: #aaa;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .nav-links a {
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+        .nav-links a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(0,255,255,0.6);
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: #00ffff;
+            box-shadow: 0 0 8px rgba(0,255,255,0.5);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
         }
         .nav-cta {
             color: #ff1493;
@@ -367,6 +400,7 @@
             font-weight: 600;
         }
 
+        /* ===== FOOTER ===== */
         footer {
             text-align: center;
             padding: 40px 20px;
@@ -383,29 +417,53 @@
         footer a:hover {
             text-shadow: 0 0 10px rgba(0,255,255,0.3);
         }
+        .referral-section {
+            margin-top: 16px;
+            padding: 12px 20px;
+            border: 1px solid rgba(138,138,154,0.2);
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .referral-section a {
+            color: #8a8a9a;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        .referral-section a:hover {
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
 
-        @media(max-width: 600px) {
-            .navbar { padding: 15px 20px; }
+        @media(max-width: 768px) {
+            .navbar { padding: 15px 20px; flex-wrap: wrap; gap: 10px; }
             .nav-left { gap: 12px; }
             .nav-logo img { max-width: 160px; }
+            .nav-links { gap: 16px; }
             .hero { padding: 60px 15px 40px; }
             .origin-card { padding: 24px; }
             .form-card { padding: 28px; }
         }
+        @media(max-width: 600px) {
+            .nav-links { display: none; }
+        }
     </style>
-<base target="_blank">
 </head>
 <body>
 
     <nav class="navbar">
         <div class="nav-left">
             <div class="nav-logo">
-                <img src="a84-bolt-logo.jpg" alt="Analytica84">
+                <a href="index.html"><img src="a84-bolt-logo.jpg" alt="Analytica84"></a>
             </div>
             <div class="lang-toggle">
                 <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
                 <button class="lang-btn" onclick="setLang('es')" id="btn-es">ES</button>
             </div>
+        </div>
+        <div class="nav-links">
+            <a href="community.html" data-en="Community" data-es="Comunidad">Community</a>
+            <a href="investor.html" data-en="Investor" data-es="Inversor">Investor</a>
+            <a href="learn.html" data-en="Learn" data-es="Aprender">Learn</a>
         </div>
         <a href="https://www.tiktok.com/@analytica84" target="_blank" class="nav-cta" data-en="Watch Live →" data-es="Ver En Vivo →">Watch Live →</a>
     </nav>
@@ -472,6 +530,9 @@
     <footer>
         <p>© 2026 Analytica84 · <span data-en="Powered by" data-es="Impulsado por">Powered by</span> <a href="https://www.tiktok.com/@analytica84" target="_blank">Forex Crayons Engine</a></p>
         <p style="margin-top:8px;"><span data-en="4 years of proof on TikTok ·" data-es="4 años de pruebas en TikTok ·">4 years of proof on TikTok ·</span> <a href="https://www.tiktok.com/@analytica84" target="_blank">@analytica84</a></p>
+        <div class="referral-section">
+            <a href="https://app.hyperliquid.xyz/join/ANALYTICA84" target="_blank" data-en="Hyperliquid Referral: ANALYTICA84" data-es="Referido Hyperliquid: ANALYTICA84">Hyperliquid Referral: ANALYTICA84</a>
+        </div>
     </footer>
 
     <script>
@@ -497,7 +558,7 @@
 
             if (!email || !tiktok) {
                 status.className = 'status-msg error';
-                status.innerText = 'Please fill in both fields';
+                status.innerText = savedLang === 'es' ? 'Por favor complete ambos campos' : 'Please fill in both fields';
                 return;
             }
 
@@ -511,9 +572,9 @@
 
                 if (data.status === 'saved') {
                     status.className = 'status-msg success';
-                    status.innerText = 'Welcome to the movement! Redirecting...';
+                    status.innerText = savedLang === 'es' ? '¡Bienvenido al movimiento! Redirigiendo...' : 'Welcome to the movement! Redirecting...';
                     setTimeout(() => {
-                        window.location.href = 'partner.html';
+                        window.location.href = 'onboard.html';
                     }, 1500);
                 } else {
                     status.className = 'status-msg error';
@@ -521,7 +582,7 @@
                 }
             } catch (e) {
                 status.className = 'status-msg error';
-                status.innerText = 'Connection error. Please try again.';
+                status.innerText = savedLang === 'es' ? 'Error de conexión. Por favor intente de nuevo.' : 'Connection error. Please try again.';
             }
         }
     </script>
