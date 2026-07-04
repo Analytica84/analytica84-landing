@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytica84 — The Movement</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000000;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: #000000;
+            border-bottom: 1px solid rgba(0,255,255,0.1);
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .nav-logo img {
+            max-width: 220px;
+            height: auto;
+        }
+        .lang-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(0,255,255,0.05);
+            border: 1px solid rgba(0,255,255,0.2);
+            border-radius: 6px;
+            padding: 4px;
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: #666;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .lang-btn.active {
+            background: rgba(0,255,255,0.15);
+            color: #00ffff;
+        }
+        .lang-btn:hover:not(.active) {
+            color: #aaa;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .nav-links a {
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+        .nav-links a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(0,255,255,0.6);
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: #00ffff;
+            box-shadow: 0 0 8px rgba(0,255,255,0.5);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .nav-links a.active {
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(0,255,255,0.6);
+        }
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+        .header p {
+            color: #8a8a9a;
+            font-size: 1.1rem;
+        }
+        
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 48px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        .stat-card {
+            background: rgba(0,255,255,0.03);
+            border: 1px solid rgba(0,255,255,0.15);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .stat-card:hover {
+            border-color: rgba(0,255,255,0.4);
+            transform: translateY(-4px);
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #00ffff;
+            text-shadow: 0 0 20px rgba(0,255,255,0.3);
+        }
+        .stat-label {
+            color: #8a8a9a;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        
+        .live-feed {
+            background: rgba(0,255,255,0.02);
+            border: 1px solid rgba(0,255,255,0.1);
+            border-radius: 16px;
+            padding: 32px;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        .live-feed-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .live-feed-header h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,255,0,0.1);
+            border: 1px solid rgba(0,255,0,0.3);
+            color: #00ff00;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .live-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff00;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .member-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .member-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+        .member-item:hover {
+            background: rgba(0,255,255,0.03);
+            border-radius: 8px;
+        }
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ffff, #ff1493);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1rem;
+            color: #000;
+        }
+        .member-handle {
+            font-weight: 600;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+        .member-time {
+            color: #555;
+            font-size: 0.8rem;
+        }
+        .member-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-verified {
+            color: #00ff00;
+        }
+        .status-pending {
+            color: #ffaa00;
+        }
+        
+        /* ===== INVESTOR SECTION ===== */
+        .investor-section {
+            margin: 48px 0;
+            padding: 32px;
+            background: rgba(0,255,255,0.02);
+            border: 1px solid rgba(0,255,255,0.1);
+            border-radius: 16px;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+        .investor-section h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .investor-section p {
+            color: #8a8a9a;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .investor-btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #00ffff, #00a884);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+        .investor-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,255,255,0.4);
+        }
+
+        /* ===== CODE FRAME (DONATE) ===== */
+        .code-frame {
+            background: #0d1117;
+            border: 1px solid rgba(0,255,255,0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .code-frame-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: rgba(0,255,255,0.03);
+            border-bottom: 1px solid rgba(0,255,255,0.1);
+        }
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+        .code-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+        .code-title {
+            color: #8a8a9a;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .copy-icon-btn {
+            background: transparent;
+            border: 1px solid rgba(0,255,255,0.2);
+            color: #00ffff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .copy-icon-btn:hover {
+            background: rgba(0,255,255,0.1);
+            border-color: rgba(0,255,255,0.4);
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+        }
+        .copy-icon-btn.copied {
+            background: rgba(0,255,0,0.15);
+            border-color: rgba(0,255,0,0.4);
+            color: #00ff00;
+        }
+        .code-frame-body {
+            padding: 20px 24px;
+            text-align: left;
+        }
+        .code-frame-body code {
+            font-family: 'Courier New', 'SF Mono', Monaco, monospace;
+            color: #00ff88;
+            font-size: 0.95rem;
+            word-break: break-all;
+            line-height: 1.6;
+        }
+        
+        .donate-section {
+            margin: 48px 0;
+            padding: 32px;
+            background: rgba(255,20,147,0.04);
+            border: 1px solid rgba(255,20,147,0.2);
+            border-radius: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+        .donate-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff1493, #00ffff);
+        }
+        .donate-section h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .donate-section p {
+            color: #8a8a9a;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .network-tag {
+            display: inline-block;
+            margin-top: 12px;
+            background: rgba(255,20,147,0.1);
+            border: 1px solid rgba(255,20,147,0.3);
+            color: #ff1493;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin-top: 48px;
+            padding: 40px;
+            background: rgba(255,20,147,0.05);
+            border: 1px solid rgba(255,20,147,0.2);
+            border-radius: 16px;
+            animation: fadeInUp 0.8s ease-out 0.7s both;
+        }
+        .cta-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+        .cta-section p {
+            color: #8a8a9a;
+            margin-bottom: 24px;
+        }
+        .cta-btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #00ffff, #00a884);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,255,255,0.4);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(0,255,255,0.08);
+        }
+        .footer p {
+            color: #444;
+            font-size: 0.85rem;
+        }
+        .footer a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+
+        @media(max-width: 768px) {
+            .navbar { padding: 15px 20px; flex-wrap: wrap; gap: 10px; }
+            .nav-left { gap: 12px; }
+            .nav-logo img { max-width: 160px; }
+            .nav-links { gap: 16px; }
+            .stats-bar { grid-template-columns: 1fr; }
+        }
+        @media(max-width: 600px) {
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="nav-logo">
+                <a href="index.html"><img src="a84-bolt-logo.jpg" alt="Analytica84"></a>
+            </div>
+            <div class="lang-toggle">
+                <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+                <button class="lang-btn" onclick="setLang('es')" id="btn-es">ES</button>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" data-en="Home" data-es="Inicio">Home</a>
+            <a href="community.html" class="active" data-en="Community" data-es="Comunidad">Community</a>
+            <a href="learn.html" data-en="Learn" data-es="Aprender">Learn</a>
+            <a href="dashboard.html" data-en="Dashboard" data-es="Panel">Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1 data-en="The Movement" data-es="El Movimiento">The Movement</h1>
+            <p data-en="Traders building the future of market intelligence together" data-es="Traders construyendo el futuro de la inteligencia de mercado juntos">Traders building the future of market intelligence together</p>
+        </div>
+        
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number" id="total-users">—</div>
+                <div class="stat-label" data-en="Total Members" data-es="Miembros Totales">Total Members</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="verified-users">—</div>
+                <div class="stat-label" data-en="Verified" data-es="Verificados">Verified</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="pending-users">—</div>
+                <div class="stat-label" data-en="Pending" data-es="Pendientes">Pending</div>
+            </div>
+        </div>
+        
+        <div class="live-feed">
+            <div class="live-feed-header">
+                <h2 data-en="📊 Live Activity Feed" data-es="📊 Feed de Actividad en Vivo">📊 Live Activity Feed</h2>
+                <div class="live-badge">
+                    <div class="dot"></div>
+                    <span>LIVE</span>
+                </div>
+            </div>
+            <div class="member-list" id="member-list">
+                <div style="text-align:center;color:#555;padding:40px;" data-en="Loading members..." data-es="Cargando miembros...">Loading members...</div>
+            </div>
+        </div>
+
+        <!-- INVESTOR SECTION -->
+        <div class="investor-section">
+            <h2 data-en="Investor Gateway" data-es="Portal de Inversores">Investor Gateway</h2>
+            <p data-en="Access the Analytica84 pitch deck and investment materials." data-es="Accede al pitch deck de Analytica84 y materiales de inversión.">Access the Analytica84 pitch deck and investment materials.</p>
+            <a href="https://wilmar2020.github.io/analytica-pitch/investor.html" target="_blank" class="investor-btn" data-en="View Investor Deck →" data-es="Ver Pitch de Inversión →">View Investor Deck →</a>
+        </div>
+
+        <!-- DONATE SECTION -->
+        <div class="donate-section">
+            <h2 data-en="Support the Build" data-es="Apoya el Desarrollo">Support the Build</h2>
+            <p data-en="Every donation fuels the dashboard, the AI engine, and the movement." data-es="Cada donación impulsa el panel, el motor de IA y el movimiento.">Every donation fuels the dashboard, the AI engine, and the movement.</p>
+            <div class="code-frame">
+                <div class="code-frame-header">
+                    <div class="code-dots">
+                        <span class="dot-red"></span>
+                        <span class="dot-yellow"></span>
+                        <span class="dot-green"></span>
+                    </div>
+                    <span class="code-title" data-en="Arbitrum Wallet" data-es="Billetera Arbitrum">Arbitrum Wallet</span>
+                    <button class="copy-icon-btn" onclick="copyWallet()" id="copy-btn" title="Copy address">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="code-frame-body">
+                    <code id="wallet-addr">0xe1B57BFAb0dc47cC7A5e673f84E49126801C3456</code>
+                </div>
+            </div>
+            <div class="network-tag">Arbitrum Network</div>
+        </div>
+        
+        <div class="cta-section">
+            <h2 data-en="Join the Movement" data-es="Únete al Movimiento">Join the Movement</h2>
+            <p data-en="Get access to live A84 Price Targets, 5-timeframe analysis, and a community of traders building the future." data-es="Obtén acceso a Objetivos de Precio A84 en vivo, análisis de 5 marcos de tiempo y una comunidad de traders construyendo el futuro.">Get access to live A84 Price Targets, 5-timeframe analysis, and a community of traders building the future.</p>
+            <a href="index.html" class="cta-btn" data-en="Sign Up Now →" data-es="Regístrate Ahora →">Sign Up Now →</a>
+        </div>
+        
+        <div class="footer">
+            <p>© 2026 Analytica84 · <span data-en="Powered by" data-es="Impulsado por">Powered by</span> <a href="https://www.tiktok.com/@analytica84" target="_blank">Forex Crayons Engine</a></p>
+            <p style="margin-top:8px;"><a href="https://www.tiktok.com/@analytica84" target="_blank">@analytica84</a></p>
+        </div>
+    </div>
+
+    <script>
+        const BOT_URL = 'https://web-production-b19ed.up.railway.app';
+        
+        function timeAgo(timestamp) {
+            const now = new Date();
+            const then = new Date(timestamp + ' UTC');
+            const seconds = Math.floor((now - then) / 1000);
+            
+            if (seconds < 60) return 'just now';
+            if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
+            if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+            if (seconds < 604800) return Math.floor(seconds / 86400) + 'd ago';
+            return Math.floor(seconds / 604800) + 'w ago';
+        }
+        
+        async function loadCommunity() {
+            try {
+                const res = await fetch(BOT_URL + '/api/stats');
+                const data = await res.json();
+                
+                document.getElementById('total-users').innerText = data.total;
+                document.getElementById('verified-users').innerText = data.approved;
+                document.getElementById('pending-users').innerText = data.pending;
+                
+                const list = document.getElementById('member-list');
+                list.innerHTML = '';
+                
+                data.recent_signups.forEach((member, i) => {
+                    const item = document.createElement('div');
+                    item.className = 'member-item';
+                    const initial = member.tiktok.charAt(1).toUpperCase();
+                    const statusClass = member.approved ? 'status-verified' : 'status-pending';
+                    const statusText = member.approved ? '✓ Verified' : '⏳ Pending';
+                    
+                    item.innerHTML = `
+                        <div class="member-info">
+                            <div class="member-avatar">${initial}</div>
+                            <div>
+                                <div class="member-handle">${member.tiktok}</div>
+                                <div class="member-time">${timeAgo(member.timestamp)}</div>
+                            </div>
+                        </div>
+                        <div class="member-status ${statusClass}">${statusText}</div>
+                    `;
+                    list.appendChild(item);
+                });
+            } catch (e) {
+                console.log('Error loading community:', e);
+            }
+        }
+        
+        loadCommunity();
+        setInterval(loadCommunity, 30000);
+
+        // --- LANGUAGE TOGGLE ---
+        function setLang(lang) {
+            document.documentElement.lang = lang;
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+            document.querySelectorAll('[data-en][data-es]').forEach(el => {
+                const html = el.getAttribute('data-' + lang);
+                if (html) el.innerHTML = html;
+            });
+            localStorage.setItem('a84-lang', lang);
+        }
+        const savedLang = localStorage.getItem('a84-lang') || 'en';
+        if (savedLang !== 'en') setLang(savedLang);
+
+        // --- COPY WALLET ---
+        function copyWallet() {
+            const addr = document.getElementById('wallet-addr').innerText;
+            navigator.clipboard.writeText(addr).then(() => {
+                const btn = document.getElementById('copy-btn');
+                btn.classList.add('copied');
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+                }, 2000);
+            });
+        }
+    </script>
+
+</body>
+</html>
