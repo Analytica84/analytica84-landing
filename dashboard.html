@@ -6,8 +6,8 @@
     <title>ANALYTICA84 - Powered by Crayons Engine</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #000000; color: #e0e0e0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; min-height: 100vh; }
-        
+        body { background: #000000; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; min-height: 100vh; }
+
         /* ===== NAVBAR ===== */
         .navbar {
             display: flex;
@@ -107,20 +107,21 @@
         .asset-selector { position: relative; display: inline-block; }
         .asset-dropdown { background: #000000 !important; color: #00ffff !important; border: 2px solid #00ffff !important; padding: 12px 30px; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0,255,255,0.3); -webkit-appearance: none; -moz-appearance: none; appearance: none; outline: none; text-align: center; }
         .asset-dropdown option { background: #000000 !important; color: #00ffff !important; }
-        .status { font-size: 12px; text-align: center; margin: 10px 0; color: #666; }
+        .asset-dropdown optgroup { background: #000000 !important; color: #00ffff !important; font-weight: bold; }
+        .status { font-size: 12px; text-align: center; margin: 10px 0; color: #ffffff; }
         .status.connected { color: #00ff00; }
         .status.error { color: #ff0000; }
         .timeframe-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; max-width: 1400px; margin: 0 auto; }
         .tf-card { background: #000000; border: 2px solid #00ffff; border-radius: 12px; padding: 20px; box-shadow: 0 0 20px rgba(0,255,255,0.2); transition: transform 0.3s ease; }
         .tf-card:hover { transform: translateY(-5px); box-shadow: 0 0 30px rgba(0,255,255,0.4); }
         .tf-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 10px; }
-        .tf-label { font-size: 24px; font-weight: 900; color: #00ffff; text-shadow: 0 0 10px rgba(0,255,255,0.5); flex-shrink: 0; }
+        .tf-label { font-size: 12pt; font-weight: 900; color: #00ffff; text-shadow: 0 0 10px rgba(0,255,255,0.5); flex-shrink: 0; }
         .tf-price { font-size: 14px; color: #00ff00; font-weight: bold; }
         .tf-a84 { font-size: 12px; color: #ff1493; font-weight: 600; }
         .chart-container { position: relative; width: 100%; height: 200px; background: #000000; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,255,255,0.3); }
         .chart-container canvas { width: 100%; height: 100%; }
         .legend { display: flex; justify-content: center; gap: 30px; margin-top: 30px; font-size: 14px; }
-        .legend-item { display: flex; align-items: center; gap: 8px; color: #00ffff; }
+        .legend-item { display: flex; align-items: center; gap: 8px; color: #ffffff; }
         .legend-line { width: 30px; height: 3px; border-radius: 2px; }
 
         /* ===== FOOTER ===== */
@@ -128,7 +129,7 @@
             text-align: center;
             padding: 2rem;
             border-top: 1px solid rgba(0,255,255,0.08);
-            color: #8a8a9a;
+            color: #ffffff;
             font-size: 0.85rem;
             margin-top: 40px;
         }
@@ -160,13 +161,14 @@
             .timeframe-grid { grid-template-columns: 1fr; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
 
     <!-- NAVBAR -->
     <nav class="navbar">
         <a href="index.html" class="nav-logo"><img src="a84-bolt-logo.jpg" alt="ANALYTICA84"></a>
-        
+
         <ul class="nav-links" id="navLinks">
             <li><a href="community.html" data-en="Community" data-es="Comunidad">Community</a></li>
             <li><a href="learn.html" data-en="Learn" data-es="Aprender">Learn</a></li>
@@ -190,25 +192,33 @@
         <div id="status" class="status">Connecting to Hyperliquid...</div>
         <div class="asset-selector" style="margin-top:8px;">
             <select class="asset-dropdown" id="assetDropdown">
-                <option value="BTC">🚀 BTC/USD</option>
-                <option value="SOL">💎 SOL/USD</option>
-                <option value="XRP">⚡ XRP/USD</option>
-                <option value="XLM">⭐ XLM/USD</option>
+                <optgroup label="Crypto">
+                    <option value="BTC">🚀 BTC/USD</option>
+                    <option value="SOL">💎 SOL/USD</option>
+                    <option value="XRP">⚡ XRP/USD</option>
+                    <option value="XLM">⭐ XLM/USD</option>
+                </optgroup>
+                <optgroup label="TradFi">
+                    <option value="xyz:SP500">📈 S&amp;P500</option>
+                    <option value="xyz:GOLD">🥇 GOLD</option>
+                    <option value="xyz:EUR">💶 EUR/USD</option>
+                    <option value="xyz:CL">🛢️ WTI Oil</option>
+                </optgroup>
             </select>
         </div>
     </div>
 
     <div class="timeframe-grid">
-        <div class="tf-card"><div class="tf-header"><span class="tf-label">1m</span><span class="tf-price" id="price-1m">$0.00</span><span class="tf-a84" id="a84-1m">A84: --</span></div><div class="chart-container"><canvas id="chart-1m"></canvas></div></div>
-        <div class="tf-card"><div class="tf-header"><span class="tf-label">5m</span><span class="tf-price" id="price-5m">$0.00</span><span class="tf-a84" id="a84-5m">A84: --</span></div><div class="chart-container"><canvas id="chart-5m"></canvas></div></div>
-        <div class="tf-card"><div class="tf-header"><span class="tf-label">15m</span><span class="tf-price" id="price-15m">$0.00</span><span class="tf-a84" id="a84-15m">A84: --</span></div><div class="chart-container"><canvas id="chart-15m"></canvas></div></div>
-        <div class="tf-card"><div class="tf-header"><span class="tf-label">1h</span><span class="tf-price" id="price-1h">$0.00</span><span class="tf-a84" id="a84-1h">A84: --</span></div><div class="chart-container"><canvas id="chart-1h"></canvas></div></div>
         <div class="tf-card"><div class="tf-header"><span class="tf-label">4h</span><span class="tf-price" id="price-4h">$0.00</span><span class="tf-a84" id="a84-4h">A84: --</span></div><div class="chart-container"><canvas id="chart-4h"></canvas></div></div>
+        <div class="tf-card"><div class="tf-header"><span class="tf-label">1h</span><span class="tf-price" id="price-1h">$0.00</span><span class="tf-a84" id="a84-1h">A84: --</span></div><div class="chart-container"><canvas id="chart-1h"></canvas></div></div>
+        <div class="tf-card"><div class="tf-header"><span class="tf-label">15m</span><span class="tf-price" id="price-15m">$0.00</span><span class="tf-a84" id="a84-15m">A84: --</span></div><div class="chart-container"><canvas id="chart-15m"></canvas></div></div>
+        <div class="tf-card"><div class="tf-header"><span class="tf-label">5m</span><span class="tf-price" id="price-5m">$0.00</span><span class="tf-a84" id="a84-5m">A84: --</span></div><div class="chart-container"><canvas id="chart-5m"></canvas></div></div>
+        <div class="tf-card"><div class="tf-header"><span class="tf-label">1m</span><span class="tf-price" id="price-1m">$0.00</span><span class="tf-a84" id="a84-1m">A84: --</span></div><div class="chart-container"><canvas id="chart-1m"></canvas></div></div>
     </div>
 
     <div class="legend">
         <div class="legend-item"><div class="legend-line" style="background:#00ffff;box-shadow:0 0 5px #00ffff;"></div><span data-en="Price Line" data-es="Línea de Precio">Price Line</span></div>
-        <div class="legend-item"><div class="legend-line" style="background:#ff1493;box-shadow:0 0 5px #ff1493;"></div><span data-en="A84 Price Target" data-es="Objetivo de Precio A84">A84 Price Target</span></div>
+        <div class="legend-item"><div class="legend-line" style="background:#ff1493;box-shadow:0 0 5px #ff1493;"></div><span style="color:#ff1493;" data-en="A84 Price Target" data-es="Objetivo de Precio A84">A84 Price Target</span></div>
     </div>
 
     <!-- FOOTER -->
@@ -217,13 +227,32 @@
     </footer>
 
     <script>
-        const TIMEFRAMES = ['1m','5m','15m','1h','4h'];
+        const TIMEFRAMES = ['4h','1h','15m','5m','1m'];
         const HL_INTERVALS = { '1m':'1m', '5m':'5m', '15m':'15m', '1h':'1h', '4h':'4h' };
         let currentAsset = 'BTC';
         let ws;
         let canvasData = {};
         let tfState = {};
         let livePrice = 0;
+        let xyzPollInterval = null;
+        let xyzLivePrice = 0;
+
+        function getDex(asset) {
+            return asset.startsWith('xyz:') ? 'xyz' : '';
+        }
+
+        function getDecimals(asset, value) {
+            if (asset === 'xyz:EUR') return 4;
+            const absVal = Math.abs(value);
+            if (absVal >= 1) return 2;
+            if (absVal >= 0.01) return 4;
+            return 6;
+        }
+
+        function formatPrice(asset, value) {
+            const decimals = getDecimals(asset, value);
+            return '$' + value.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+        }
 
         function drawChart(canvasId, prices, a84targets) {
             const canvas = document.getElementById(canvasId);
@@ -259,7 +288,7 @@
                 ctx.moveTo(0, y);
                 ctx.lineTo(chartW, y);
                 ctx.stroke();
-                const label = '$' + val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                const label = formatPrice(currentAsset, val);
                 ctx.fillText(label, chartW + 8, y + 3);
             }
 
@@ -308,17 +337,17 @@
                 const res = await fetch('https://api.hyperliquid.xyz/info', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ type: 'candleSnapshot', req: { coin: asset, interval: interval, startTime: startTime, endTime: endTime } })
+                    body: JSON.stringify({ type: 'candleSnapshot', req: { coin: asset, interval: interval, startTime: startTime, endTime: endTime }, dex: getDex(asset) })
                 });
                 const candles = await res.json();
                 if (!candles || candles.length < 2) return;
 
                 const rawCandles = candles.map(c => [0,0,0,0, parseFloat(c.c), parseFloat(c.v)]);
                 const lastCandle = rawCandles[rawCandles.length - 1];
-                
+
                 const a84 = calcA84Target(rawCandles);
                 const prices = rawCandles.map(c => c[4]);
-                
+
                 tfState[tfId] = {
                     candles: rawCandles,
                     obv: a84[a84.length - 1],
@@ -338,36 +367,36 @@
             try {
                 const state = tfState[tfId];
                 if (!state) return;
-                
+
                 const lastTime = state.lastTime;
                 const endTime = Date.now();
-                
+
                 const res = await fetch('https://api.hyperliquid.xyz/info', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ type: 'candleSnapshot', req: { coin: asset, interval: interval, startTime: lastTime, endTime: endTime } })
+                    body: JSON.stringify({ type: 'candleSnapshot', req: { coin: asset, interval: interval, startTime: lastTime, endTime: endTime }, dex: getDex(asset) })
                 });
                 const newCandles = await res.json();
                 if (!newCandles || newCandles.length < 2) return;
-                
+
                 const toAdd = newCandles.slice(1);
                 if (toAdd.length === 0) return;
-                
+
                 const rawToAdd = toAdd.map(c => [0,0,0,0, parseFloat(c.c), parseFloat(c.v)]);
                 state.candles = state.candles.concat(rawToAdd);
-                
+
                 const a84 = calcA84Target(state.candles);
                 const prices = state.candles.map(c => c[4]);
-                
+
                 const lastCandle = rawToAdd[rawToAdd.length - 1];
                 state.obv = a84[a84.length - 1];
                 state.lastClose = lastCandle[4];
                 state.lastTime = toAdd[toAdd.length - 1].t;
-                
+
                 if (state.candles.length > 500) {
                     state.candles = state.candles.slice(-500);
                 }
-                
+
                 canvasData[tfId] = { prices, a84 };
                 drawChart('chart-' + tfId, prices, a84);
                 updateA84Label(tfId, a84[a84.length - 1]);
@@ -379,12 +408,45 @@
         function updateA84Label(tfId, value) {
             const a84El = document.getElementById('a84-' + tfId);
             if (a84El) {
-                a84El.innerText = 'A84: $' + value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                a84El.innerText = 'A84: ' + formatPrice(currentAsset, value);
             }
         }
 
         function loadAllCharts(asset) {
             TIMEFRAMES.forEach(tf => initCandles(asset, HL_INTERVALS[tf], tf));
+        }
+
+        function startXyzPolling(asset) {
+            if (xyzPollInterval) clearInterval(xyzPollInterval);
+
+            async function pollXyz() {
+                try {
+                    const res = await fetch('https://api.hyperliquid.xyz/info', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ type: 'allMids', dex: 'xyz' })
+                    });
+                    const mids = await res.json();
+                    const price = mids[asset];
+                    if (price) {
+                        xyzLivePrice = parseFloat(price);
+                        const formatted = formatPrice(currentAsset, xyzLivePrice);
+                        TIMEFRAMES.forEach(tf => { document.getElementById('price-' + tf).innerText = formatted; });
+                    }
+                } catch(e) {
+                    console.log('XYZ poll error:', e);
+                }
+            }
+
+            pollXyz();
+            xyzPollInterval = setInterval(pollXyz, 10000);
+        }
+
+        function stopXyzPolling() {
+            if (xyzPollInterval) {
+                clearInterval(xyzPollInterval);
+                xyzPollInterval = null;
+            }
         }
 
         function connect() {
@@ -402,7 +464,7 @@
                     const price = msg.data.mids[currentAsset];
                     if (price) {
                         livePrice = parseFloat(price);
-                        const formatted = '$' + livePrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        const formatted = formatPrice(currentAsset, livePrice);
                         TIMEFRAMES.forEach(tf => { document.getElementById('price-' + tf).innerText = formatted; });
                     }
                 }
@@ -424,6 +486,15 @@
             currentAsset = e.target.value;
             tfState = {};
             livePrice = 0;
+            xyzLivePrice = 0;
+
+            if (currentAsset.startsWith('xyz:')) {
+                stopXyzPolling();
+                startXyzPolling(currentAsset);
+            } else {
+                stopXyzPolling();
+            }
+
             loadAllCharts(currentAsset);
         });
 
