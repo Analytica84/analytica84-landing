@@ -208,6 +208,18 @@
         </div>
     </div>
 
+    <!-- A84 CURRENT TRADE PANEL -->
+    <div id="tradePanel" style="text-align:center; margin: 20px auto; max-width: 1400px; display: none;">
+        <div style="background: rgba(0,0,0,0.9); border: 2px solid #ff1493; border-radius: 12px; padding: 15px 30px; display: inline-flex; align-items: center; gap: 30px; box-shadow: 0 0 20px rgba(255,20,147,0.3);">
+            <span style="color: #ff1493; font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px;">A84 CURRENT TRADE</span>
+            <span id="tradeDir" style="font-size: 16px; font-weight: bold;">--</span>
+            <span id="tradeEntry" style="color: #00ffff; font-size: 14px;">Entry: --</span>
+            <span id="tradeCurrent" style="color: #00ffff; font-size: 14px;">Current: --</span>
+            <span id="tradePnL" style="font-size: 16px; font-weight: bold;">--</span>
+            <span style="color: #666; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-left: 20px; border-left: 1px solid rgba(255,20,147,0.3); padding-left: 20px;">For educational purposes only.<br>Not financial advice.</span>
+        </div>
+    </div>
+
     <div class="timeframe-grid">
         <div class="tf-card"><div class="tf-header"><span class="tf-label">4h</span><span class="tf-price" id="price-4h">$0.00</span><span class="tf-a84" id="a84-4h">A84: --</span></div><div class="chart-container"><canvas id="chart-4h"></canvas></div></div>
         <div class="tf-card"><div class="tf-header"><span class="tf-label">1h</span><span class="tf-price" id="price-1h">$0.00</span><span class="tf-a84" id="a84-1h">A84: --</span></div><div class="chart-container"><canvas id="chart-1h"></canvas></div></div>
@@ -449,7 +461,76 @@
             }
         }
 
-        function connect() {
+        async function fetchOpenPositions() {
+    try {
+        const res = await fetch('https://api.hyperliquid.xyz/info', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: 'clearinghouseState', user: '0xe1B57BFAb0dc47cC7A5e673f84E49126801C3456' })
+        });
+        const data = await res.json();
+        if (!data || !data.assetPositions) {
+            hideTradePanel();
+            return;
+        }
+
+        // Find position for current asset
+        const assetKey = currentAsset.startsWith('xyz:') ? currentAsset.replace('xyz:', '') : currentAsset;
+        const positions = data.assetPositions;
+        let foundPos = null;
+
+        for (const key in positions) {
+            const pos = positions[key];
+            if (pos && pos.position && pos.position.coin === assetKey) {
+                foundPos = pos.position;
+                break;
+            }
+        }
+
+        if (!foundPos || parseFloat(foundPos.szi) === 0) {
+            hideTradePanel();
+            return;
+        }
+
+        const size = parseFloat(foundPos.szi);
+        const entry = parseFloat(foundPos.entryPx);
+        const current = livePrice || xyzLivePrice || entry;
+        const isLong = size > 0;
+        const pnlPct = ((current - entry) / entry) * (isLong ? 1 : -1) * 100;
+
+        showTradePanel(isLong, entry, current, pnlPct);
+    } catch(e) {
+        console.log('Fetch positions error:', e);
+        hideTradePanel();
+    }
+}
+
+function showTradePanel(isLong, entry, current, pnlPct) {
+    const panel = document.getElementById('tradePanel');
+    const dirEl = document.getElementById('tradeDir');
+    const entryEl = document.getElementById('tradeEntry');
+    const currentEl = document.getElementById('tradeCurrent');
+    const pnlEl = document.getElementById('tradePnL');
+
+    if (!panel) return;
+
+    panel.style.display = 'block';
+    dirEl.innerText = isLong ? 'LONG 🟢' : 'SHORT 🔴';
+    dirEl.style.color = isLong ? '#00ff00' : '#ff0000';
+    entryEl.innerText = 'Entry: ' + formatPrice(currentAsset, entry);
+    currentEl.innerText = 'Current: ' + formatPrice(currentAsset, current);
+
+    const pnlSign = pnlPct >= 0 ? '+' : '';
+    pnlEl.innerText = pnlSign + pnlPct.toFixed(2) + '%';
+    pnlEl.style.color = pnlPct >= 0 ? '#00ff00' : '#ff0000';
+}
+
+function hideTradePanel() {
+    const panel = document.getElementById('tradePanel');
+    if (panel) panel.style.display = 'none';
+}
+
+function connect() {
             ws = new WebSocket('wss://api.hyperliquid.xyz/ws');
 
             ws.onopen = () => {
@@ -496,6 +577,7 @@
             }
 
             loadAllCharts(currentAsset);
+            fetchOpenPositions();
         });
 
         connect();
@@ -503,6 +585,9 @@
         setInterval(() => {
             TIMEFRAMES.forEach(tf => updateCandles(currentAsset, HL_INTERVALS[tf], tf));
         }, 60000);
+
+        // Poll for open positions every 10 seconds
+        setInterval(fetchOpenPositions, 10000);
 
         // --- LANGUAGE TOGGLE ---
         function setLang(lang) {
