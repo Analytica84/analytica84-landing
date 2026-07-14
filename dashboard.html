@@ -208,15 +208,22 @@
         </div>
     </div>
 
-    <!-- A84 CURRENT TRADE PANEL -->
-    <div id="tradePanel" style="text-align:center; margin: 20px auto; max-width: 1400px; display: none;">
-        <div style="background: rgba(0,0,0,0.9); border: 2px solid #ff1493; border-radius: 12px; padding: 15px 30px; display: inline-flex; align-items: center; gap: 30px; box-shadow: 0 0 20px rgba(255,20,147,0.3);">
-            <span style="color: #ff1493; font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px;">A84 CURRENT TRADE</span>
-            <span id="tradeDir" style="font-size: 16px; font-weight: bold;">--</span>
-            <span id="tradeEntry" style="color: #00ffff; font-size: 14px;">Entry: --</span>
-            <span id="tradeCurrent" style="color: #00ffff; font-size: 14px;">Current: --</span>
-            <span id="tradePnL" style="font-size: 16px; font-weight: bold;">--</span>
-            <span style="color: #666; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-left: 20px; border-left: 1px solid rgba(255,20,147,0.3); padding-left: 20px;">For educational purposes only.<br>Not financial advice.</span>
+    <!-- A84 TRADES PANEL -->
+    <div id="tradesPanel" style="text-align:center; margin: 20px auto; max-width: 1400px;">
+        <div style="background: rgba(0,0,0,0.9); border: 2px solid #ff1493; border-radius: 12px; padding: 15px 30px; box-shadow: 0 0 20px rgba(255,20,147,0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid rgba(255,20,147,0.3); padding-bottom: 10px;">
+                <span style="color: #ff1493; font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px;">A84 CURRENT TRADES</span>
+                <span style="color: #666; font-size: 10px; text-transform: uppercase; letter-spacing: 1px;">For educational purposes only. Not financial advice.</span>
+            </div>
+            <div id="openTradesList" style="min-height: 40px;">
+                <span style="color: #666; font-size: 12px;">No open positions</span>
+            </div>
+            <div style="margin-top: 15px; border-top: 1px solid rgba(255,20,147,0.3); padding-top: 10px;">
+                <span style="color: #ff1493; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Past 24H Closed</span>
+                <div id="closedTradesList" style="margin-top: 10px; min-height: 40px;">
+                    <span style="color: #666; font-size: 12px;">No closed trades</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -461,7 +468,7 @@
             }
         }
 
-        async function fetchOpenPositions() {
+        async function fetchTrades() {
     try {
         const res = await fetch('https://api.hyperliquid.xyz/info', {
             method: 'POST',
@@ -469,65 +476,106 @@
             body: JSON.stringify({ type: 'clearinghouseState', user: '0xe1B57BFAb0dc47cC7A5e673f84E49126801C3456' })
         });
         const data = await res.json();
-        if (!data || !data.assetPositions) {
-            hideTradePanel();
-            return;
-        }
 
-        // Find position for current asset
-        const assetKey = currentAsset.startsWith('xyz:') ? currentAsset.replace('xyz:', '') : currentAsset;
-        const positions = data.assetPositions;
-        let foundPos = null;
+        // OPEN POSITIONS
+        const openList = document.getElementById('openTradesList');
+        if (data && data.assetPositions) {
+            let openHtml = '';
+            let hasOpen = false;
 
-        for (const key in positions) {
-            const pos = positions[key];
-            if (pos && pos.position && pos.position.coin === assetKey) {
-                foundPos = pos.position;
-                break;
+            for (const key in data.assetPositions) {
+                const pos = data.assetPositions[key];
+                if (!pos || !pos.position) continue;
+                const p = pos.position;
+                const size = parseFloat(p.szi);
+                if (size === 0) continue;
+
+                hasOpen = true;
+                const isLong = size > 0;
+                const entry = parseFloat(p.entryPx);
+                const coin = p.coin;
+                const current = getPriceForCoin(coin) || entry;
+                const pnlPct = ((current - entry) / entry) * (isLong ? 1 : -1) * 100;
+                const pnlSign = pnlPct >= 0 ? '+' : '';
+                const pnlColor = pnlPct >= 0 ? '#00ff00' : '#ff0000';
+                const dirColor = isLong ? '#00ff00' : '#ff0000';
+                const dirText = isLong ? 'LONG' : 'SHORT';
+
+                openHtml += '<div style="display: inline-flex; align-items: center; gap: 20px; margin: 5px 15px; padding: 8px 15px; border: 1px solid rgba(255,20,147,0.2); border-radius: 6px;">';
+                openHtml += '<span style="color: #00ffff; font-weight: bold;">' + coin + '</span>';
+                openHtml += '<span style="color: ' + dirColor + '; font-weight: bold;">' + dirText + '</span>';
+                openHtml += '<span style="color: #666; font-size: 12px;">Entry: ' + entry.toFixed(4) + '</span>';
+                openHtml += '<span style="color: ' + pnlColor + '; font-weight: bold;">' + pnlSign + pnlPct.toFixed(2) + '%</span>';
+                openHtml += '</div>';
             }
+
+            openList.innerHTML = hasOpen ? openHtml : '<span style="color: #666; font-size: 12px;">No open positions</span>';
+        } else {
+            openList.innerHTML = '<span style="color: #666; font-size: 12px;">No open positions</span>';
         }
 
-        if (!foundPos || parseFloat(foundPos.szi) === 0) {
-            hideTradePanel();
-            return;
+        // CLOSED TRADES (past 24h) - from fillHistory if available
+        const closedList = document.getElementById('closedTradesList');
+        if (data && data.fillHistory && data.fillHistory.length > 0) {
+            const now = Date.now();
+            const dayAgo = now - 24*60*60*1000;
+            let closedHtml = '';
+            let hasClosed = false;
+
+            // Group fills by coin and side to estimate closed trades
+            const fills = data.fillHistory.filter(f => f.time && f.time > dayAgo);
+            const tradeMap = {};
+
+            fills.forEach(fill => {
+                const key = fill.coin + '-' + (fill.side || 'unknown');
+                if (!tradeMap[key]) tradeMap[key] = [];
+                tradeMap[key].push(fill);
+            });
+
+            for (const key in tradeMap) {
+                const trades = tradeMap[key];
+                if (trades.length < 2) continue; // need open + close
+
+                hasClosed = true;
+                const coin = trades[0].coin;
+                const isBuy = trades[0].side === 'B';
+                const entry = parseFloat(trades[0].px);
+                const exit = parseFloat(trades[trades.length-1].px);
+                const pnlPct = ((exit - entry) / entry) * (isBuy ? 1 : -1) * 100;
+                const pnlSign = pnlPct >= 0 ? '+' : '';
+                const pnlColor = pnlPct >= 0 ? '#00ff00' : '#ff0000';
+                const dirText = isBuy ? 'LONG' : 'SHORT';
+
+                closedHtml += '<div style="display: inline-flex; align-items: center; gap: 20px; margin: 5px 15px; padding: 8px 15px; border: 1px solid rgba(255,20,147,0.2); border-radius: 6px; opacity: 0.7;">';
+                closedHtml += '<span style="color: #00ffff; font-weight: bold;">' + coin + '</span>';
+                closedHtml += '<span style="color: #666; font-size: 11px;">' + dirText + '</span>';
+                closedHtml += '<span style="color: ' + pnlColor + ';">' + pnlSign + pnlPct.toFixed(2) + '%</span>';
+                closedHtml += '<span style="color: #444; font-size: 10px;">Closed</span>';
+                closedHtml += '</div>';
+            }
+
+            closedList.innerHTML = hasClosed ? closedHtml : '<span style="color: #666; font-size: 12px;">No closed trades</span>';
+        } else {
+            closedList.innerHTML = '<span style="color: #666; font-size: 12px;">No closed trades</span>';
         }
-
-        const size = parseFloat(foundPos.szi);
-        const entry = parseFloat(foundPos.entryPx);
-        const current = livePrice || xyzLivePrice || entry;
-        const isLong = size > 0;
-        const pnlPct = ((current - entry) / entry) * (isLong ? 1 : -1) * 100;
-
-        showTradePanel(isLong, entry, current, pnlPct);
     } catch(e) {
-        console.log('Fetch positions error:', e);
-        hideTradePanel();
+        console.log('Fetch trades error:', e);
     }
 }
 
-function showTradePanel(isLong, entry, current, pnlPct) {
-    const panel = document.getElementById('tradePanel');
-    const dirEl = document.getElementById('tradeDir');
-    const entryEl = document.getElementById('tradeEntry');
-    const currentEl = document.getElementById('tradeCurrent');
-    const pnlEl = document.getElementById('tradePnL');
-
-    if (!panel) return;
-
-    panel.style.display = 'block';
-    dirEl.innerText = isLong ? 'LONG 🟢' : 'SHORT 🔴';
-    dirEl.style.color = isLong ? '#00ff00' : '#ff0000';
-    entryEl.innerText = 'Entry: ' + formatPrice(currentAsset, entry);
-    currentEl.innerText = 'Current: ' + formatPrice(currentAsset, current);
-
-    const pnlSign = pnlPct >= 0 ? '+' : '';
-    pnlEl.innerText = pnlSign + pnlPct.toFixed(2) + '%';
-    pnlEl.style.color = pnlPct >= 0 ? '#00ff00' : '#ff0000';
-}
-
-function hideTradePanel() {
-    const panel = document.getElementById('tradePanel');
-    if (panel) panel.style.display = 'none';
+function getPriceForCoin(coin) {
+    // Map coin to current price
+    const priceMap = {
+        'BTC': livePrice,
+        'SOL': livePrice,
+        'XRP': livePrice,
+        'XLM': livePrice,
+        'SP500': xyzLivePrice,
+        'GOLD': xyzLivePrice,
+        'EUR': xyzLivePrice,
+        'CL': xyzLivePrice
+    };
+    return priceMap[coin] || 0;
 }
 
 function connect() {
@@ -577,7 +625,7 @@ function connect() {
             }
 
             loadAllCharts(currentAsset);
-            fetchOpenPositions();
+            fetchTrades();
         });
 
         connect();
@@ -587,7 +635,7 @@ function connect() {
         }, 60000);
 
         // Poll for open positions every 10 seconds
-        setInterval(fetchOpenPositions, 10000);
+        setInterval(fetchTrades, 10000);
 
         // --- LANGUAGE TOGGLE ---
         function setLang(lang) {
