@@ -110,16 +110,16 @@
 
         /* ===== MAIN CONTENT ===== */
         .container {
-            max-width: 520px;
+            max-width: 600px;
             margin: 0 auto;
-            padding: 60px 20px;
+            padding: 40px 20px;
             animation: fadeInUp 0.8s ease-out;
         }
         .card {
             background: rgba(0,255,255,0.03);
             border: 1px solid rgba(0,255,255,0.2);
             border-radius: 16px;
-            padding: 48px;
+            padding: 40px;
             width: 100%;
             text-align: center;
         }
@@ -134,35 +134,89 @@
             margin-bottom: 16px;
         }
         .logo {
-            max-width: 180px;
-            margin-bottom: 24px;
+            max-width: 140px;
+            margin-bottom: 20px;
         }
         h1 {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 12px;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            font-weight: 900;
+            margin-bottom: 8px;
             color: #fff;
+            line-height: 1.1;
         }
-        .subtitle {
+        .headline {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 16px;
+            text-shadow: 0 0 15px rgba(0,255,255,0.3);
+        }
+        .manifesto {
             color: #8a8a9a;
-            margin-bottom: 32px;
-            line-height: 1.6;
+            margin-bottom: 24px;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+        .manifesto .highlight {
+            color: #ff1493;
+            font-weight: 600;
+        }
+        .manifesto .cyan {
+            color: #00ffff;
+            font-weight: 600;
+        }
+        .broker-list {
+            text-align: left;
+            margin: 20px 0;
+            padding: 16px 20px;
+            background: rgba(255,20,147,0.04);
+            border: 1px solid rgba(255,20,147,0.15);
+            border-radius: 12px;
+        }
+        .broker-list p {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .broker-list ul {
+            list-style: none;
+        }
+        .broker-list li {
+            color: #444;
+            font-size: 0.9rem;
+            padding: 4px 0;
+            text-decoration: line-through;
+        }
+        .broker-list li:before {
+            content: "✗";
+            color: #ff4444;
+            margin-right: 8px;
+        }
+        .broker-list .solution {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(0,255,255,0.1);
+            color: #00ffff;
+            font-size: 1rem;
+            font-weight: 700;
         }
         .discount {
             color: #00ff00;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 900;
-            margin: 20px 0;
+            margin: 20px 0 4px;
             text-shadow: 0 0 20px rgba(0,255,0,0.3);
         }
         .discount-label {
             color: #8a8a9a;
-            font-size: 0.9rem;
-            margin-bottom: 32px;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
         }
         .benefits {
             text-align: left;
-            margin: 32px 0;
+            margin: 24px 0;
             padding: 20px;
             background: rgba(0,255,255,0.05);
             border-radius: 12px;
@@ -202,11 +256,16 @@
         }
         .note {
             margin-top: 20px;
-            font-size: 0.8rem;
-            color: #555;
+            font-size: 0.85rem;
+            color: #8a8a9a;
+            line-height: 1.6;
+        }
+        .note .highlight {
+            color: #00ffff;
+            font-weight: 600;
         }
         .verify-link {
-            margin-top: 12px;
+            margin-top: 16px;
             font-size: 0.85rem;
         }
         .verify-link a {
@@ -257,13 +316,16 @@
             .nav-left { gap: 12px; }
             .nav-logo img { max-width: 160px; }
             .nav-links { gap: 16px; }
-            .container { padding: 40px 15px; }
-            .card { padding: 32px 24px; }
+            .container { padding: 30px 15px; }
+            .card { padding: 28px 20px; }
+            h1 { font-size: 1.5rem; }
+            .headline { font-size: 1.1rem; }
         }
         @media(max-width: 600px) {
             .nav-links { display: none; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -279,8 +341,8 @@
         </div>
         <div class="nav-links">
             <a href="community.html" data-en="Community" data-es="Comunidad">Community</a>
+            <a href="investor.html" data-en="Investor" data-es="Inversor">Investor</a>
             <a href="learn.html" data-en="Learn" data-es="Aprender">Learn</a>
-            <a href="verify.html" data-en="Verify" data-es="Verificar">Verify</a>
         </div>
     </nav>
 
@@ -288,17 +350,42 @@
         <div class="card">
             <span class="step" data-en="STEP 1 OF 2" data-es="PASO 1 DE 2">STEP 1 OF 2</span>
             <img src="a84-bolt-logo.jpg" alt="Analytica84" class="logo">
-            <h1 data-en="Unlock Your Dashboard" data-es="Desbloquea Tu Panel">Unlock Your Dashboard</h1>
+
+            <h1 data-en="One Platform. Every Major Market." data-es="Una Plataforma. Todos los Mercados.">One Platform. Every Major Market.</h1>
+
+            <div class="headline" data-en="Decentralized. The people's exchange. Not Wall Street's." data-es="Descentralizado. El exchange del pueblo. No de Wall Street.">Decentralized. The people's exchange. Not Wall Street's.</div>
+
+            <p class="manifesto" data-en="Hyperliquid is a <span class='cyan'>global decentralized exchange</span> — no one controls it. <span class='highlight'>We the people control it.</span> No stock broker. No forex broker. No crypto exchange. No commodities broker. One place. All markets. No hassles." data-es="Hyperliquid es un <span class='cyan'>exchange global descentralizado</span> — nadie lo controla. <span class='highlight'>Nosotros el pueblo lo controlamos.</span> Sin broker de acciones. Sin broker de forex. Sin exchange de cripto. Sin broker de commodities. Un lugar. Todos los mercados. Sin complicaciones.">
+                Hyperliquid is a <span class="cyan">global decentralized exchange</span> — no one controls it. <span class="highlight">We the people control it.</span> No stock broker. No forex broker. No crypto exchange. No commodities broker. One place. All markets. No hassles.
+            </p>
+
+            <div class="broker-list">
+                <p data-en="Instead of needing:" data-es="En lugar de necesitar:">Instead of needing:</p>
+                <ul>
+                    <li data-en="A stock broker" data-es="Un broker de acciones">A stock broker</li>
+                    <li data-en="A forex broker" data-es="Un broker de forex">A forex broker</li>
+                    <li data-en="A crypto exchange" data-es="Un exchange de cripto">A crypto exchange</li>
+                    <li data-en="A commodities broker" data-es="Un broker de commodities">A commodities broker</li>
+                </ul>
+                <div class="solution" data-en="→ One platform. All markets." data-es="→ Una plataforma. Todos los mercados.">→ One platform. All markets.</div>
+            </div>
+
             <div class="discount">4%</div>
-            <div class="discount-label" data-en="Trading Fee Discount" data-es="Descuento en Comisiones">Trading Fee Discount</div>
+            <div class="discount-label" data-en="Trading Fee Discount with Analytica84" data-es="Descuento en Comisiones con Analytica84">Trading Fee Discount with Analytica84</div>
+
             <ul class="benefits">
-                <li data-en="Access to live A84 Price Targets" data-es="Acceso a Objetivos de Precio A84 en vivo">Access to live A84 Price Targets</li>
-                <li data-en="5-timeframe structural analysis" data-es="Análisis estructural de 5 marcos de tiempo">5-timeframe structural analysis</li>
-                <li data-en="Real-time Hyperliquid integration" data-es="Integración en tiempo real con Hyperliquid">Real-time Hyperliquid integration</li>
-                <li data-en="Community-first build updates" data-es="Actualizaciones de la comunidad primero">Community-first build updates</li>
+                <li data-en="Live Analytica84 Market Intelligence" data-es="Inteligencia de Mercado Analytica84 en Vivo">Live Analytica84 Market Intelligence</li>
+                <li data-en="Multi-Timeframe Market Structure Analysis" data-es="Análisis de Estructura de Mercado Multi-Marco">Multi-Timeframe Market Structure Analysis</li>
+                <li data-en="Global Market Access Through Hyperliquid" data-es="Acceso Global a Mercados a Través de Hyperliquid">Global Market Access Through Hyperliquid</li>
+                <li data-en="Community Updates & Platform Improvements" data-es="Actualizaciones de la Comunidad y Mejoras de Plataforma">Community Updates & Platform Improvements</li>
             </ul>
+
             <a href="https://app.hyperliquid.xyz/join/ANALYTICA84" target="_blank" class="cta-btn" data-en="Sign Up on Hyperliquid →" data-es="Regístrate en Hyperliquid →">Sign Up on Hyperliquid →</a>
-            <p class="note" data-en="After signing up, return here to verify your wallet" data-es="Después de registrarte, regresa aquí para verificar tu wallet">After signing up, return here to verify your wallet</p>
+
+            <p class="note" data-en="Create your Hyperliquid account using the <span class='highlight'>Analytica84 referral link</span>, then return here to verify your wallet and unlock platform access." data-es="Crea tu cuenta de Hyperliquid usando el <span class='highlight'>link de referido de Analytica84</span>, luego regresa aquí para verificar tu wallet y desbloquear el acceso a la plataforma.">
+                Create your Hyperliquid account using the <span class="highlight">Analytica84 referral link</span>, then return here to verify your wallet and unlock platform access.
+            </p>
+
             <p class="verify-link">
                 <a href="verify.html" data-en="Already have an account? Verify your wallet →" data-es="¿Ya tienes cuenta? Verifica tu wallet →">Already have an account? Verify your wallet →</a>
             </p>
