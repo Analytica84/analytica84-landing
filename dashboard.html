@@ -162,6 +162,7 @@
         }
     </style>
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -351,7 +352,7 @@
         async function initCandles(asset, interval, tfId) {
             try {
                 const endTime = Date.now();
-                const startMap = { '1m': 4*60*60*1000, '5m': 12*60*60*1000, '15m': 3*24*60*60*1000, '1h': 5*24*60*60*1000, '4h': 10*24*60*60*1000 };
+                const startMap = { '1m': 90*60*1000, '5m': 450*60*1000, '15m': 1350*60*1000, '1h': 65*60*60*1000, '4h': 200*60*60*1000 };
                 const startTime = endTime - startMap[interval];
 
                 const res = await fetch('https://api.hyperliquid.xyz/info', {
