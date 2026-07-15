@@ -16,13 +16,17 @@
             overflow-x: hidden;
         }
 
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(0,255,255,0.3); }
-            50% { box-shadow: 0 0 40px rgba(0,255,255,0.6), 0 0 60px rgba(0,255,255,0.2); }
-        }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(0,255,255,0.3); }
+            50% { text-shadow: 0 0 25px rgba(0,255,255,0.6), 0 0 40px rgba(0,255,255,0.2); }
         }
 
         /* ===== NAVBAR ===== */
@@ -108,173 +112,228 @@
             width: 100%;
         }
 
-        /* ===== MAIN CONTENT ===== */
+        /* ===== HERO SECTION ===== */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .hero-step {
+            display: inline-block;
+            background: rgba(0,255,255,0.08);
+            color: #00ffff;
+            padding: 5px 16px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(0,255,255,0.15);
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+        .hero-subheadline {
+            font-size: clamp(1rem, 2.5vw, 1.35rem);
+            color: #00ffff;
+            font-weight: 600;
+            margin-bottom: 24px;
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+        .hero-body {
+            color: #8a8a9a;
+            font-size: clamp(0.9rem, 2vw, 1.05rem);
+            line-height: 1.8;
+            max-width: 640px;
+            margin: 0 auto 30px;
+        }
+        .hero-body .highlight {
+            color: #00ffff;
+            font-weight: 600;
+        }
+
+        /* ===== BROKER CONTRAST SECTION ===== */
+        .contrast-section {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            padding: 0 20px;
+            animation: fadeInUp 0.9s ease-out 0.2s both;
+        }
+        .contrast-card {
+            background: rgba(255,20,147,0.03);
+            border: 1px solid rgba(255,20,147,0.12);
+            border-radius: 16px;
+            padding: 28px 32px;
+        }
+        .contrast-label {
+            color: #666;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+            font-weight: 600;
+        }
+        .contrast-list {
+            list-style: none;
+        }
+        .contrast-list li {
+            color: #555;
+            font-size: 0.95rem;
+            padding: 6px 0;
+            text-decoration: line-through;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .contrast-list li::before {
+            content: "✗";
+            color: #ff4444;
+            font-weight: bold;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .contrast-solution {
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(0,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .contrast-solution .arrow {
+            color: #00ffff;
+            font-size: 1.3rem;
+            font-weight: 900;
+        }
+        .contrast-solution .solution-text {
+            color: #00ffff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+        .contrast-solution .solution-text .rebellion {
+            color: #ff1493;
+            font-weight: 800;
+        }
+
+        /* ===== MAIN CARD (CTA + BENEFITS) ===== */
         .container {
             max-width: 600px;
             margin: 0 auto;
-            padding: 40px 20px;
-            animation: fadeInUp 0.8s ease-out;
+            padding: 0 20px 40px;
+            animation: fadeInUp 1s ease-out 0.3s both;
         }
         .card {
             background: rgba(0,255,255,0.03);
-            border: 1px solid rgba(0,255,255,0.2);
+            border: 1px solid rgba(0,255,255,0.15);
             border-radius: 16px;
-            padding: 40px;
+            padding: 36px 32px;
             width: 100%;
             text-align: center;
         }
-        .step {
-            display: inline-block;
-            background: rgba(0,255,255,0.1);
-            color: #00ffff;
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
         .logo {
-            max-width: 140px;
+            max-width: 100px;
             margin-bottom: 20px;
+            opacity: 0.9;
         }
-        h1 {
-            font-size: clamp(1.6rem, 4vw, 2.2rem);
-            font-weight: 900;
-            margin-bottom: 8px;
-            color: #fff;
-            line-height: 1.1;
-        }
-        .headline {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #00ffff;
-            margin-bottom: 16px;
-            text-shadow: 0 0 15px rgba(0,255,255,0.3);
-        }
-        .manifesto {
-            color: #8a8a9a;
-            margin-bottom: 24px;
-            line-height: 1.7;
-            font-size: 0.95rem;
-        }
-        .manifesto .highlight {
-            color: #ff1493;
-            font-weight: 600;
-        }
-        .manifesto .cyan {
-            color: #00ffff;
-            font-weight: 600;
-        }
-        .broker-list {
-            text-align: left;
-            margin: 20px 0;
-            padding: 16px 20px;
-            background: rgba(255,20,147,0.04);
-            border: 1px solid rgba(255,20,147,0.15);
-            border-radius: 12px;
-        }
-        .broker-list p {
-            color: #666;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .broker-list ul {
-            list-style: none;
-        }
-        .broker-list li {
-            color: #444;
-            font-size: 0.9rem;
-            padding: 4px 0;
-            text-decoration: line-through;
-        }
-        .broker-list li:before {
-            content: "✗";
-            color: #ff4444;
-            margin-right: 8px;
-        }
-        .broker-list .solution {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(0,255,255,0.1);
-            color: #00ffff;
-            font-size: 1rem;
-            font-weight: 700;
+        .discount-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0 4px;
         }
         .discount {
             color: #00ff00;
-            font-size: 2.2rem;
+            font-size: 3rem;
             font-weight: 900;
-            margin: 20px 0 4px;
-            text-shadow: 0 0 20px rgba(0,255,0,0.3);
+            text-shadow: 0 0 25px rgba(0,255,0,0.35);
+            line-height: 1;
+        }
+        .discount-off {
+            color: #00ff00;
+            font-size: 1.2rem;
+            font-weight: 700;
+            opacity: 0.8;
         }
         .discount-label {
             color: #8a8a9a;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             margin-bottom: 24px;
         }
         .benefits {
             text-align: left;
             margin: 24px 0;
             padding: 20px;
-            background: rgba(0,255,255,0.05);
+            background: rgba(0,255,255,0.04);
             border-radius: 12px;
-            border: 1px solid rgba(0,255,255,0.1);
+            border: 1px solid rgba(0,255,255,0.08);
         }
         .benefits li {
             list-style: none;
-            padding: 8px 0;
+            padding: 10px 0;
             color: #ccc;
             font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
         }
-        .benefits li:before {
+        .benefits li::before {
             content: "✓";
             color: #00ff00;
-            margin-right: 10px;
             font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 2px;
         }
         .cta-btn {
             display: inline-block;
             width: 100%;
-            padding: 18px;
+            padding: 20px;
             background: linear-gradient(135deg, #00ffff, #00a884);
             color: #000;
             border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
+            border-radius: 12px;
+            font-size: 1.15rem;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
-            margin-top: 24px;
-            letter-spacing: 1px;
+            margin-top: 8px;
+            letter-spacing: 0.5px;
         }
         .cta-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0,255,255,0.4);
+            box-shadow: 0 10px 35px rgba(0,255,255,0.45);
         }
         .note {
             margin-top: 20px;
             font-size: 0.85rem;
             color: #8a8a9a;
-            line-height: 1.6;
+            line-height: 1.7;
         }
         .note .highlight {
             color: #00ffff;
             font-weight: 600;
         }
         .verify-link {
-            margin-top: 16px;
-            font-size: 0.85rem;
+            margin-top: 18px;
+            font-size: 0.9rem;
         }
         .verify-link a {
             color: #00ffff;
             text-decoration: none;
             transition: all 0.3s;
+            font-weight: 500;
         }
         .verify-link a:hover {
-            text-shadow: 0 0 10px rgba(0,255,255,0.3);
+            text-shadow: 0 0 12px rgba(0,255,255,0.4);
         }
 
         /* ===== FOOTER ===== */
@@ -296,7 +355,7 @@
         }
         .referral-section {
             margin-top: 16px;
-            padding: 12px 20px;
+            padding: 12px 24px;
             border: 1px solid rgba(138,138,154,0.2);
             border-radius: 8px;
             display: inline-block;
@@ -316,10 +375,10 @@
             .nav-left { gap: 12px; }
             .nav-logo img { max-width: 160px; }
             .nav-links { gap: 16px; }
-            .container { padding: 30px 15px; }
+            .hero { padding: 40px 15px 20px; }
+            .contrast-card { padding: 22px 20px; }
+            .container { padding: 0 15px 30px; }
             .card { padding: 28px 20px; }
-            h1 { font-size: 1.5rem; }
-            .headline { font-size: 1.1rem; }
         }
         @media(max-width: 600px) {
             .nav-links { display: none; }
@@ -346,31 +405,48 @@
         </div>
     </nav>
 
+    <!-- ===== HERO: OUTCOME + PHILOSOPHY + PROOF ===== -->
+    <section class="hero">
+        <span class="hero-step" data-en="STEP 1 OF 2" data-es="PASO 1 DE 2">STEP 1 OF 2</span>
+
+        <h1 data-en="Trade Global Markets Through One Platform" data-es="Opere Mercados Globales en Una Plataforma">Trade Global Markets Through One Platform</h1>
+
+        <p class="hero-subheadline" data-en="Decentralized. The people's exchange. Not Wall Street's." data-es="Descentralizado. El exchange del pueblo. No de Wall Street.">Decentralized. The people's exchange. Not Wall Street's.</p>
+
+        <p class="hero-body" data-en="Built on <span class='highlight'>40+ years of trading experience</span> and a repeatable methodology refined over two decades. Analytica84 provides the market intelligence and workflow; Hyperliquid provides access to <span class='highlight'>forex, crypto, commodities, indices, and more</span> through a single execution platform." data-es="Construido sobre <span class='highlight'>más de 40 años de experiencia en trading</span> y una metodología repetible refinada durante dos décadas. Analytica84 proporciona la inteligencia de mercado y el flujo de trabajo; Hyperliquid proporciona acceso a <span class='highlight'>forex, cripto, commodities, índices y más</span> a través de una sola plataforma de ejecución.">
+            Built on <span class="highlight">40+ years of trading experience</span> and a repeatable methodology refined over two decades. Analytica84 provides the market intelligence and workflow; Hyperliquid provides access to <span class="highlight">forex, crypto, commodities, indices, and more</span> through a single execution platform.
+        </p>
+    </section>
+
+    <!-- ===== CONTRAST: WHAT YOU DON'T NEED vs WHAT YOU GET ===== -->
+    <section class="contrast-section">
+        <div class="contrast-card">
+            <p class="contrast-label" data-en="Instead of needing:" data-es="En lugar de necesitar:">Instead of needing:</p>
+            <ul class="contrast-list">
+                <li data-en="A stock broker" data-es="Un broker de acciones">A stock broker</li>
+                <li data-en="A forex broker" data-es="Un broker de forex">A forex broker</li>
+                <li data-en="A crypto exchange" data-es="Un exchange de cripto">A crypto exchange</li>
+                <li data-en="A commodities broker" data-es="Un broker de commodities">A commodities broker</li>
+                <li data-en="A separate futures platform" data-es="Una plataforma de futuros separada">A separate futures platform</li>
+            </ul>
+            <div class="contrast-solution">
+                <span class="arrow">→</span>
+                <span class="solution-text" data-en="One platform. All markets. <span class='rebellion'>No Wall Street middlemen.</span>" data-es="Una plataforma. Todos los mercados. <span class='rebellion'>Sin intermediarios de Wall Street.</span>">
+                    One platform. All markets. <span class="rebellion">No Wall Street middlemen.</span>
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA CARD: DISCOUNT + BENEFITS + ACTION ===== -->
     <main class="container">
         <div class="card">
-            <span class="step" data-en="STEP 1 OF 2" data-es="PASO 1 DE 2">STEP 1 OF 2</span>
             <img src="a84-bolt-logo.jpg" alt="Analytica84" class="logo">
 
-            <h1 data-en="One Platform. Every Major Market." data-es="Una Plataforma. Todos los Mercados.">One Platform. Every Major Market.</h1>
-
-            <div class="headline" data-en="Decentralized. The people's exchange. Not Wall Street's." data-es="Descentralizado. El exchange del pueblo. No de Wall Street.">Decentralized. The people's exchange. Not Wall Street's.</div>
-
-            <p class="manifesto" data-en="Hyperliquid is a <span class='cyan'>global decentralized exchange</span> — no one controls it. <span class='highlight'>We the people control it.</span> No stock broker. No forex broker. No crypto exchange. No commodities broker. One place. All markets. No hassles." data-es="Hyperliquid es un <span class='cyan'>exchange global descentralizado</span> — nadie lo controla. <span class='highlight'>Nosotros el pueblo lo controlamos.</span> Sin broker de acciones. Sin broker de forex. Sin exchange de cripto. Sin broker de commodities. Un lugar. Todos los mercados. Sin complicaciones.">
-                Hyperliquid is a <span class="cyan">global decentralized exchange</span> — no one controls it. <span class="highlight">We the people control it.</span> No stock broker. No forex broker. No crypto exchange. No commodities broker. One place. All markets. No hassles.
-            </p>
-
-            <div class="broker-list">
-                <p data-en="Instead of needing:" data-es="En lugar de necesitar:">Instead of needing:</p>
-                <ul>
-                    <li data-en="A stock broker" data-es="Un broker de acciones">A stock broker</li>
-                    <li data-en="A forex broker" data-es="Un broker de forex">A forex broker</li>
-                    <li data-en="A crypto exchange" data-es="Un exchange de cripto">A crypto exchange</li>
-                    <li data-en="A commodities broker" data-es="Un broker de commodities">A commodities broker</li>
-                </ul>
-                <div class="solution" data-en="→ One platform. All markets." data-es="→ Una plataforma. Todos los mercados.">→ One platform. All markets.</div>
+            <div class="discount-row">
+                <span class="discount">4%</span>
+                <span class="discount-off">OFF</span>
             </div>
-
-            <div class="discount">4%</div>
             <div class="discount-label" data-en="Trading Fee Discount with Analytica84" data-es="Descuento en Comisiones con Analytica84">Trading Fee Discount with Analytica84</div>
 
             <ul class="benefits">
