@@ -214,15 +214,15 @@
         <div style="background: rgba(0,0,0,0.9); border: 2px solid #ff1493; border-radius: 12px; padding: 15px 30px; box-shadow: 0 0 20px rgba(255,20,147,0.3);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid rgba(255,20,147,0.3); padding-bottom: 10px;">
                 <span style="color: #ff1493; font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px;">A84 CURRENT TRADES</span>
-                <span style="color: #666; font-size: 10px; text-transform: uppercase; letter-spacing: 1px;">For educational purposes only. Not financial advice.</span>
+                <span style="color: #ffffff; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">For educational purposes only. Not financial advice.</span>
             </div>
             <div id="openTradesList" style="min-height: 40px;">
-                <span style="color: #666; font-size: 12px;">No open positions</span>
+                <span style="color: #ffffff; font-size: 12px;">No open positions</span>
             </div>
             <div style="margin-top: 15px; border-top: 1px solid rgba(255,20,147,0.3); padding-top: 10px;">
                 <span style="color: #ff1493; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Past 24H Closed</span>
                 <div id="closedTradesList" style="margin-top: 10px; min-height: 40px;">
-                    <span style="color: #666; font-size: 12px;">No closed trades</span>
+                    <span style="color: #ffffff; font-size: 12px;">No closed trades</span>
                 </div>
             </div>
         </div>
@@ -505,14 +505,14 @@
                 openHtml += '<div style="display: inline-flex; align-items: center; gap: 20px; margin: 5px 15px; padding: 8px 15px; border: 1px solid rgba(255,20,147,0.2); border-radius: 6px;">';
                 openHtml += '<span style="color: #00ffff; font-weight: bold;">' + coin + '</span>';
                 openHtml += '<span style="color: ' + dirColor + '; font-weight: bold;">' + dirText + '</span>';
-                openHtml += '<span style="color: #666; font-size: 12px;">Entry: ' + entry.toFixed(4) + '</span>';
+                openHtml += '<span style="color: #ffffff; font-size: 12px;">Entry: ' + entry.toFixed(4) + '</span>';
                 openHtml += '<span style="color: ' + pnlColor + '; font-weight: bold;">' + pnlSign + pnlPct.toFixed(2) + '%</span>';
                 openHtml += '</div>';
             }
 
-            openList.innerHTML = hasOpen ? openHtml : '<span style="color: #666; font-size: 12px;">No open positions</span>';
+            openList.innerHTML = hasOpen ? openHtml : '<span style="color: #ffffff; font-size: 12px;">No open positions</span>';
         } else {
-            openList.innerHTML = '<span style="color: #666; font-size: 12px;">No open positions</span>';
+            openList.innerHTML = '<span style="color: #ffffff; font-size: 12px;">No open positions</span>';
         }
 
         // CLOSED TRADES (past 24h) - from fillHistory if available
@@ -549,15 +549,15 @@
 
                 closedHtml += '<div style="display: inline-flex; align-items: center; gap: 20px; margin: 5px 15px; padding: 8px 15px; border: 1px solid rgba(255,20,147,0.2); border-radius: 6px; opacity: 0.7;">';
                 closedHtml += '<span style="color: #00ffff; font-weight: bold;">' + coin + '</span>';
-                closedHtml += '<span style="color: #666; font-size: 11px;">' + dirText + '</span>';
+                closedHtml += '<span style="color: #ffffff; font-size: 11px;">' + dirText + '</span>';
                 closedHtml += '<span style="color: ' + pnlColor + ';">' + pnlSign + pnlPct.toFixed(2) + '%</span>';
-                closedHtml += '<span style="color: #444; font-size: 10px;">Closed</span>';
+                closedHtml += '<span style="color: #ffffff; font-size: 10px;">Closed</span>';
                 closedHtml += '</div>';
             }
 
-            closedList.innerHTML = hasClosed ? closedHtml : '<span style="color: #666; font-size: 12px;">No closed trades</span>';
+            closedList.innerHTML = hasClosed ? closedHtml : '<span style="color: #ffffff; font-size: 12px;">No closed trades</span>';
         } else {
-            closedList.innerHTML = '<span style="color: #666; font-size: 12px;">No closed trades</span>';
+            closedList.innerHTML = '<span style="color: #ffffff; font-size: 12px;">No closed trades</span>';
         }
     } catch(e) {
         console.log('Fetch trades error:', e);
