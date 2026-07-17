@@ -164,6 +164,7 @@
 <base target="_blank">
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -258,6 +259,8 @@
         let livePrice = 0;
         let xyzPollInterval = null;
         let xyzLivePrice = 0;
+        let openPositions = []; // Track open positions for TMV breakout alerts
+        let lastAlertState = {}; // Track last alert per position to avoid spam
 
         function getDex(asset) {
             return asset.startsWith('xyz:') ? 'xyz' : '';
@@ -353,7 +356,10 @@
         async function initCandles(asset, interval, tfId) {
             try {
                 const endTime = Date.now();
-                const startMap = { '1m': 90*60*1000, '5m': 450*60*1000, '15m': 1350*60*1000, '1h': 65*60*60*1000, '4h': 200*60*60*1000 };
+                const isTradFi = asset.startsWith('xyz:');
+                const startMap = isTradFi 
+                    ? { '1m': 180*60*1000, '5m': 900*60*1000, '15m': 2700*60*1000, '1h': 130*60*60*1000, '4h': 400*60*60*1000 }
+                    : { '1m': 90*60*1000, '5m': 450*60*1000, '15m': 1350*60*1000, '1h': 65*60*60*1000, '4h': 200*60*60*1000 };
                 const startTime = endTime - startMap[interval];
 
                 const res = await fetch('https://api.hyperliquid.xyz/info', {
@@ -436,6 +442,64 @@
 
         function loadAllCharts(asset) {
             TIMEFRAMES.forEach(tf => initCandles(asset, HL_INTERVALS[tf], tf));
+        }
+
+        function checkTMVBreakout() {
+            // Check if any open position should be exited based on 15m A84 breakout
+            if (!openPositions || openPositions.length === 0) return;
+
+            const state15m = tfState['15m'];
+            const state4h = tfState['4h'];
+            if (!state15m || !state4h) return;
+
+            const price15m = state15m.lastClose;
+            const a84_15m = state15m.obv;
+            const a84_4h = state4h.obv;
+
+            openPositions.forEach(pos => {
+                const posKey = pos.coin + '-' + pos.dex;
+                const isLong = pos.szi > 0;
+
+                // LONG position: exit if price breaks BELOW 15m A84 bottom
+                // SHORT position: exit if price breaks ABOVE 15m A84 top
+                let breakout = false;
+                let direction = '';
+
+                if (isLong && price15m < a84_15m) {
+                    breakout = true;
+                    direction = 'DOWN';
+                } else if (!isLong && price15m > a84_15m) {
+                    breakout = true;
+                    direction = 'UP';
+                }
+
+                if (breakout) {
+                    const lastAlert = lastAlertState[posKey];
+                    const now = Date.now();
+                    // Only alert once per 60 seconds per position
+                    if (!lastAlert || (now - lastAlert) > 60000) {
+                        lastAlertState[posKey] = now;
+
+                        // Flash the position card
+                        const openList = document.getElementById('openTradesList');
+                        if (openList) {
+                            const cards = openList.querySelectorAll('div');
+                            cards.forEach(card => {
+                                if (card.innerText.includes(pos.coin.split(':').pop())) {
+                                    card.style.border = '2px solid #ffff00';
+                                    card.style.boxShadow = '0 0 20px rgba(255,255,0,0.5)';
+                                    setTimeout(() => {
+                                        card.style.border = '1px solid rgba(255,20,147,0.2)';
+                                        card.style.boxShadow = 'none';
+                                    }, 3000);
+                                }
+                            });
+                        }
+
+                        console.log('TMV BREAKOUT:', pos.coin, isLong ? 'LONG' : 'SHORT', '15m broke', direction, '| Exit position!');
+                    }
+                }
+            });
         }
 
         function startXyzPolling(asset) {
@@ -531,6 +595,9 @@
                 console.log('allMids error:', dex, e.message);
             }
         }
+
+        // Store for TMV breakout detection
+        openPositions = allPositions;
 
         // 4. Render open positions
         if (allPositions.length > 0) {
@@ -666,6 +733,7 @@ function connect() {
         loadAllCharts(currentAsset);
         setInterval(() => {
             TIMEFRAMES.forEach(tf => updateCandles(currentAsset, HL_INTERVALS[tf], tf));
+            checkTMVBreakout();
         }, 60000);
 
         // Poll for open positions every 10 seconds
