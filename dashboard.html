@@ -370,7 +370,7 @@
                 const candles = await res.json();
                 if (!candles || candles.length < 2) return;
 
-                const rawCandles = candles.map(c => [0,0,0,0, parseFloat(c.c), parseFloat(c.v)]);
+                const rawCandles = candles.map(c => [0, parseFloat(c.h), parseFloat(c.l), 0, parseFloat(c.c), parseFloat(c.v)]);
                 const lastCandle = rawCandles[rawCandles.length - 1];
 
                 const a84 = calcA84Target(rawCandles);
@@ -410,7 +410,7 @@
                 const toAdd = newCandles.slice(1);
                 if (toAdd.length === 0) return;
 
-                const rawToAdd = toAdd.map(c => [0,0,0,0, parseFloat(c.c), parseFloat(c.v)]);
+                const rawToAdd = toAdd.map(c => [0, parseFloat(c.h), parseFloat(c.l), 0, parseFloat(c.c), parseFloat(c.v)]);
                 state.candles = state.candles.concat(rawToAdd);
 
                 const a84 = calcA84Target(state.candles);
