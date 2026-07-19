@@ -606,7 +606,7 @@
                 const isLong = p.szi > 0;
                 const sideText = isLong ? 'LONG' : 'SHORT';
                 const sideColor = isLong ? '#00ff00' : '#ff0000';
-                const coinKey = p.coin.includes(':') ? p.coin : p.dex + ':' + p.coin;
+                const coinKey = p.coin.includes(':') ? p.coin : (p.dex === 'native' ? p.coin : p.dex + ':' + p.coin);
                 const markPx = markPrices[coinKey] ? parseFloat(markPrices[coinKey]) : null;
                 let pnlPct = null;
                 if (markPx && p.entryPx) {
