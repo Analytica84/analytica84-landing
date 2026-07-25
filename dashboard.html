@@ -262,6 +262,67 @@
         let openPositions = []; // Track open positions for TMV breakout alerts
         let lastAlertState = {}; // Track last alert per position to avoid spam
 
+        // === CANDLE CAP — matches confirmed real cycle lengths, same for every asset ===
+        const CANDLE_CAP = { '4h': 60, '1h': 168, '15m': 480, '5m': 576, '1m': 360 };
+        const INTERVAL_MINUTES = { '4h': 240, '1h': 60, '15m': 15, '5m': 5, '1m': 1 };
+
+        // === ATR — background-only, never drawn, never touches price scale ===
+        // Just measures "how big is a normal candle" per box, per asset, right now.
+        function calcATR(candles, period = 14) {
+            if (candles.length < period + 1) return 0;
+            const trueRanges = [];
+            for (let i = 1; i < candles.length; i++) {
+                const high = candles[i][1], low = candles[i][2], prevClose = candles[i-1][4];
+                trueRanges.push(Math.max(high - low, Math.abs(high - prevClose), Math.abs(low - prevClose)));
+            }
+            const recent = trueRanges.slice(-period);
+            return recent.reduce((a, b) => a + b, 0) / recent.length;
+        }
+
+        // === TARGET PERSISTENCE — one state per box, freezes a target on real separation ===
+        let boxTargets = {};
+        TIMEFRAMES.forEach(tf => { boxTargets[tf] = { frozenPrice: null, direction: null, maxGap: 0, active: false }; });
+
+        const LOCK_MULT = 1.5;  // gap must exceed 1.5x ATR to lock a target
+        const KILL_MULT = 0.4;  // gap collapses below 0.4x ATR = target considered dead
+
+        function updateTargetPersistence(tfId, candles, a84Line, currentPrice) {
+            const state = boxTargets[tfId];
+            const atr = calcATR(candles, 14);
+            if (atr === 0) return state; // not enough data yet, leave as-is
+
+            const liveObvPrice = a84Line[a84Line.length - 1];
+            const gap = liveObvPrice - currentPrice;
+            const absGap = Math.abs(gap);
+            const lockThreshold = atr * LOCK_MULT;
+            const killThreshold = atr * KILL_MULT;
+
+            if (absGap > lockThreshold) {
+                const direction = gap > 0 ? 'bull' : 'bear';
+                if (!state.active || state.direction !== direction) {
+                    state.frozenPrice = liveObvPrice;
+                    state.direction = direction;
+                    state.maxGap = absGap;
+                    state.active = true;
+                } else if (absGap > state.maxGap) {
+                    state.frozenPrice = liveObvPrice;
+                    state.maxGap = absGap;
+                }
+            }
+
+            // Hit
+            if (state.active && state.direction === 'bull' && currentPrice >= state.frozenPrice) {
+                state.active = false;
+            } else if (state.active && state.direction === 'bear' && currentPrice <= state.frozenPrice) {
+                state.active = false;
+            }
+            // Death (gap collapsed)
+            else if (state.active && absGap < killThreshold) {
+                state.active = false;
+            }
+            return state;
+        }
+
         function getDex(asset) {
             return asset.startsWith('xyz:') ? 'xyz' : '';
         }
@@ -279,7 +340,7 @@
             return '$' + value.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
         }
 
-        function drawChart(canvasId, prices, a84targets) {
+        function drawChart(canvasId, prices, a84targets, frozenTarget) {
             const canvas = document.getElementById(canvasId);
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
@@ -292,6 +353,7 @@
             if (prices.length < 2) return;
 
             const allVals = [...prices, ...a84targets];
+            if (frozenTarget && frozenTarget.active) allVals.push(frozenTarget.frozenPrice);
             const minV = Math.min(...allVals);
             const maxV = Math.max(...allVals);
             const range = maxV - minV || 1;
@@ -328,10 +390,29 @@
             ctx.beginPath();
             ctx.strokeStyle = '#ff1493';
             ctx.lineWidth = 2;
-            ctx.shadowColor = '#ff1493';
-            ctx.shadowBlur = 6;
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
             a84targets.forEach((v, i) => { i === 0 ? ctx.moveTo(toX(i, a84targets.length), toY(v)) : ctx.lineTo(toX(i, a84targets.length), toY(v)); });
             ctx.stroke();
+
+            if (frozenTarget && frozenTarget.active) {
+                const color = frozenTarget.direction === 'bull' ? '#00ff00' : '#ff0000';
+                const y = toY(frozenTarget.frozenPrice);
+                ctx.beginPath();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.setLineDash([6, 4]);
+                ctx.moveTo(0, y);
+                ctx.lineTo(chartW, y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.font = '10px "Segoe UI", sans-serif';
+                ctx.fillStyle = color;
+                ctx.textAlign = 'left';
+                ctx.fillText(formatPrice(currentAsset, frozenTarget.frozenPrice), chartW + 8, y + 3);
+            }
         }
 
         function calcA84Target(candles) {
@@ -356,11 +437,9 @@
         async function initCandles(asset, interval, tfId) {
             try {
                 const endTime = Date.now();
-                const isTradFi = asset.startsWith('xyz:');
-                const startMap = isTradFi 
-                    ? { '1m': 180*60*1000, '5m': 900*60*1000, '15m': 900*60*1000, '1h': 65*60*60*1000, '4h': 200*60*60*1000 }
-                    : { '1m': 90*60*1000, '5m': 450*60*1000, '15m': 1350*60*1000, '1h': 65*60*60*1000, '4h': 200*60*60*1000 };
-                const startTime = endTime - startMap[interval];
+                // Same lookback for every asset — crypto and TradFi, no more split/mismatch.
+                const minutesBack = CANDLE_CAP[tfId] * INTERVAL_MINUTES[tfId];
+                const startTime = endTime - minutesBack * 60 * 1000;
 
                 const res = await fetch('https://api.hyperliquid.xyz/info', {
                     method: 'POST',
@@ -375,6 +454,7 @@
 
                 const a84 = calcA84Target(rawCandles);
                 const prices = rawCandles.map(c => c[4]);
+                const frozenTarget = updateTargetPersistence(tfId, rawCandles, a84, lastCandle[4]);
 
                 tfState[tfId] = {
                     candles: rawCandles,
@@ -384,7 +464,7 @@
                 };
 
                 canvasData[tfId] = { prices, a84 };
-                drawChart('chart-' + tfId, prices, a84);
+                drawChart('chart-' + tfId, prices, a84, frozenTarget);
                 updateA84Label(tfId, a84[a84.length - 1]);
             } catch(e) {
                 console.log('Init candle error:', interval, e);
@@ -413,6 +493,12 @@
                 const rawToAdd = toAdd.map(c => [0, parseFloat(c.h), parseFloat(c.l), 0, parseFloat(c.c), parseFloat(c.v)]);
                 state.candles = state.candles.concat(rawToAdd);
 
+                // Trim to this box's real cap FIRST — this is the fix for infinite candle growth.
+                const cap = CANDLE_CAP[tfId];
+                if (state.candles.length > cap) {
+                    state.candles = state.candles.slice(-cap);
+                }
+
                 const a84 = calcA84Target(state.candles);
                 const prices = state.candles.map(c => c[4]);
 
@@ -421,12 +507,10 @@
                 state.lastClose = lastCandle[4];
                 state.lastTime = toAdd[toAdd.length - 1].t;
 
-                if (state.candles.length > 500) {
-                    state.candles = state.candles.slice(-500);
-                }
+                const frozenTarget = updateTargetPersistence(tfId, state.candles, a84, lastCandle[4]);
 
                 canvasData[tfId] = { prices, a84 };
-                drawChart('chart-' + tfId, prices, a84);
+                drawChart('chart-' + tfId, prices, a84, frozenTarget);
                 updateA84Label(tfId, a84[a84.length - 1]);
             } catch(e) {
                 console.log('Update candle error:', interval, e);
@@ -717,6 +801,7 @@ function connect() {
             tfState = {};
             livePrice = 0;
             xyzLivePrice = 0;
+            TIMEFRAMES.forEach(tf => { boxTargets[tf] = { frozenPrice: null, direction: null, maxGap: 0, active: false }; });
 
             if (currentAsset.startsWith('xyz:')) {
                 stopXyzPolling();
