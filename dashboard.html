@@ -588,7 +588,6 @@
         }
 
         let lastPublicSignal = null;
-        let lastA84Value15m = null;
 
         function checkPublicBridgeAlert() {
             // Public-facing 15m guidance. No wallet or position data used.
@@ -596,24 +595,16 @@
             if (!state15m) return;
 
             const a84_15m = state15m.obv;
-            if (a84_15m == null) return;
+            const price = livePrice || state15m.lastClose;
+            if (a84_15m == null || price == null) return;
 
-            if (lastA84Value15m == null) {
-                lastA84Value15m = a84_15m;
-                return;
-            }
-
-            if (a84_15m === lastA84Value15m) return; // no new direction info yet
-
-            const rising = a84_15m > lastA84Value15m;
-            lastA84Value15m = a84_15m;
-
-            const signal = rising ? 'BUY' : 'SELL';
+            const obvAbovePrice = a84_15m > price;
+            const signal = obvAbovePrice ? 'BUY' : 'SELL';
             if (signal !== lastPublicSignal) {
                 lastPublicSignal = signal;
                 const msgBox = document.getElementById('public-bridge-15m');
                 if (msgBox) {
-                    if (rising) {
+                    if (obvAbovePrice) {
                         msgBox.innerHTML = '15m: Buy signal predominant.<br>Price rising under accumulation toward target. If short and down 10%+, consider closing.';
                         msgBox.style.color = '#00ff88';
                         msgBox.style.borderColor = '#00ff88';
@@ -842,7 +833,6 @@ function connect() {
             livePrice = 0;
             xyzLivePrice = 0;
             lastPublicSignal = null;
-            lastA84Value15m = null;
             const publicBadge = document.getElementById('public-bridge-15m');
             if (publicBadge) publicBadge.innerHTML = '';
             TIMEFRAMES.forEach(tf => { boxTargets[tf] = { frozenPrice: null, direction: null, maxGap: 0, active: false }; });
@@ -855,11 +845,13 @@ function connect() {
             }
 
             loadAllCharts(currentAsset);
+            setTimeout(checkPublicBridgeAlert, 2000);
             fetchTrades();
         });
 
         connect();
         loadAllCharts(currentAsset);
+        setTimeout(checkPublicBridgeAlert, 2000);
         setInterval(() => {
             TIMEFRAMES.forEach(tf => updateCandles(currentAsset, HL_INTERVALS[tf], tf));
             checkTMVBreakout();
