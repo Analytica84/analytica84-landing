@@ -234,7 +234,7 @@
     <div class="timeframe-grid">
         <div class="tf-card"><div class="tf-header"><span class="tf-label">4h</span><span class="tf-price" id="price-4h">$0.00</span><span class="tf-a84" id="a84-4h">A84: --</span></div><div class="chart-container"><canvas id="chart-4h"></canvas></div></div>
         <div class="tf-card"><div class="tf-header"><span class="tf-label">1h</span><span class="tf-price" id="price-1h">$0.00</span><span class="tf-a84" id="a84-1h">A84: --</span></div><div class="chart-container"><canvas id="chart-1h"></canvas></div></div>
-        <div class="tf-card"><div class="tf-header"><span class="tf-label">15m</span><span class="tf-price" id="price-15m">$0.00</span><span class="tf-a84" id="a84-15m">A84: --</span></div><div class="chart-container"><canvas id="chart-15m"></canvas></div></div>
+        <div class="tf-card"><div class="tf-header"><span class="tf-label">15m</span><span class="tf-price" id="price-15m">$0.00</span><span class="tf-a84" id="a84-15m">A84: --</span><span class="tf-public-bridge" id="public-bridge-15m"></span></div><div class="chart-container"><canvas id="chart-15m"></canvas></div></div>
         <div class="tf-card"><div class="tf-header"><span class="tf-label">5m</span><span class="tf-price" id="price-5m">$0.00</span><span class="tf-a84" id="a84-5m">A84: --</span></div><div class="chart-container"><canvas id="chart-5m"></canvas></div></div>
         <div class="tf-card"><div class="tf-header"><span class="tf-label">1m</span><span class="tf-price" id="price-1m">$0.00</span><span class="tf-a84" id="a84-1m">A84: --</span></div><div class="chart-container"><canvas id="chart-1m"></canvas></div></div>
     </div>
@@ -586,6 +586,29 @@
             });
         }
 
+        let lastPublicBreakDirection = null;
+
+        function checkPublicBridgeAlert() {
+            // Public-facing 15m break alert. No wallet or position data used.
+            const state15m = tfState['15m'];
+            if (!state15m) return;
+
+            const price15m = state15m.lastClose;
+            const a84_15m = state15m.obv;
+            if (price15m == null || a84_15m == null) return;
+
+            const direction = price15m < a84_15m ? 'DOWN' : 'UP';
+
+            if (direction !== lastPublicBreakDirection) {
+                lastPublicBreakDirection = direction;
+                const badge = document.getElementById('public-bridge-15m');
+                if (badge) {
+                    badge.innerText = '15m broke ' + direction;
+                    badge.style.color = direction === 'UP' ? '#00ff88' : '#ff4444';
+                }
+            }
+        }
+
         function startXyzPolling(asset) {
             if (xyzPollInterval) clearInterval(xyzPollInterval);
 
@@ -801,6 +824,9 @@ function connect() {
             tfState = {};
             livePrice = 0;
             xyzLivePrice = 0;
+            lastPublicBreakDirection = null;
+            const publicBadge = document.getElementById('public-bridge-15m');
+            if (publicBadge) publicBadge.innerText = '';
             TIMEFRAMES.forEach(tf => { boxTargets[tf] = { frozenPrice: null, direction: null, maxGap: 0, active: false }; });
 
             if (currentAsset.startsWith('xyz:')) {
@@ -819,6 +845,7 @@ function connect() {
         setInterval(() => {
             TIMEFRAMES.forEach(tf => updateCandles(currentAsset, HL_INTERVALS[tf], tf));
             checkTMVBreakout();
+            checkPublicBridgeAlert();
         }, 60000);
 
         // Poll for open positions every 10 seconds
