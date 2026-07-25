@@ -120,6 +120,7 @@
         .tf-a84 { font-size: 12px; color: #ff1493; font-weight: 600; }
         .chart-container { position: relative; width: 100%; height: 200px; background: #000000; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,255,255,0.3); }
         .chart-container canvas { width: 100%; height: 100%; }
+        .public-bridge-msg { margin-top: 12px; padding: 10px 12px; border-radius: 8px; font-size: 13px; line-height: 1.5; text-align: center; border: 1px solid; }
         .legend { display: flex; justify-content: center; gap: 30px; margin-top: 30px; font-size: 14px; }
         .legend-item { display: flex; align-items: center; gap: 8px; color: #ffffff; }
         .legend-line { width: 30px; height: 3px; border-radius: 2px; }
@@ -234,7 +235,7 @@
     <div class="timeframe-grid">
         <div class="tf-card"><div class="tf-header"><span class="tf-label">4h</span><span class="tf-price" id="price-4h">$0.00</span><span class="tf-a84" id="a84-4h">A84: --</span></div><div class="chart-container"><canvas id="chart-4h"></canvas></div></div>
         <div class="tf-card"><div class="tf-header"><span class="tf-label">1h</span><span class="tf-price" id="price-1h">$0.00</span><span class="tf-a84" id="a84-1h">A84: --</span></div><div class="chart-container"><canvas id="chart-1h"></canvas></div></div>
-        <div class="tf-card"><div class="tf-header"><span class="tf-label">15m</span><span class="tf-price" id="price-15m">$0.00</span><span class="tf-a84" id="a84-15m">A84: --</span><span class="tf-public-bridge" id="public-bridge-15m"></span></div><div class="chart-container"><canvas id="chart-15m"></canvas></div></div>
+        <div class="tf-card"><div class="tf-header"><span class="tf-label">15m</span><span class="tf-price" id="price-15m">$0.00</span><span class="tf-a84" id="a84-15m">A84: --</span></div><div class="chart-container"><canvas id="chart-15m"></canvas></div><div class="public-bridge-msg" id="public-bridge-15m"></div></div>
         <div class="tf-card"><div class="tf-header"><span class="tf-label">5m</span><span class="tf-price" id="price-5m">$0.00</span><span class="tf-a84" id="a84-5m">A84: --</span></div><div class="chart-container"><canvas id="chart-5m"></canvas></div></div>
         <div class="tf-card"><div class="tf-header"><span class="tf-label">1m</span><span class="tf-price" id="price-1m">$0.00</span><span class="tf-a84" id="a84-1m">A84: --</span></div><div class="chart-container"><canvas id="chart-1m"></canvas></div></div>
     </div>
@@ -586,25 +587,41 @@
             });
         }
 
-        let lastPublicBreakDirection = null;
+        let lastPublicSignal = null;
+        let lastA84Value15m = null;
 
         function checkPublicBridgeAlert() {
-            // Public-facing 15m break alert. No wallet or position data used.
+            // Public-facing 15m guidance. No wallet or position data used.
             const state15m = tfState['15m'];
             if (!state15m) return;
 
-            const price15m = state15m.lastClose;
             const a84_15m = state15m.obv;
-            if (price15m == null || a84_15m == null) return;
+            if (a84_15m == null) return;
 
-            const direction = price15m < a84_15m ? 'DOWN' : 'UP';
+            if (lastA84Value15m == null) {
+                lastA84Value15m = a84_15m;
+                return;
+            }
 
-            if (direction !== lastPublicBreakDirection) {
-                lastPublicBreakDirection = direction;
-                const badge = document.getElementById('public-bridge-15m');
-                if (badge) {
-                    badge.innerText = '15m broke ' + direction;
-                    badge.style.color = direction === 'UP' ? '#00ff88' : '#ff4444';
+            if (a84_15m === lastA84Value15m) return; // no new direction info yet
+
+            const rising = a84_15m > lastA84Value15m;
+            lastA84Value15m = a84_15m;
+
+            const signal = rising ? 'BUY' : 'SELL';
+            if (signal !== lastPublicSignal) {
+                lastPublicSignal = signal;
+                const msgBox = document.getElementById('public-bridge-15m');
+                if (msgBox) {
+                    if (rising) {
+                        msgBox.innerHTML = '15m: Buy signal predominant.<br>Price rising under accumulation toward target. If short and down 10%+, consider closing.';
+                        msgBox.style.color = '#00ff88';
+                        msgBox.style.borderColor = '#00ff88';
+                    } else {
+                        msgBox.innerHTML = '15m: Sell signal predominant.<br>Price falling under distribution toward target. If long and down 10%+, consider closing.';
+                        msgBox.style.color = '#ff4444';
+                        msgBox.style.borderColor = '#ff4444';
+                    }
                 }
             }
         }
@@ -824,9 +841,10 @@ function connect() {
             tfState = {};
             livePrice = 0;
             xyzLivePrice = 0;
-            lastPublicBreakDirection = null;
+            lastPublicSignal = null;
+            lastA84Value15m = null;
             const publicBadge = document.getElementById('public-bridge-15m');
-            if (publicBadge) publicBadge.innerText = '';
+            if (publicBadge) publicBadge.innerHTML = '';
             TIMEFRAMES.forEach(tf => { boxTargets[tf] = { frozenPrice: null, direction: null, maxGap: 0, active: false }; });
 
             if (currentAsset.startsWith('xyz:')) {
