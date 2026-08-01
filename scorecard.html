@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Scorecard | Analytica84</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000000;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== NAVBAR (matches index.html + Dashboard link for interior pages) ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: #000000;
+            border-bottom: 1px solid rgba(0,255,255,0.1);
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .nav-logo img {
+            max-width: 220px;
+            height: auto;
+        }
+        .lang-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(0,255,255,0.05);
+            border: 1px solid rgba(0,255,255,0.2);
+            border-radius: 6px;
+            padding: 4px;
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: #666;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .lang-btn.active {
+            background: rgba(0,255,255,0.15);
+            color: #00ffff;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .nav-links a {
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+        .nav-links a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(0,255,255,0.6);
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: #00ffff;
+            box-shadow: 0 0 8px rgba(0,255,255,0.5);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .nav-links a.active {
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(0,255,255,0.6);
+        }
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        .nav-cta {
+            color: #ff1493;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid #ff1493;
+            padding: 8px 20px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        .nav-cta:hover {
+            background: #ff1493;
+            color: #000;
+            box-shadow: 0 0 20px rgba(255,20,147,0.4);
+        }
+
+        /* ===== MAIN ===== */
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== BRANDING (from wk-8 source) ===== */
+        .scorecard-hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 48px 0 8px;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .logo-canvas {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 5px;
+        }
+        .brand-main-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 2px;
+        }
+        .text-group {
+            display: flex;
+            align-items: baseline;
+            letter-spacing: 5px;
+            font-family: 'Cinzel', 'Times New Roman', serif;
+            font-weight: 700;
+            font-size: 42px;
+            margin-right: 12px;
+        }
+        .metal-char {
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 35%, #475569 48%, #334155 52%, #94a3b8 65%, #f1f5f9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.9));
+            display: inline-block;
+            line-height: 1;
+        }
+        .delta-style {
+            font-family: 'Arial', sans-serif;
+            font-weight: 300;
+            position: relative;
+            display: inline-block;
+            transform: scaleX(1.15);
+        }
+        .delta-style.primary-a::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 11px solid #38bdf8;
+            filter: blur(1px) drop-shadow(0 0 8px #0284c7);
+        }
+        .number-stack {
+            position: relative;
+            display: inline-block;
+            font-family: 'Playfair Display', 'Georgia', serif;
+            font-style: italic;
+            width: 80px;
+            height: 110px;
+        }
+        .num-8 {
+            position: absolute;
+            top: 5px;
+            left: 2px;
+            font-size: 72px;
+            line-height: 1;
+            font-weight: 700;
+            background: linear-gradient(145deg, #ffffff 0%, #cbd5e1 40%, #64748b 70%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.8));
+        }
+        .num-4 {
+            position: absolute;
+            bottom: 5px;
+            right: 2px;
+            font-size: 64px;
+            line-height: 1;
+            font-weight: 700;
+            background: linear-gradient(145deg, #e2e8f0 0%, #94a3b8 40%, #334155 70%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(-1px 2px 4px rgba(0,0,0,0.8));
+        }
+        .laser-divider {
+            position: absolute;
+            width: 125px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0) 0%, #38bdf8 30%, #ffffff 50%, #0284c7 70%, rgba(2, 132, 199, 0) 100%);
+            transform: rotate(-42deg);
+            top: 54px;
+            left: -20px;
+            box-shadow: 0 0 10px #38bdf8, 0 0 3px #ffffff;
+            z-index: 10;
+        }
+        .center-beam {
+            width: 320px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #0284c7 35%, #ffffff 50%, #0284c7 65%, transparent 100%);
+            box-shadow: 0 0 8px #38bdf8;
+            margin-top: -12px;
+            margin-bottom: 12px;
+            opacity: 0.85;
+        }
+        .domain-display {
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: linear-gradient(180deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.4));
+        }
+        .sub-title-tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-top: 15px;
+            opacity: 0.8;
+        }
+        .last-updated {
+            font-family: 'Segoe UI', monospace;
+            font-size: 12px;
+            color: #526073;
+            margin-top: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== GLOW BOX ===== */
+        .glow-box {
+            border: 1px solid #102a45;
+            box-shadow: inset 0 0 15px rgba(0, 191, 255, 0.05), 0 0 20px rgba(0,0,0,0.6);
+            border-radius: 12px;
+            background: linear-gradient(180deg, #02060d 0%, #000000 100%);
+            width: 100%;
+            margin-top: 16px;
+            padding: 16px 20px;
+        }
+
+        /* ===== WEEK PANEL ===== */
+        .week-panel {
+            display: grid;
+            grid-template-columns: 1.2fr 1.5fr 1fr;
+            align-items: center;
+            text-align: center;
+        }
+        .week-col-1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-right: 1px solid #102a45;
+            padding-right: 5px;
+        }
+        .calendar-icon {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #00bfff;
+            border-radius: 4px;
+            position: relative;
+        }
+        .calendar-icon::before {
+            content: '';
+            position: absolute;
+            top: 4px; left: 4px; right: 4px; height: 2px;
+            background: #00bfff;
+        }
+        .week-col-1 span { color: #00bfff; }
+        .week-col-2 {
+            border-right: 1px solid #102a45;
+            padding: 0 10px;
+        }
+        .week-label-mini {
+            font-size: 9px;
+            color: #00bfff;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .week-dates-main {
+            font-size: 13px;
+            color: #ffffff;
+            font-weight: 600;
+            margin-top: 2px;
+            letter-spacing: 0.5px;
+        }
+        .week-dates-to {
+            font-size: 9px;
+            color: #8a929e;
+            margin: 1px 0;
+        }
+        .week-col-3 .eval-num {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00bfff;
+            line-height: 1;
+        }
+        .week-col-3 .eval-lbl {
+            font-size: 8px;
+            color: #8a929e;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 3px;
+        }
+
+        /* ===== METRICS BOARD ===== */
+        .metrics-board { padding: 5px 0; }
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 10px;
+            border-bottom: 1px solid #0a1829;
+        }
+        .metric-row:last-child { border-bottom: none; }
+        .metric-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .icon-frame {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .icon-frame.blue { border-color: rgba(0, 191, 255, 0.4); color: #00bfff; }
+        .icon-frame.green { border-color: rgba(34, 197, 94, 0.4); color: #22c55e; }
+        .icon-frame.red { border-color: rgba(239, 68, 68, 0.4); color: #ef4444; }
+        .icon-inner-target { width: 12px; height: 12px; border: 2px solid currentColor; border-radius: 50%; }
+        .icon-inner-trendup { width: 12px; height: 8px; border-left: 2px solid; border-bottom: 2px solid; transform: rotate(-135deg); }
+        .icon-inner-trenddown { width: 12px; height: 8px; border-left: 2px solid; border-top: 2px solid; transform: rotate(-135deg); }
+        .icon-inner-pct { font-size: 14px; font-weight: 700; font-family: monospace; }
+        .icon-inner-scale { width: 14px; height: 2px; background: currentColor; position: relative; }
+        .icon-inner-scale::before { content:''; position: absolute; left:0; top:-4px; width:4px; height:4px; background:currentColor;}
+        .icon-inner-scale::after { content:''; position: absolute; right:0; top:-4px; width:4px; height:4px; background:currentColor;}
+        .icon-inner-shield { width: 10px; height: 12px; border: 2px solid currentColor; border-top-left-radius: 3px; border-top-right-radius: 3px; }
+        .label-stack {
+            display: flex;
+            flex-direction: column;
+        }
+        .label-main {
+            font-size: 12px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .label-sub {
+            font-size: 10px;
+            color: #526073;
+            margin-top: 1px;
+        }
+        .value-display {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-align: right;
+        }
+        .value-display.white { color: #ffffff; }
+        .value-display.green { color: #22c55e; }
+        .value-display.red { color: #ef4444; }
+        .value-display.blue-txt { color: #00bfff; }
+        .value-sub-msg {
+            font-size: 10px;
+            color: #526073;
+            font-weight: 500;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            margin-top: 64px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #00bfff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(0, 191, 255, 0.35), transparent);
+        }
+
+        /* ===== PHILOSOPHY ===== */
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .philosophy-card {
+            border: 1px solid #102a45;
+            border-radius: 12px;
+            padding: 24px;
+            background: linear-gradient(180deg, #02060d 0%, #000000 100%);
+            box-shadow: inset 0 0 15px rgba(0, 191, 255, 0.05), 0 0 20px rgba(0,0,0,0.6);
+            transition: all 0.3s ease;
+        }
+        .philosophy-card:hover {
+            border-color: rgba(0, 191, 255, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 191, 255, 0.08);
+        }
+        .philosophy-card h3 {
+            font-size: 12px;
+            font-weight: 700;
+            color: #00bfff;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .philosophy-card p {
+            font-size: 13px;
+            color: #8a929e;
+            line-height: 1.7;
+        }
+
+        /* ===== JOIN / CONVERSION SECTION ===== */
+        .join-section {
+            margin-top: 64px;
+            padding: 48px 32px;
+            text-align: center;
+            border: 1px solid #102a45;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #02060d 0%, #000000 100%);
+            box-shadow: inset 0 0 15px rgba(0, 191, 255, 0.05), 0 0 20px rgba(0,0,0,0.6);
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .join-section h2 {
+            font-family: 'Cinzel', 'Times New Roman', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+        }
+        .join-section p {
+            font-size: 14px;
+            color: #8a929e;
+            line-height: 1.7;
+            max-width: 520px;
+            margin: 0 auto 28px;
+        }
+        @keyframes joinGlowPulse {
+            0%, 100% { box-shadow: 0 0 18px rgba(0,255,255,0.35), 0 0 40px rgba(0,255,255,0.12); }
+            50% { box-shadow: 0 0 28px rgba(0,255,255,0.55), 0 0 60px rgba(0,255,255,0.22); }
+        }
+        .join-btn {
+            display: inline-block;
+            color: #000000;
+            background: linear-gradient(180deg, #5cf6ff 0%, #00ffff 50%, #00bfff 100%);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            padding: 16px 44px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            animation: joinGlowPulse 2.4s ease-in-out infinite;
+            transition: transform 0.25s ease;
+        }
+        .join-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ===== FOOTER (exact from index.html) ===== */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(0,255,255,0.08);
+            margin-top: 80px;
+        }
+        footer p {
+            color: #444;
+            font-size: 0.85rem;
+        }
+        footer a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+        .referral-section {
+            margin-top: 16px;
+            padding: 12px 20px;
+            border: 1px solid rgba(138,138,154,0.2);
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .referral-section a {
+            color: #8a8a9a;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        .referral-section a:hover {
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width: 768px) {
+            .navbar { padding: 15px 20px; flex-wrap: wrap; gap: 10px; }
+            .nav-logo img { max-width: 160px; }
+            .nav-links { gap: 16px; }
+            .text-group { font-size: 28px; letter-spacing: 3px; }
+            .number-stack { width: 60px; height: 80px; }
+            .num-8 { font-size: 52px; }
+            .num-4 { font-size: 46px; }
+            .laser-divider { width: 90px; top: 40px; left: -14px; }
+            .center-beam { width: 240px; }
+            .domain-display { font-size: 24px; }
+            .week-panel { grid-template-columns: 1fr; gap: 12px; }
+            .week-col-1, .week-col-2 { border-right: none; border-bottom: 1px solid #102a45; padding-bottom: 12px; }
+            .week-col-3 { padding-top: 4px; }
+            .metric-row { padding: 12px 6px; }
+            .value-display { font-size: 22px; }
+        }
+        @media(max-width: 600px) {
+            .nav-links { display: none; }
+            .text-group { font-size: 22px; letter-spacing: 2px; margin-right: 8px; }
+            .number-stack { width: 48px; height: 66px; }
+            .num-8 { font-size: 42px; top: 3px; left: 1px; }
+            .num-4 { font-size: 38px; bottom: 3px; right: 1px; }
+            .laser-divider { width: 75px; top: 32px; left: -10px; }
+            .center-beam { width: 200px; margin-top: -8px; }
+            .domain-display { font-size: 20px; }
+            .sub-title-tag { font-size: 9px; letter-spacing: 3px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="nav-logo">
+                <a href="index.html"><img src="a84-bolt-logo.jpg" alt="Analytica84"></a>
+            </div>
+            <div class="lang-toggle">
+                <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+                <button class="lang-btn" onclick="setLang('es')" id="btn-es">ES</button>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="scorecard.html" class="active">Performance</a>
+        </div>
+    </nav>
+
+    <!-- ===== BRANDING ===== -->
+    <header class="scorecard-hero">
+        <div class="logo-canvas">
+            <div class="brand-main-row">
+                <div class="text-group">
+                    <span class="metal-char delta-style primary-a">A</span>
+                    <span class="metal-char">N</span>
+                    <span class="metal-char">A</span>
+                    <span class="metal-char">L</span>
+                    <span class="metal-char">Y</span>
+                    <span class="metal-char">T</span>
+                    <span class="metal-char">I</span>
+                    <span class="metal-char">C</span>
+                    <span class="metal-char delta-style">A</span>
+                </div>
+                <div class="number-stack">
+                    <div class="num-8">8</div>
+                    <div class="laser-divider"></div>
+                    <div class="num-4">4</div>
+                </div>
+            </div>
+            <div class="center-beam"></div>
+            <div class="domain-display">analytica84.com</div>
+            <div class="sub-title-tag">Institutional Performance Scorecard</div>
+        </div>
+        <p class="last-updated" id="lastUpdated">Last Updated: July 31, 2026</p>
+    </header>
+
+    <main class="container">
+
+        <!-- ===== PERIOD HEADER ===== -->
+        <div class="glow-box">
+            <div class="week-panel">
+                <div class="week-col-1">
+                    <div class="calendar-icon"></div>
+                    WEEK <span>#1-8</span>
+                </div>
+                <div class="week-col-2">
+                    <div class="week-label-mini">Trading Period</div>
+                    <div class="week-dates-main">JUN 7, 2026</div>
+                    <div class="week-dates-to">TO</div>
+                    <div class="week-dates-main">JUL 31, 2026</div>
+                </div>
+                <div class="week-col-3">
+                    <div class="eval-num">8</div>
+                    <div class="eval-lbl">Weeks<br>Evaluated</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== METRICS BOARD ===== -->
+        <div class="glow-box">
+            <div class="metrics-board">
+
+                <div class="metric-row">
+                    <div class="metric-left">
+                        <div class="icon-frame blue"><div class="icon-inner-target"></div></div>
+                        <div class="label-stack">
+                            <div class="label-main">Total Trades</div>
+                            <div class="label-sub">Completed Trades</div>
+                        </div>
+                    </div>
+                    <div class="value-display white">82</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-left">
+                        <div class="icon-frame green"><div class="icon-inner-trendup"></div></div>
+                        <div class="label-stack">
+                            <div class="label-main">Winning Trades</div>
+                            <div class="label-sub">Profitable Trades</div>
+                        </div>
+                    </div>
+                    <div class="value-display green">62</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-left">
+                        <div class="icon-frame red"><div class="icon-inner-trenddown"></div></div>
+                        <div class="label-stack">
+                            <div class="label-main">Losing Trades</div>
+                            <div class="label-sub">Losing Trades</div>
+                        </div>
+                    </div>
+                    <div class="value-display red">20</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-left">
+                        <div class="icon-frame blue"><div class="icon-inner-pct">%</div></div>
+                        <div class="label-stack">
+                            <div class="label-main">Win Rate</div>
+                            <div class="label-sub">Win Percentage</div>
+                        </div>
+                    </div>
+                    <div class="value-display green">75.61%</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-left">
+                        <div class="icon-frame blue"><div class="icon-inner-scale"></div></div>
+                        <div class="label-stack">
+                            <div class="label-main">Profit Factor</div>
+                            <div class="label-sub">Gross Profit / Gross Loss</div>
+                        </div>
+                    </div>
+                    <div class="value-display white">1.59</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-left">
+                        <div class="icon-frame blue"><div class="icon-inner-trendup"></div></div>
+                        <div class="label-stack">
+                            <div class="label-main">Total Period Return</div>
+                            <div class="label-sub">Net Account Performance</div>
+                        </div>
+                    </div>
+                    <div class="value-display blue-txt">
+                        +14.20%
+                        <div class="value-sub-msg">Weekly Avg: +2.03%</div>
+                    </div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-left">
+                        <div class="icon-frame red"><div class="icon-inner-shield"></div></div>
+                        <div class="label-stack">
+                            <div class="label-main">Max Drawdown</div>
+                            <div class="label-sub">Maximum Peak-to-Valley Drawdown</div>
+                        </div>
+                    </div>
+                    <div class="value-display red">-8.31%</div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-left">
+                        <div class="icon-frame blue"><div class="icon-inner-trendup"></div></div>
+                        <div class="label-stack">
+                            <div class="label-main">Lifetime ROI</div>
+                            <div class="label-sub">Net of Withdrawals</div>
+                        </div>
+                    </div>
+                    <div class="value-display blue-txt">
+                        +21.28%
+                        <div class="value-sub-msg">Since Inception</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ===== PERFORMANCE PHILOSOPHY ===== -->
+        <section class="section">
+            <h2 class="section-title">Performance Philosophy</h2>
+            <div class="philosophy-grid">
+                <div class="philosophy-card">
+                    <h3>Disciplined Execution</h3>
+                    <p>Every position is sized according to pre-defined risk parameters. No discretionary overrides. The system executes; the operator observes.</p>
+                </div>
+                <div class="philosophy-card">
+                    <h3>Repeatable Statistical Edge</h3>
+                    <p>Analytica84 is built on cascade mechanics, hidden level confluence, and multi-timeframe OBV alignment. Edge is measured in hundreds of trades.</p>
+                </div>
+                <div class="philosophy-card">
+                    <h3>Radical Transparency</h3>
+                    <p>Win rate, drawdown, and profit factor are published weekly. No cherry-picking. No hiding losing weeks. The scorecard is the truth.</p>
+                </div>
+                <div class="philosophy-card">
+                    <h3>Weekly Reporting</h3>
+                    <p>Every Friday, the scorecard updates with the week's trades, returns, and notes. This rhythm enforces accountability.</p>
+                </div>
+                <div class="philosophy-card">
+                    <h3>Risk Management First</h3>
+                    <p>Maximum drawdown is capped structurally. Stop losses are fixed before entry. Capital preservation is the primary mandate.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== JOIN / CONVERSION ===== -->
+        <section class="join-section">
+            <h2>Ready to Join Analytica84?</h2>
+            <p>You've reviewed the performance results. If you're ready to begin trading with the Analytica84 methodology, continue to the official onboarding page where you'll learn how to get started and join through the official Hyperliquid referral.</p>
+            <a href="onboard.html" class="join-btn">Join Analytica84</a>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <p>© 2026 Analytica84 · Powered by <a href="https://www.tiktok.com/@analytica84" target="_blank">Forex Crayons Engine</a></p>
+        <p style="margin-top:8px;">4 years of proof on TikTok · <a href="https://www.tiktok.com/@analytica84" target="_blank">@analytica84</a></p>
+        <div class="referral-section">
+            <a href="https://app.hyperliquid.xyz/join/ANALYTICA84" target="_blank">Hyperliquid Referral: ANALYTICA84</a>
+        </div>
+    </footer>
+
+    <script>
+        function setLang(lang) {
+            document.documentElement.lang = lang;
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+            document.querySelectorAll('[data-en][data-es]').forEach(el => {
+                const html = el.getAttribute('data-' + lang);
+                if (html) el.innerHTML = html;
+            });
+            localStorage.setItem('a84-lang', lang);
+        }
+        const savedLang = localStorage.getItem('a84-lang') || 'en';
+        if (savedLang !== 'en') setLang(savedLang);
+
+        (function() {
+            const now = new Date();
+            const day = now.getDay();
+            const diff = (day + 2) % 7;
+            const lastFriday = new Date(now);
+            lastFriday.setDate(now.getDate() - diff);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const el = document.getElementById('lastUpdated');
+            if (el) el.textContent = 'Last Updated: ' + lastFriday.toLocaleDateString('en-US', options);
+        })();
+    </script>
+
+</body>
+</html>
