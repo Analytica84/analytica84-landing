@@ -237,88 +237,113 @@
             font-style: normal;
         }
 
+        /* ===== SIGNUP CARD (Hyperliquid CTA, pulled from onboard.html) ===== */
         .form-card {
             background: rgba(0,255,255,0.03);
             border: 1px solid rgba(0,255,255,0.15);
             border-radius: 16px;
-            padding: 40px;
+            padding: 36px 32px;
             max-width: 480px;
             margin: 0 auto 60px;
             animation: pulse-glow 4s ease-in-out infinite;
+            text-align: center;
         }
-        .form-group {
+        .form-card .card-logo {
+            max-width: 100px;
             margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        .discount-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0 4px;
+        }
+        .discount {
+            color: #00ff00;
+            font-size: 3rem;
+            font-weight: 900;
+            text-shadow: 0 0 25px rgba(0,255,0,0.35);
+            line-height: 1;
+        }
+        .discount-off {
+            color: #00ff00;
+            font-size: 1.2rem;
+            font-weight: 700;
+            opacity: 0.8;
+        }
+        .discount-label {
+            color: #8a8a9a;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+        .benefits {
             text-align: left;
+            margin: 24px 0;
+            padding: 20px;
+            background: rgba(0,255,255,0.04);
+            border-radius: 12px;
+            border: 1px solid rgba(0,255,255,0.08);
         }
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #00ffff;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+        .benefits li {
+            list-style: none;
+            padding: 10px 0;
+            color: #ccc;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
         }
-        .form-group input {
-            width: 100%;
-            padding: 14px 16px;
-            background: #000000;
-            border: 1px solid rgba(0,255,255,0.3);
-            border-radius: 8px;
-            color: #fff;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: all 0.3s;
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: #00ffff;
-            box-shadow: 0 0 15px rgba(0,255,255,0.2);
-        }
-        .form-group input::placeholder {
-            color: #444;
+        .benefits li::before {
+            content: "✓";
+            color: #00ff00;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 2px;
         }
         .submit-btn {
+            display: inline-block;
             width: 100%;
-            padding: 16px;
+            padding: 20px;
             background: linear-gradient(135deg, #00ffff, #00a884);
             color: #000;
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.3s;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            box-sizing: border-box;
         }
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0,255,255,0.4);
+            box-shadow: 0 10px 35px rgba(0,255,255,0.45);
         }
         .form-note {
-            margin-top: 16px;
-            font-size: 0.8rem;
-            color: #555;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #8a8a9a;
+            line-height: 1.7;
         }
-        .status-msg {
-            margin-top: 16px;
-            padding: 12px;
-            border-radius: 8px;
-            display: none;
+        .form-note .highlight {
+            color: #00ffff;
+            font-weight: 600;
+        }
+        .verify-link {
+            margin-top: 18px;
             font-size: 0.9rem;
         }
-        .status-msg.success {
-            background: rgba(0,255,0,0.1);
-            border: 1px solid rgba(0,255,0,0.3);
-            color: #00ff00;
-            display: block;
+        .verify-link a {
+            color: #00ffff;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
         }
-        .status-msg.error {
-            background: rgba(255,0,0,0.1);
-            border: 1px solid rgba(255,0,0,0.3);
-            color: #ff4444;
-            display: block;
+        .verify-link a:hover {
+            text-shadow: 0 0 12px rgba(0,255,255,0.4);
         }
 
         .preview-section {
@@ -441,7 +466,7 @@
             .nav-links { gap: 16px; }
             .hero { padding: 60px 15px 40px; }
             .origin-card { padding: 24px; }
-            .form-card { padding: 28px; }
+            .form-card { padding: 28px 20px; }
         }
         @media(max-width: 600px) {
             .nav-links { display: none; }
@@ -461,9 +486,6 @@
             </div>
         </div>
         <div class="nav-links">
-            <a href="community.html" data-en="Community" data-es="Comunidad">Community</a>
-            <a href="learn.html" data-en="Learn" data-es="Aprender">Learn</a>
-            <a href="onboard.html" data-en="Onboard" data-es="Abordar">Onboard</a>
             <a href="scorecard.html" data-en="Performance" data-es="Rendimiento">Performance</a>
         </div>
         <a href="https://www.tiktok.com/@analytica84" target="_blank" class="nav-cta" data-en="Watch Live →" data-es="Ver En Vivo →">Watch Live →</a>
@@ -494,17 +516,30 @@
 
     <section class="form-section">
         <div class="form-card">
-            <div class="form-group">
-                <label data-en="Email" data-es="Correo Electrónico">Email</label>
-                <input type="email" id="email" placeholder="you@email.com" required>
+            <img src="a84-bolt-logo.jpg" alt="Analytica84" class="card-logo">
+
+            <div class="discount-row">
+                <span class="discount">4%</span>
+                <span class="discount-off">OFF</span>
             </div>
-            <div class="form-group">
-                <label data-en="TikTok Handle" data-es="Usuario de TikTok">TikTok Handle</label>
-                <input type="text" id="tiktok" placeholder="@yourhandle" required>
-            </div>
-            <button class="submit-btn" onclick="submitForm()" data-en="Join the Movement →" data-es="Únete al Movimiento →">Join the Movement →</button>
-            <p class="form-note" data-en="Free access. No spam. We build this together." data-es="Acceso gratis. Sin spam. Construimos esto juntos.">Free access. No spam. We build this together.</p>
-            <div id="status" class="status-msg"></div>
+            <div class="discount-label" data-en="Trading Fee Discount with Analytica84" data-es="Descuento en Comisiones con Analytica84">Trading Fee Discount with Analytica84</div>
+
+            <ul class="benefits">
+                <li data-en="Live Analytica84 Market Intelligence" data-es="Inteligencia de Mercado Analytica84 en Vivo">Live Analytica84 Market Intelligence</li>
+                <li data-en="Multi-Timeframe Market Structure Analysis" data-es="Análisis de Estructura de Mercado Multi-Marco">Multi-Timeframe Market Structure Analysis</li>
+                <li data-en="Global Market Access Through Hyperliquid" data-es="Acceso Global a Mercados a Través de Hyperliquid">Global Market Access Through Hyperliquid</li>
+                <li data-en="Community Updates & Platform Improvements" data-es="Actualizaciones de la Comunidad y Mejoras de Plataforma">Community Updates & Platform Improvements</li>
+            </ul>
+
+            <a href="https://app.hyperliquid.xyz/join/ANALYTICA84" target="_blank" class="submit-btn" data-en="Sign Up on Hyperliquid →" data-es="Regístrate en Hyperliquid →">Sign Up on Hyperliquid →</a>
+
+            <p class="form-note" data-en="Create your Hyperliquid account using the <span class='highlight'>Analytica84 referral link</span>, then return here to verify your wallet and unlock platform access." data-es="Crea tu cuenta de Hyperliquid usando el <span class='highlight'>link de referido de Analytica84</span>, luego regresa aquí para verificar tu wallet y desbloquear el acceso a la plataforma.">
+                Create your Hyperliquid account using the <span class="highlight">Analytica84 referral link</span>, then return here to verify your wallet and unlock platform access.
+            </p>
+
+            <p class="verify-link">
+                <a href="verify.html" data-en="Already have an account? Verify your wallet →" data-es="¿Ya tienes cuenta? Verifica tu wallet →">Already have an account? Verify your wallet →</a>
+            </p>
         </div>
     </section>
 
@@ -537,8 +572,6 @@
     </footer>
 
     <script>
-        const BOT_URL = 'https://web-production-b19ed.up.railway.app';
-
         function setLang(lang) {
             document.documentElement.lang = lang;
             document.getElementById('btn-en').classList.toggle('active', lang === 'en');
@@ -551,41 +584,6 @@
         }
         const savedLang = localStorage.getItem('a84-lang') || 'en';
         if (savedLang !== 'en') setLang(savedLang);
-
-        async function submitForm() {
-            const email = document.getElementById('email').value;
-            const tiktok = document.getElementById('tiktok').value;
-            const status = document.getElementById('status');
-
-            if (!email || !tiktok) {
-                status.className = 'status-msg error';
-                status.innerText = savedLang === 'es' ? 'Por favor complete ambos campos' : 'Please fill in both fields';
-                return;
-            }
-
-            try {
-                const res = await fetch(BOT_URL + '/api/contact', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, tiktok })
-                });
-                const data = await res.json();
-
-                if (data.status === 'saved') {
-                    status.className = 'status-msg success';
-                    status.innerText = savedLang === 'es' ? '¡Bienvenido al movimiento! Redirigiendo...' : 'Welcome to the movement! Redirecting...';
-                    setTimeout(() => {
-                        window.location.href = 'onboard.html';
-                    }, 1500);
-                } else {
-                    status.className = 'status-msg error';
-                    status.innerText = 'Error: ' + (data.error || 'Please try again');
-                }
-            } catch (e) {
-                status.className = 'status-msg error';
-                status.innerText = savedLang === 'es' ? 'Error de conexión. Por favor intente de nuevo.' : 'Connection error. Please try again.';
-            }
-        }
     </script>
 
 </body>
