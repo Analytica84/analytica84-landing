@@ -34,20 +34,9 @@
             background: #000000;
             border-bottom: 1px solid rgba(0,255,255,0.1);
         }
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .nav-logo img {
-            max-width: 220px;
-            height: auto;
-        }
+        .nav-left { display: flex; align-items: center; gap: 20px; }
+        .nav-logo { display: flex; align-items: center; gap: 12px; }
+        .nav-logo img { max-width: 220px; height: auto; }
         .lang-toggle {
             display: flex;
             gap: 4px;
@@ -68,18 +57,9 @@
             transition: all 0.3s;
             font-family: inherit;
         }
-        .lang-btn.active {
-            background: rgba(0,255,255,0.15);
-            color: #00ffff;
-        }
-        .lang-btn:hover:not(.active) {
-            color: #aaa;
-        }
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 28px;
-        }
+        .lang-btn.active { background: rgba(0,255,255,0.15); color: #00ffff; }
+        .lang-btn:hover:not(.active) { color: #aaa; }
+        .nav-links { display: flex; align-items: center; gap: 28px; }
         .nav-links a {
             color: #00ffff;
             text-decoration: none;
@@ -89,10 +69,7 @@
             transition: all 0.25s ease;
             position: relative;
         }
-        .nav-links a:hover {
-            color: #ffffff;
-            text-shadow: 0 0 12px rgba(0,255,255,0.6);
-        }
+        .nav-links a:hover { color: #ffffff; text-shadow: 0 0 12px rgba(0,255,255,0.6); }
         .nav-links a::after {
             content: '';
             position: absolute;
@@ -104,9 +81,7 @@
             box-shadow: 0 0 8px rgba(0,255,255,0.5);
             transition: width 0.3s ease;
         }
-        .nav-links a:hover::after {
-            width: 100%;
-        }
+        .nav-links a:hover::after { width: 100%; }
         .nav-cta {
             color: #ff1493;
             text-decoration: none;
@@ -117,12 +92,9 @@
             border-radius: 6px;
             transition: all 0.3s;
         }
-        .nav-cta:hover {
-            background: #ff1493;
-            color: #000;
-            box-shadow: 0 0 20px rgba(255,20,147,0.4);
-        }
+        .nav-cta:hover { background: #ff1493; color: #000; box-shadow: 0 0 20px rgba(255,20,147,0.4); }
 
+        /* ===== HERO (unchanged) ===== */
         .hero {
             text-align: center;
             padding: 80px 20px 60px;
@@ -180,79 +152,24 @@
             text-decoration: none;
             transition: all 0.3s;
         }
-        .hero-proof:hover {
-            color: #ff69b4;
-            text-shadow: 0 0 10px rgba(255,20,147,0.3);
-        }
+        .hero-proof:hover { color: #ff69b4; text-shadow: 0 0 10px rgba(255,20,147,0.3); }
 
-        /* ===== STATS / 3 BOXES SECTION ===== */
-        .stats-section {
-            max-width: 1100px;
-            margin: 0 auto 60px;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            animation: fadeInUp 0.9s ease-out 0.2s both;
-        }
-        .stat-card {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(0,255,255,0.1);
-            border-radius: 16px;
-            padding: 32px 24px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-        }
-        .stat-card:nth-child(1)::before { background: linear-gradient(90deg, #00ffff, #00a884); }
-        .stat-card:nth-child(2)::before { background: linear-gradient(90deg, #00ff00, #00a844); }
-        .stat-card:nth-child(3)::before { background: linear-gradient(90deg, #ff1493, #ff69b4); }
-        .stat-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(0,255,255,0.25);
-        }
-        .stat-card:nth-child(1):hover { box-shadow: 0 10px 30px rgba(0,255,255,0.1); }
-        .stat-card:nth-child(2):hover { box-shadow: 0 10px 30px rgba(0,255,0,0.1); }
-        .stat-card:nth-child(3):hover { box-shadow: 0 10px 30px rgba(255,20,147,0.1); }
-        .stat-number {
-            font-size: 2.4rem;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 8px;
-            letter-spacing: -1px;
-        }
-        .stat-card:nth-child(1) .stat-number { color: #00ffff; text-shadow: 0 0 20px rgba(0,255,255,0.25); }
-        .stat-card:nth-child(2) .stat-number { color: #00ff00; text-shadow: 0 0 20px rgba(0,255,0,0.25); }
-        .stat-card:nth-child(3) .stat-number { color: #ff1493; text-shadow: 0 0 20px rgba(255,20,147,0.25); }
-        .stat-label {
-            font-size: 0.85rem;
-            color: #aaa;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 16px;
-        }
-        .stat-desc {
-            font-size: 0.9rem;
-            color: #8a8a9a;
-            line-height: 1.6;
-        }
-        .stat-desc .highlight {
-            font-weight: 700;
-        }
-        .stat-card:nth-child(1) .stat-desc .highlight { color: #00ffff; }
-        .stat-card:nth-child(2) .stat-desc .highlight { color: #00ff00; }
-        .stat-card:nth-child(3) .stat-desc .highlight { color: #ff1493; }
+        /* ===== NEW: PHOTO + STATS + FLOW ===== */
+        .ix { max-width: 1100px; margin: 0 auto 70px; padding: 20px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; }
+        .ix-pic { border-radius: 16px; overflow: hidden; border: 1px solid rgba(0,255,255,.25); background: #000; min-height: 260px; }
+        .ix-pic img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 85% center; }
+        .ix-stats { display: flex; flex-direction: column; gap: 12px; }
+        .ix-card, .ix-flow { background: #000; border: 1px solid rgba(0,255,255,.25); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
+        .ix-card { flex: 1; display: flex; align-items: center; gap: 16px; border-radius: 14px; padding: 14px 20px; }
+        .ix-card b { flex: 0 0 auto; min-width: 128px; font-size: 2.1rem; font-weight: 800; letter-spacing: -1px; line-height: 1; background: linear-gradient(90deg,#6fe7dc,#5aa0e6,#a27ee0); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .ix-card span { font-size: .95rem; font-weight: 500; color: #f0f4fa; line-height: 1.35; }
+        .ix-flow { grid-column: 1/-1; border-radius: 16px; padding: 22px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+        .ix-steps { display: flex; gap: 32px; flex-wrap: wrap; color: #f0f4fa; font-size: 1.05rem; font-weight: 500; }
+        .ix-steps em { font-style: normal; display: inline-block; width: 28px; height: 28px; line-height: 26px; text-align: center; border-radius: 50%; border: 1px solid rgba(0,255,255,.6); color: #00ffff; font-weight: 700; margin-right: 10px; }
+        .ix-btn { display: inline-block; padding: 14px 40px; border-radius: 10px; font-weight: 700; letter-spacing: .3px; color: #000; text-decoration: none; background: linear-gradient(135deg,#00ffff,#00a884); transition: all .3s; }
+        .ix-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,255,255,.4); }
 
+        /* ===== ORIGIN STORY (unchanged) ===== */
         .origin-section {
             padding: 0 20px 40px;
             max-width: 700px;
@@ -270,9 +187,7 @@
         .origin-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 3px;
             background: linear-gradient(90deg, #ff1493, #00ffff);
         }
@@ -288,24 +203,11 @@
             padding: 4px 12px;
             border-radius: 4px;
         }
-        .origin-quote {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #c0c0d0;
-            font-style: italic;
-        }
-        .origin-quote .highlight {
-            color: #ff1493;
-            font-weight: 600;
-            font-style: normal;
-        }
-        .origin-quote .cyan {
-            color: #00ffff;
-            font-weight: 600;
-            font-style: normal;
-        }
+        .origin-quote { font-size: 1.1rem; line-height: 1.8; color: #c0c0d0; font-style: italic; }
+        .origin-quote .highlight { color: #ff1493; font-weight: 600; font-style: normal; }
+        .origin-quote .cyan { color: #00ffff; font-weight: 600; font-style: normal; }
 
-        /* ===== SIGNUP CARD (Hyperliquid CTA, pulled from onboard.html) ===== */
+        /* ===== SIGNUP CARD ===== */
         .form-card {
             background: rgba(0,255,255,0.03);
             border: 1px solid rgba(0,255,255,0.15);
@@ -316,36 +218,11 @@
             animation: pulse-glow 4s ease-in-out infinite;
             text-align: center;
         }
-        .form-card .card-logo {
-            max-width: 100px;
-            margin-bottom: 20px;
-            opacity: 0.9;
-        }
-        .discount-row {
-            display: flex;
-            align-items: baseline;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0 4px;
-        }
-        .discount {
-            color: #00ff00;
-            font-size: 3rem;
-            font-weight: 900;
-            text-shadow: 0 0 25px rgba(0,255,0,0.35);
-            line-height: 1;
-        }
-        .discount-off {
-            color: #00ff00;
-            font-size: 1.2rem;
-            font-weight: 700;
-            opacity: 0.8;
-        }
-        .discount-label {
-            color: #8a8a9a;
-            font-size: 0.9rem;
-            margin-bottom: 24px;
-        }
+        .form-card .card-logo { max-width: 100px; margin-bottom: 20px; opacity: 0.9; }
+        .discount-row { display: flex; align-items: baseline; justify-content: center; gap: 10px; margin: 20px 0 4px; }
+        .discount { color: #00ff00; font-size: 3rem; font-weight: 900; text-shadow: 0 0 25px rgba(0,255,0,0.35); line-height: 1; }
+        .discount-off { color: #00ff00; font-size: 1.2rem; font-weight: 700; opacity: 0.8; }
+        .discount-label { color: #8a8a9a; font-size: 0.9rem; margin-bottom: 24px; }
         .benefits {
             text-align: left;
             margin: 24px 0;
@@ -363,13 +240,7 @@
             align-items: flex-start;
             gap: 10px;
         }
-        .benefits li::before {
-            content: "✓";
-            color: #00ff00;
-            font-weight: bold;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
+        .benefits li::before { content: "✓"; color: #00ff00; font-weight: bold; flex-shrink: 0; margin-top: 2px; }
         .submit-btn {
             display: inline-block;
             width: 100%;
@@ -386,149 +257,31 @@
             letter-spacing: 0.5px;
             box-sizing: border-box;
         }
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 35px rgba(0,255,255,0.45);
-        }
-        .form-note {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: #8a8a9a;
-            line-height: 1.7;
-        }
-        .form-note .highlight {
-            color: #00ffff;
-            font-weight: 600;
-        }
-        .verify-link {
-            margin-top: 18px;
-            font-size: 0.9rem;
-        }
-        .verify-link a {
-            color: #00ffff;
-            text-decoration: none;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-        .verify-link a:hover {
-            text-shadow: 0 0 12px rgba(0,255,255,0.4);
-        }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(0,255,255,0.45); }
+        .form-note { margin-top: 20px; font-size: 0.85rem; color: #8a8a9a; line-height: 1.7; }
+        .form-note .highlight { color: #00ffff; font-weight: 600; }
+        .verify-link { margin-top: 18px; font-size: 0.9rem; }
+        .verify-link a { color: #00ffff; text-decoration: none; transition: all 0.3s; font-weight: 500; }
+        .verify-link a:hover { text-shadow: 0 0 12px rgba(0,255,255,0.4); }
 
-        .preview-section {
-            padding: 60px 20px;
-            text-align: center;
-            background: linear-gradient(180deg, #000000 0%, rgba(0,255,255,0.02) 50%, #000000 100%);
-        }
-        .preview-section h2 {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 800;
-            margin-bottom: 12px;
-            color: #fff;
-        }
-        .preview-section p {
-            color: #8a8a9a;
-            max-width: 500px;
-            margin: 0 auto 40px;
-            line-height: 1.7;
-        }
-        .preview-frame {
-            max-width: 900px;
-            margin: 0 auto;
-            background: #000000;
-            border: 2px solid rgba(0,255,255,0.2);
-            border-radius: 16px;
-            overflow: hidden;
-            position: relative;
-        }
-        .preview-frame img {
-            width: 100%;
-            display: block;
-            opacity: 0.7;
-        }
-        .preview-overlay {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.6);
-        }
-        .preview-overlay .lock {
-            font-size: 3rem;
-            margin-bottom: 16px;
-        }
-        .preview-overlay p {
-            color: #00ffff;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin: 0;
-        }
-        .preview-overlay .sub {
-            color: #8a8a9a;
-            font-size: 0.9rem;
-            margin-top: 8px;
-        }
-
-        .movement-section {
-            padding: 80px 20px;
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        .movement-section h2 {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 800;
-            margin-bottom: 24px;
-            color: #fff;
-        }
-        .movement-section p {
-            color: #8a8a9a;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 16px;
-        }
-        .movement-section .highlight {
-            color: #ff1493;
-            font-weight: 600;
-        }
+        .movement-section { padding: 80px 20px; text-align: center; max-width: 700px; margin: 0 auto; }
+        .movement-section h2 { font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 800; margin-bottom: 24px; color: #fff; }
+        .movement-section p { color: #8a8a9a; font-size: 1.1rem; line-height: 1.8; margin-bottom: 16px; }
+        .movement-section .highlight { color: #ff1493; font-weight: 600; }
 
         /* ===== FOOTER ===== */
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            border-top: 1px solid rgba(0,255,255,0.08);
-        }
-        footer p {
-            color: #444;
-            font-size: 0.85rem;
-        }
-        footer a {
-            color: #00ffff;
-            text-decoration: none;
-        }
-        footer a:hover {
-            text-shadow: 0 0 10px rgba(0,255,255,0.3);
-        }
-        .referral-section {
-            margin-top: 16px;
-            padding: 12px 20px;
-            border: 1px solid rgba(138,138,154,0.2);
-            border-radius: 8px;
-            display: inline-block;
-        }
-        .referral-section a {
-            color: #8a8a9a;
-            font-size: 0.8rem;
-            transition: all 0.3s;
-        }
-        .referral-section a:hover {
-            color: #00ffff;
-            text-shadow: 0 0 10px rgba(0,255,255,0.3);
-        }
+        footer { text-align: center; padding: 40px 20px; border-top: 1px solid rgba(0,255,255,0.08); }
+        footer p { color: #444; font-size: 0.85rem; }
+        footer a { color: #00ffff; text-decoration: none; }
+        footer a:hover { text-shadow: 0 0 10px rgba(0,255,255,0.3); }
+        .referral-section { margin-top: 16px; padding: 12px 20px; border: 1px solid rgba(138,138,154,0.2); border-radius: 8px; display: inline-block; }
+        .referral-section a { color: #8a8a9a; font-size: 0.8rem; transition: all 0.3s; }
+        .referral-section a:hover { color: #00ffff; text-shadow: 0 0 10px rgba(0,255,255,0.3); }
 
-        @media(max-width: 900px) {
-            .stats-section { grid-template-columns: 1fr; max-width: 480px; }
+        @media(max-width: 860px) {
+            .ix { grid-template-columns: 1fr; }
+            .ix-flow { justify-content: center; text-align: center; }
+            .ix-card b { min-width: 110px; font-size: 1.8rem; }
         }
         @media(max-width: 768px) {
             .navbar { padding: 15px 20px; flex-wrap: wrap; gap: 10px; }
@@ -536,8 +289,6 @@
             .nav-logo img { max-width: 160px; }
             .nav-links { gap: 16px; }
             .hero { padding: 60px 15px 40px; }
-            .stat-card { padding: 28px 20px; }
-            .stat-number { font-size: 2rem; }
             .origin-card { padding: 24px; }
             .form-card { padding: 28px 20px; }
         }
@@ -578,28 +329,21 @@
         <a href="https://www.tiktok.com/@analytica84" target="_blank" class="hero-proof" data-en="📹 Proof of Concept — Watch on TikTok →" data-es="📹 Prueba de Concepto — Ver en TikTok →">📹 Proof of Concept — Watch on TikTok →</a>
     </section>
 
-    <!-- ===== 3 STAT BOXES ===== -->
-    <section class="stats-section">
-        <div class="stat-card">
-            <div class="stat-number" data-en="$1B+" data-es="$1B+">$1B+</div>
-            <div class="stat-label" data-en="Verified FX Volume" data-es="Volumen FX Verificado">Verified FX Volume</div>
-            <p class="stat-desc" data-en="3-year track record · 2022–2024 · <span class='highlight'>86.98%</span> win rate" data-es="Track record de 3 años · 2022–2024 · Tasa de acierto del <span class='highlight'>86.98%</span>">
-                3-year track record · 2022–2024 · <span class="highlight">86.98%</span> win rate
-            </p>
+    <!-- ===== PHOTO + STATS + FLOW ===== -->
+    <section class="ix">
+        <div class="ix-pic"><img src="a84-hero-pic.jpg" alt="Analytica84 trading desk with Hyperliquid integration"></div>
+        <div class="ix-stats">
+            <div class="ix-card"><b>$1BB+</b><span data-en="Verified FX volume" data-es="Volumen FX verificado">Verified FX volume</span></div>
+            <div class="ix-card"><b>86.98%</b><span data-en="Win rate (2024)" data-es="Tasa de acierto (2024)">Win rate (2024)</span></div>
+            <div class="ix-card"><b>+81.07%</b><span data-en="Annual gain · FXBook verified" data-es="Ganancia anual · verificada por FXBook">Annual gain · FXBook verified</span></div>
+            <div class="ix-card"><b>4% off</b><span data-en="Trading fees on Hyperliquid" data-es="Comisiones en Hyperliquid">Trading fees on Hyperliquid</span></div>
         </div>
-        <div class="stat-card">
-            <div class="stat-number" data-en="40+ Years" data-es="40+ Años">40+ Years</div>
-            <div class="stat-label" data-en="Of Edge" data-es="de Ventaja">Of Edge</div>
-            <p class="stat-desc" data-en="Trading FX before PCs existed. Four decades refined into <span class='highlight'>one system.</span>" data-es="Operando FX antes de que existieran las PCs. Cuatro décadas refinadas en <span class='highlight'>un sistema.</span>">
-                Trading FX before PCs existed. Four decades refined into <span class="highlight">one system.</span>
-            </p>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number" data-en="Crayons Method" data-es="Método Crayons">Crayons Method</div>
-            <div class="stat-label" data-en="Proprietary Intelligence" data-es="Inteligencia Propietaria">Proprietary Intelligence</div>
-            <p class="stat-desc" data-en="Institutional-grade intermarket intelligence. <span class='highlight'>Built for retail.</span>" data-es="Inteligencia intermercado de grado institucional. <span class='highlight'>Construido para retail.</span>">
-                Institutional-grade intermarket intelligence. <span class="highlight">Built for retail.</span>
-            </p>
+        <div class="ix-flow">
+            <div class="ix-steps">
+                <div><em>1</em><span data-en="Trade on Hyperliquid" data-es="Opera en Hyperliquid">Trade on Hyperliquid</span></div>
+                <div><em>2</em><span data-en="Unlock Analytica84" data-es="Desbloquea Analytica84">Unlock Analytica84</span></div>
+            </div>
+            <a href="https://app.hyperliquid.xyz/join/ANALYTICA84" target="_blank" class="ix-btn" data-en="Activate Free Access →" data-es="Activar Acceso Gratis →">Activate Free Access →</a>
         </div>
     </section>
 
@@ -641,7 +385,7 @@
         </div>
     </section>
 
-<section class="movement-section">
+    <section class="movement-section">
         <h2 data-en="Not a Product. A Project." data-es="No es un Producto. Es un Proyecto.">Not a Product. A Project.</h2>
         <p data-en="You don't buy this. You <span class='highlight'>join it</span>." data-es="No compras esto. Te <span class='highlight'>unés</span>.">You don't buy this. You <span class="highlight">join it</span>.</p>
         <p data-en="Free access to the dash. Shape what comes next. Be first when we open new doors." data-es="Acceso gratis al panel. Da forma a lo que viene. Sé el primero cuando abramos nuevas puertas.">Free access to the dash. Shape what comes next. Be first when we open new doors.</p>
