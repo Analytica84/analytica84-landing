@@ -154,20 +154,30 @@
         }
         .hero-proof:hover { color: #ff69b4; text-shadow: 0 0 10px rgba(255,20,147,0.3); }
 
-        /* ===== NEW: PHOTO + STATS + FLOW ===== */
+        /* ===== PHOTO + STATS + TWO DOORS ===== */
         .ix { max-width: 1100px; margin: 0 auto 70px; padding: 20px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; }
         .ix-pic { border-radius: 16px; overflow: hidden; border: 1px solid rgba(0,255,255,.25); background: #000; min-height: 260px; }
         .ix-pic img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 85% center; }
         .ix-stats { display: flex; flex-direction: column; gap: 12px; }
-        .ix-card, .ix-flow { background: #000; border: 1px solid rgba(0,255,255,.25); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
+        .ix-card { background: #000; border: 1px solid rgba(0,255,255,.25); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
         .ix-card { flex: 1; display: flex; align-items: center; gap: 16px; border-radius: 14px; padding: 14px 20px; }
         .ix-card b { flex: 0 0 auto; min-width: 128px; font-size: 2.1rem; font-weight: 800; letter-spacing: -1px; line-height: 1; background: linear-gradient(90deg,#6fe7dc,#5aa0e6,#a27ee0); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
         .ix-card span { font-size: .95rem; font-weight: 500; color: #f0f4fa; line-height: 1.35; }
-        .ix-flow { grid-column: 1/-1; border-radius: 16px; padding: 22px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-        .ix-steps { display: flex; gap: 32px; flex-wrap: wrap; color: #f0f4fa; font-size: 1.05rem; font-weight: 500; }
-        .ix-steps em { font-style: normal; display: inline-block; width: 28px; height: 28px; line-height: 26px; text-align: center; border-radius: 50%; border: 1px solid rgba(0,255,255,.6); color: #00ffff; font-weight: 700; margin-right: 10px; }
-        .ix-btn { display: inline-block; padding: 14px 40px; border-radius: 10px; font-weight: 700; letter-spacing: .3px; color: #000; text-decoration: none; background: linear-gradient(135deg,#00ffff,#00a884); transition: all .3s; }
+        .ix-btn { display: inline-block; padding: 14px 40px; border-radius: 10px; font-weight: 700; letter-spacing: .3px; color: #000; text-decoration: none; background: linear-gradient(135deg,#00ffff,#00a884); transition: all .3s; text-align: center; }
         .ix-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,255,255,.4); }
+        .ix-btn.pink { background: linear-gradient(135deg,#ff1493,#c2185b); color: #fff; }
+        .ix-btn.pink:hover { box-shadow: 0 8px 28px rgba(255,20,147,.4); }
+
+        .doors { grid-column: 1/-1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .door { background: #000; border: 1px solid rgba(0,255,255,.25); border-radius: 16px; padding: 26px 28px; display: flex; flex-direction: column; gap: 12px; box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
+        .door-paid { border-color: rgba(255,20,147,.45); }
+        .door h3 { font-size: 1.4rem; font-weight: 800; color: #f0f4fa; }
+        .door-tag { font-size: 1rem; font-weight: 600; color: #00ffff; }
+        .door-paid .door-tag { color: #ff1493; }
+        .door p { font-size: .95rem; color: #c0c8d8; line-height: 1.6; }
+        .door .door-small { font-size: .85rem; color: #8a8a9a; }
+        .door .ix-btn { margin-top: auto; align-self: flex-start; }
+        .doors-note { grid-column: 1/-1; text-align: center; font-size: .95rem; color: #8a8a9a; }
 
         /* ===== ORIGIN STORY (unchanged) ===== */
         .origin-section {
@@ -260,9 +270,6 @@
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(0,255,255,0.45); }
         .form-note { margin-top: 20px; font-size: 0.85rem; color: #8a8a9a; line-height: 1.7; }
         .form-note .highlight { color: #00ffff; font-weight: 600; }
-        .verify-link { margin-top: 18px; font-size: 0.9rem; }
-        .verify-link a { color: #00ffff; text-decoration: none; transition: all 0.3s; font-weight: 500; }
-        .verify-link a:hover { text-shadow: 0 0 12px rgba(0,255,255,0.4); }
 
         .movement-section { padding: 80px 20px; text-align: center; max-width: 700px; margin: 0 auto; }
         .movement-section h2 { font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 800; margin-bottom: 24px; color: #fff; }
@@ -280,7 +287,9 @@
 
         @media(max-width: 860px) {
             .ix { grid-template-columns: 1fr; }
-            .ix-flow { justify-content: center; text-align: center; }
+            .doors { grid-template-columns: 1fr; }
+            .door-paid { order: -1; }
+            .doors-note { order: 2; }
             .ix-card b { min-width: 110px; font-size: 1.8rem; }
         }
         @media(max-width: 768px) {
@@ -329,7 +338,7 @@
         <a href="https://www.tiktok.com/@analytica84" target="_blank" class="hero-proof" data-en="📹 Proof of Concept — Watch on TikTok →" data-es="📹 Prueba de Concepto — Ver en TikTok →">📹 Proof of Concept — Watch on TikTok →</a>
     </section>
 
-    <!-- ===== PHOTO + STATS + FLOW ===== -->
+    <!-- ===== PHOTO + STATS + TWO DOORS ===== -->
     <section class="ix">
         <div class="ix-pic"><img src="a84-hero-pic.jpg" alt="Analytica84 trading desk with Hyperliquid integration"></div>
         <div class="ix-stats">
@@ -338,12 +347,22 @@
             <div class="ix-card"><b>+81.07%</b><span data-en="Annual gain · FXBook verified" data-es="Ganancia anual · verificada por FXBook">Annual gain · FXBook verified</span></div>
             <div class="ix-card"><b>4% off</b><span data-en="Trading fees on Hyperliquid" data-es="Comisiones en Hyperliquid">Trading fees on Hyperliquid</span></div>
         </div>
-        <div class="ix-flow">
-            <div class="ix-steps">
-                <div><em>1</em><span data-en="Trade on Hyperliquid" data-es="Opera en Hyperliquid">Trade on Hyperliquid</span></div>
-                <div><em>2</em><span data-en="Unlock Analytica84" data-es="Desbloquea Analytica84">Unlock Analytica84</span></div>
+
+        <div class="doors">
+            <div class="door door-perk">
+                <h3 data-en="Trader Perk" data-es="Trader Perk">Trader Perk</h3>
+                <div class="door-tag" data-en="Free because you trade, through Hyperliquid." data-es="Gratis porque operas, a través de Hyperliquid.">Free because you trade, through Hyperliquid.</div>
+                <p data-en="Join Hyperliquid with the code ANALYTICA84 and trade. Active traders get the dashboard free." data-es="Únete a Hyperliquid con el código ANALYTICA84 y opera. Los traders activos reciben el panel gratis.">Join Hyperliquid with the code ANALYTICA84 and trade. Active traders get the dashboard free.</p>
+                <p class="door-small" data-en="Not available to US residents." data-es="No disponible para residentes de EE. UU.">Not available to US residents.</p>
+                <a href="https://app.hyperliquid.xyz/join/ANALYTICA84" target="_blank" class="ix-btn" data-en="Join on Hyperliquid →" data-es="Unirme en Hyperliquid →">Join on Hyperliquid →</a>
             </div>
-            <a href="https://app.hyperliquid.xyz/join/ANALYTICA84" target="_blank" class="ix-btn" data-en="Activate Free Access →" data-es="Activar Acceso Gratis →">Activate Free Access →</a>
+            <div class="door door-paid">
+                <h3 data-en="Paid Access" data-es="Acceso de Pago">Paid Access</h3>
+                <div class="door-tag" data-en="$83.25 per month." data-es="$83.25 al mes.">$83.25 per month.</div>
+                <p data-en="No Hyperliquid account needed. Open to everyone, including US residents." data-es="No necesitas cuenta de Hyperliquid. Abierto para todos, incluidos residentes de EE. UU.">No Hyperliquid account needed. Open to everyone, including US residents.</p>
+                <a href="https://whop.com/checkout/plan_CYVzSLzUuyDFB/" target="_blank" class="ix-btn pink" data-en="Get Paid Access →" data-es="Obtener Acceso de Pago →">Get Paid Access →</a>
+            </div>
+            <div class="doors-note" data-en="Both doors open the same dashboard." data-es="Ambas puertas abren el mismo panel.">Both doors open the same dashboard.</div>
         </div>
     </section>
 
@@ -375,20 +394,16 @@
 
             <a href="https://app.hyperliquid.xyz/join/ANALYTICA84" target="_blank" class="submit-btn" data-en="Sign Up on Hyperliquid →" data-es="Regístrate en Hyperliquid →">Sign Up on Hyperliquid →</a>
 
-            <p class="form-note" data-en="Create your Hyperliquid account using the <span class='highlight'>Analytica84 referral link</span>, then return here to verify your wallet and unlock platform access." data-es="Crea tu cuenta de Hyperliquid usando el <span class='highlight'>link de referido de Analytica84</span>, luego regresa aquí para verificar tu wallet y desbloquear el acceso a la plataforma.">
-                Create your Hyperliquid account using the <span class="highlight">Analytica84 referral link</span>, then return here to verify your wallet and unlock platform access.
-            </p>
-
-            <p class="verify-link">
-                <a href="verify.html" data-en="Already have an account? Verify your wallet →" data-es="¿Ya tienes cuenta? Verifica tu wallet →">Already have an account? Verify your wallet →</a>
+            <p class="form-note" data-en="Join with the <span class='highlight'>Analytica84 referral link</span> and trade. Then email your wallet address and the email you will use on Whop to <span class='highlight'>william@analytica84.com</span>. Active traders get free access. Not available to US residents." data-es="Únete con el <span class='highlight'>link de referido de Analytica84</span> y opera. Luego envía por correo tu dirección de wallet y el correo que usarás en Whop a <span class='highlight'>william@analytica84.com</span>. Los traders activos reciben acceso gratis. No disponible para residentes de EE. UU.">
+                Join with the <span class="highlight">Analytica84 referral link</span> and trade. Then email your wallet address and the email you will use on Whop to <span class="highlight">william@analytica84.com</span>. Active traders get free access. Not available to US residents.
             </p>
         </div>
     </section>
 
     <section class="movement-section">
         <h2 data-en="Not a Product. A Project." data-es="No es un Producto. Es un Proyecto.">Not a Product. A Project.</h2>
-        <p data-en="You don't buy this. You <span class='highlight'>join it</span>." data-es="No compras esto. Te <span class='highlight'>unés</span>.">You don't buy this. You <span class="highlight">join it</span>.</p>
-        <p data-en="Free access to the dash. Shape what comes next. Be first when we open new doors." data-es="Acceso gratis al panel. Da forma a lo que viene. Sé el primero cuando abramos nuevas puertas.">Free access to the dash. Shape what comes next. Be first when we open new doors.</p>
+        <p data-en="Join free as a <span class='highlight'>Hyperliquid trader</span>, or pay for access." data-es="Únete gratis como <span class='highlight'>trader de Hyperliquid</span>, o paga por el acceso.">Join free as a <span class="highlight">Hyperliquid trader</span>, or pay for access.</p>
+        <p data-en="Free for active Hyperliquid traders. Shape what comes next. Be first when we open new doors." data-es="Gratis para traders activos de Hyperliquid. Da forma a lo que viene. Sé el primero cuando abramos nuevas puertas.">Free for active Hyperliquid traders. Shape what comes next. Be first when we open new doors.</p>
         <p data-en="We're building this live. <span class='highlight'>You're part of it.</span>" data-es="Estamos construyendo esto en vivo. <span class='highlight'>Tú eres parte de esto.</span>">We're building this live. <span class="highlight">You're part of it.</span></p>
     </section>
 
