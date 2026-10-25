@@ -164,15 +164,30 @@
         }
         .hero-proof:hover { color: #ff69b4; text-shadow: 0 0 10px rgba(255,20,147,0.3); }
 
-        /* ===== PHOTO + STATS + TWO DOORS ===== */
-        .ix { max-width: 1100px; margin: 0 auto 70px; padding: 20px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; }
-        .ix-pic { border-radius: 16px; overflow: hidden; border: 1px solid rgba(0,255,255,.25); background: #000; min-height: 260px; }
-        .ix-pic img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 85% center; }
-        .ix-stats { display: flex; flex-direction: column; gap: 12px; }
-        .ix-card { background: #000; border: 1px solid rgba(0,255,255,.25); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
-        .ix-card { flex: 1; display: flex; align-items: center; gap: 16px; border-radius: 14px; padding: 14px 20px; }
-        .ix-card b { flex: 0 0 auto; min-width: 128px; font-size: 2.1rem; font-weight: 800; letter-spacing: -1px; line-height: 1; background: linear-gradient(90deg,#6fe7dc,#5aa0e6,#a27ee0); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-        .ix-card span { font-size: .95rem; font-weight: 500; color: #f0f4fa; line-height: 1.35; }
+        /* ===== NEW HERO LAYOUT: PHOTO + HEADLINE BOX + STATS + CRAYONS BAR + TWO DOORS ===== */
+        .ix { max-width: 1100px; margin: 0 auto 70px; padding: 20px; display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,.95fr); gap: 20px; }
+        .ix-pic { position: relative; border-radius: 20px; overflow: hidden; border: 1px solid rgba(0,255,255,.34); background: #000; min-height: 320px; }
+        .ix-pic img { display: block; width: 100%; height: 100%; min-height: 320px; object-fit: cover; object-position: 70% center; }
+        .ix-pic::after { content: ''; position: absolute; inset: 55% 0 0; background: linear-gradient(transparent, rgba(0,0,0,.5)); pointer-events: none; }
+        .ix-pic-label { position: absolute; z-index: 1; left: 18px; bottom: 16px; font-size: 11px; font-weight: 800; letter-spacing: .15em; color: #fff; text-shadow: 0 2px 8px #000; }
+
+        .nh-right { display: flex; flex-direction: column; gap: 12px; }
+        .nh-promise { border: 1px solid rgba(255,20,147,.45); border-radius: 16px; padding: 18px 20px; background: #000; }
+        .nh-promise h2 { font-size: clamp(20px, 2.3vw, 29px); line-height: 1.12; margin: 0 0 8px; color: #fff; }
+        .nh-promise h2 em { font-style: normal; color: #ff1493; }
+        .nh-promise p { margin: 0; color: #d5e1e8; font-size: 14px; line-height: 1.5; }
+        .nh-stats { display: grid; gap: 10px; }
+        .nh-stat { display: grid; grid-template-columns: minmax(130px,.75fr) 1.25fr; align-items: center; gap: 12px; padding: 15px 18px; border: 1px solid rgba(0,255,255,.34); border-radius: 14px; background: #000; }
+        .nh-num { font-size: clamp(25px, 2.6vw, 34px); font-weight: 900; letter-spacing: -.04em; color: #00e5ff; white-space: nowrap; }
+        .nh-desc { font-size: 14px; line-height: 1.35; color: #f4f7fa; }
+        .nh-desc small { display: block; color: #aeb9c5; font-size: 11px; margin-top: 4px; }
+
+        .nh-crayons { grid-column: 1/-1; border: 1px solid rgba(255,255,255,.12); border-radius: 15px; padding: 13px 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: #000; }
+        .nh-crayons strong { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #fff; }
+        .nh-sticks { display: flex; gap: 6px; align-items: center; }
+        .nh-stick { width: 28px; height: 7px; border-radius: 99px; transform: rotate(-18deg); display: block; }
+        .nh-note { color: #aeb9c5; font-size: 12px; margin-left: auto; }
+
         .ix-btn { display: inline-block; padding: 14px 40px; border-radius: 10px; font-weight: 700; letter-spacing: .3px; color: #000; text-decoration: none; background: linear-gradient(135deg,#00ffff,#00a884); transition: all .3s; text-align: center; }
         .ix-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,255,255,.4); }
         .ix-btn.pink { background: linear-gradient(135deg,#ff1493,#c2185b); color: #fff; }
@@ -297,10 +312,12 @@
 
         @media(max-width: 860px) {
             .ix { grid-template-columns: 1fr; }
+            .ix-pic, .ix-pic img { min-height: 260px; }
+            .nh-stat { grid-template-columns: 120px 1fr; }
+            .nh-note { margin-left: 0; width: 100%; }
             .doors { grid-template-columns: 1fr; }
             .door-paid { order: -1; }
             .doors-note { order: 2; }
-            .ix-card b { min-width: 110px; font-size: 1.8rem; }
         }
         @media(max-width: 768px) {
             .navbar { padding: 15px 20px; flex-wrap: wrap; gap: 10px; }
@@ -349,14 +366,28 @@
         <a href="https://www.tiktok.com/@analytica84" target="_blank" class="hero-proof" data-en="📹 Proof of Concept — Watch on TikTok →" data-es="📹 Prueba de Concepto — Ver en TikTok →">📹 Proof of Concept — Watch on TikTok →</a>
     </section>
 
-    <!-- ===== PHOTO + STATS + TWO DOORS ===== -->
+    <!-- ===== NEW HERO LAYOUT: PHOTO + HEADLINE BOX + STATS + CRAYONS BAR + TWO DOORS ===== -->
     <section class="ix">
-        <div class="ix-pic"><img src="a84-hero-pic.jpg" alt="Analytica84 trading desk with Hyperliquid integration"></div>
-        <div class="ix-stats">
-            <div class="ix-card"><b>$1BB+</b><span data-en="Verified FX volume" data-es="Volumen FX verificado">Verified FX volume</span></div>
-            <div class="ix-card"><b>86.98%</b><span data-en="Win rate (2024)" data-es="Tasa de acierto (2024)">Win rate (2024)</span></div>
-            <div class="ix-card"><b>+81.07%</b><span data-en="Annual gain · FXBook verified" data-es="Ganancia anual · verificada por FXBook">Annual gain · FXBook verified</span></div>
-            <div class="ix-card"><b>4% off</b><span data-en="Trading fees on Hyperliquid" data-es="Comisiones en Hyperliquid">Trading fees on Hyperliquid</span></div>
+        <div class="ix-pic">
+            <img src="a84-hero-pic.jpg" alt="Analytica84 trading desk with Hyperliquid integration">
+            <div class="ix-pic-label" data-en="WE SEE WHAT MARKETS HIDE" data-es="VEMOS LO QUE LOS MERCADOS ESCONDEN">WE SEE WHAT MARKETS HIDE</div>
+        </div>
+        <div class="nh-right">
+            <div class="nh-promise">
+                <h2 data-en="Complex markets.<br><em>Crayons-simple clarity.</em>" data-es="Mercados complejos.<br><em>Claridad simple con Crayons.</em>">Complex markets.<br><em>Crayons-simple clarity.</em></h2>
+                <p data-en="Powered by Crayons — turning intermarket complexity into a clearer view of the market." data-es="Impulsado por Crayons — convirtiendo la complejidad intermercado en una visión más clara del mercado.">Powered by Crayons — turning intermarket complexity into a clearer view of the market.</p>
+            </div>
+            <div class="nh-stats">
+                <div class="nh-stat"><div class="nh-num">$1BB+</div><div class="nh-desc" data-en="Verified FX volume<small>2022–2024</small>" data-es="Volumen FX verificado<small>2022–2024</small>">Verified FX volume<small>2022–2024</small></div></div>
+                <div class="nh-stat"><div class="nh-num">45–80%</div><div class="nh-desc" data-en="Historical annual win-rate range<small>2014–2024 · varies by year</small>" data-es="Rango histórico anual de tasa de acierto<small>2014–2024 · varía por año</small>">Historical annual win-rate range<small>2014–2024 · varies by year</small></div></div>
+                <div class="nh-stat"><div class="nh-num">+81.07%</div><div class="nh-desc" data-en="Documented single-year gain<small>FXBook verified · one year, not a 10-year average</small>" data-es="Ganancia documentada de un solo año<small>Verificada por FXBook · un año, no un promedio de 10 años</small>">Documented single-year gain<small>FXBook verified · one year, not a 10-year average</small></div></div>
+            </div>
+        </div>
+
+        <div class="nh-crayons">
+            <strong data-en="Powered by Crayons" data-es="Impulsado por Crayons">Powered by Crayons</strong>
+            <div class="nh-sticks"><i class="nh-stick" style="background:#ff1744"></i><i class="nh-stick" style="background:#ff9100"></i><i class="nh-stick" style="background:#ffea00"></i><i class="nh-stick" style="background:#00e676"></i><i class="nh-stick" style="background:#00bfff"></i><i class="nh-stick" style="background:#651fff"></i><i class="nh-stick" style="background:#ff1493"></i></div>
+            <span class="nh-note" data-en="Many market signals in. Clearer decisions out." data-es="Muchas señales de mercado. Decisiones más claras.">Many market signals in. Clearer decisions out.</span>
         </div>
 
         <div class="doors">
