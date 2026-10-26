@@ -202,6 +202,8 @@
         .door p { font-size: .95rem; color: #c0c8d8; line-height: 1.6; }
         .door .door-small { font-size: .85rem; color: #8a8a9a; }
         .door .ix-btn { margin-top: auto; align-self: flex-start; }
+        .door-btns { margin-top: auto; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; }
+        .door-btns .ix-btn { margin-top: 0; padding: 14px 28px; }
         .doors-note { grid-column: 1/-1; text-align: center; font-size: .95rem; color: #8a8a9a; }
 
         /* ===== ORIGIN STORY (unchanged) ===== */
@@ -400,9 +402,12 @@
             </div>
             <div class="door door-paid">
                 <h3 data-en="Paid Access" data-es="Acceso de Pago">Paid Access</h3>
-                <div class="door-tag" data-en="$83.25 per month." data-es="$83.25 al mes.">$83.25 per month.</div>
+                <div class="door-tag" data-en="$83.25 per month, or $799 per year." data-es="$83.25 al mes, o $799 al año.">$83.25 per month, or $799 per year.</div>
                 <p data-en="No Hyperliquid account needed. Open to everyone, including US residents." data-es="No necesitas cuenta de Hyperliquid. Abierto para todos, incluidos residentes de EE. UU.">No Hyperliquid account needed. Open to everyone, including US residents.</p>
-                <a href="https://whop.com/checkout/plan_CYVzSLzUuyDFB/" target="_blank" class="ix-btn pink" data-en="Get Paid Access →" data-es="Obtener Acceso de Pago →">Get Paid Access →</a>
+                <div class="door-btns">
+                    <a href="https://whop.com/checkout/plan_CYVzSLzUuyDFB/" target="_blank" class="ix-btn pink" data-en="$83.25 / month →" data-es="$83.25 / mes →">$83.25 / month →</a>
+                    <a href="https://whop.com/checkout/plan_323xuNZgTMBce/" target="_blank" class="ix-btn pink" data-en="$799 / year →" data-es="$799 / año →">$799 / year →</a>
+                </div>
             </div>
             <div class="doors-note" data-en="Both doors open the same dashboard." data-es="Ambas puertas abren el mismo panel.">Both doors open the same dashboard.</div>
         </div>
