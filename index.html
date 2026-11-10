@@ -171,6 +171,11 @@
         .ix-pic::after { content: ''; position: absolute; inset: 55% 0 0; background: linear-gradient(transparent, rgba(0,0,0,.5)); pointer-events: none; }
         .ix-pic-label { position: absolute; z-index: 1; left: 18px; bottom: 16px; font-size: 11px; font-weight: 800; letter-spacing: .15em; color: #fff; text-shadow: 0 2px 8px #000; }
 
+        /* ===== CRAYON TAGLINE ABOVE HERO PHOTO ===== */
+        .ix-kid { grid-column: 1/-1; text-align: center; padding: 4px 0 6px; }
+        .ix-kid-sticks { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 14px; }
+        .ix-kid-line { font-size: clamp(15px, 2.7vw, 27px); font-weight: 900; letter-spacing: .06em; text-transform: uppercase; line-height: 1.35; }
+
         .nh-right { display: flex; flex-direction: column; gap: 12px; }
         .nh-promise { border: 1px solid rgba(255,20,147,.45); border-radius: 16px; padding: 18px 20px; background: #000; }
         .nh-promise h2 { font-size: clamp(20px, 2.3vw, 29px); line-height: 1.12; margin: 0 0 8px; color: #fff; }
@@ -205,6 +210,14 @@
         .door-btns { margin-top: auto; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; }
         .door-btns .ix-btn { margin-top: 0; padding: 14px 28px; }
         .doors-note { grid-column: 1/-1; text-align: center; font-size: .95rem; color: #8a8a9a; }
+
+        /* ===== FREE TRIAL STRIP (open to everyone) ===== */
+        .trial { grid-column: 1/-1; position: relative; background: #000; border: 1px solid rgba(255,255,255,.14); border-radius: 16px; padding: 30px 28px 26px; text-align: center; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .trial::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg,#ff1744,#ff9100,#ffea00,#00e676,#00bfff,#651fff,#ff1493); }
+        .trial h3 { font-size: clamp(1.4rem, 3.2vw, 2rem); font-weight: 900; letter-spacing: .02em; line-height: 1.2; }
+        .trial p { font-size: .98rem; color: #c0c8d8; line-height: 1.6; }
+        .trial-btn { display: inline-block; padding: 16px 38px; border-radius: 12px; font-weight: 800; font-size: 1.05rem; letter-spacing: .3px; color: #000; text-decoration: none; background: linear-gradient(90deg,#ff1744,#ff9100,#ffea00,#00e676,#00bfff,#b388ff,#ff1493); transition: all .3s; }
+        .trial-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,255,255,.25); }
 
         /* ===== ORIGIN STORY (unchanged) ===== */
         .origin-section {
@@ -320,6 +333,7 @@
             .doors { grid-template-columns: 1fr; }
             .door-paid { order: -1; }
             .doors-note { order: 2; }
+            .trial { order: 3; }
         }
         @media(max-width: 768px) {
             .navbar { padding: 15px 20px; flex-wrap: wrap; gap: 10px; }
@@ -368,8 +382,12 @@
         <a href="https://www.tiktok.com/@analytica84" target="_blank" class="hero-proof" data-en="📹 Proof of Concept — Watch on TikTok →" data-es="📹 Prueba de Concepto — Ver en TikTok →">📹 Proof of Concept — Watch on TikTok →</a>
     </section>
 
-    <!-- ===== NEW HERO LAYOUT: PHOTO + HEADLINE BOX + STATS + CRAYONS BAR + TWO DOORS ===== -->
+    <!-- ===== NEW HERO LAYOUT: CRAYON TAGLINE + PHOTO + HEADLINE BOX + STATS + CRAYONS BAR + TWO DOORS + TRIAL ===== -->
     <section class="ix">
+        <div class="ix-kid">
+            <div class="ix-kid-sticks"><i class="nh-stick" style="background:#ff1744"></i><i class="nh-stick" style="background:#ff9100"></i><i class="nh-stick" style="background:#ffea00"></i><i class="nh-stick" style="background:#00e676"></i><i class="nh-stick" style="background:#00bfff"></i><i class="nh-stick" style="background:#651fff"></i><i class="nh-stick" style="background:#ff1493"></i></div>
+            <div class="ix-kid-line" data-en="<span style='color:#ff1744'>Powered</span> <span style='color:#ff9100'>by</span> <span style='color:#ffea00'>Crayons:</span> <span style='color:#00e676'>Trading</span> <span style='color:#00bfff'>So</span> <span style='color:#b388ff'>Easy</span> <span style='color:#ff1493'>A</span> <span style='color:#ff1744'>Kid</span> <span style='color:#ff9100'>Can</span> <span style='color:#ffea00'>Do</span> <span style='color:#00e676'>It</span>" data-es="<span style='color:#ff1744'>Impulsado</span> <span style='color:#ff9100'>por</span> <span style='color:#ffea00'>Crayons:</span> <span style='color:#00e676'>Operar</span> <span style='color:#00bfff'>Tan</span> <span style='color:#b388ff'>Fácil</span> <span style='color:#ff1493'>Que</span> <span style='color:#ff1744'>Un</span> <span style='color:#ff9100'>Niño</span> <span style='color:#ffea00'>Puede</span> <span style='color:#00e676'>Hacerlo</span>"><span style="color:#ff1744">Powered</span> <span style="color:#ff9100">by</span> <span style="color:#ffea00">Crayons:</span> <span style="color:#00e676">Trading</span> <span style="color:#00bfff">So</span> <span style="color:#b388ff">Easy</span> <span style="color:#ff1493">A</span> <span style="color:#ff1744">Kid</span> <span style="color:#ff9100">Can</span> <span style="color:#ffea00">Do</span> <span style="color:#00e676">It</span></div>
+        </div>
         <div class="ix-pic">
             <img src="a84-hero-pic.jpg" alt="Analytica84 trading desk with Hyperliquid integration">
             <div class="ix-pic-label" data-en="WE SEE WHAT MARKETS HIDE" data-es="VEMOS LO QUE LOS MERCADOS ESCONDEN">WE SEE WHAT MARKETS HIDE</div>
@@ -410,6 +428,12 @@
                 </div>
             </div>
             <div class="doors-note" data-en="Both doors open the same dashboard." data-es="Ambas puertas abren el mismo panel.">Both doors open the same dashboard.</div>
+
+            <div class="trial">
+                <h3 data-en="<span style='color:#ff1744'>Try</span> <span style='color:#ff9100'>it</span> <span style='color:#ffea00'>free</span> <span style='color:#00e676'>for</span> <span style='color:#00bfff'>30</span> <span style='color:#b388ff'>days</span>" data-es="<span style='color:#ff1744'>Pruébalo</span> <span style='color:#ff9100'>gratis</span> <span style='color:#ffea00'>por</span> <span style='color:#00e676'>30</span> <span style='color:#00bfff'>días</span>"><span style="color:#ff1744">Try</span> <span style="color:#ff9100">it</span> <span style="color:#ffea00">free</span> <span style="color:#00e676">for</span> <span style="color:#00bfff">30</span> <span style="color:#b388ff">days</span></h3>
+                <p data-en="Then $83.25 per month. Card required. Cancel anytime." data-es="Luego $83.25 al mes. Se requiere tarjeta. Cancela cuando quieras.">Then $83.25 per month. Card required. Cancel anytime.</p>
+                <a href="https://whop.com/checkout/plan_aZay1JfzXL1j2" target="_blank" class="trial-btn" data-en="Start 30-day free trial →" data-es="Comenzar prueba gratis de 30 días →">Start 30-day free trial →</a>
+            </div>
         </div>
     </section>
 
